@@ -1,7 +1,7 @@
 #!/usr/bin/env python
+from config.configure import Configure
 from modules.allocate import Allocate
 from modules.blocks import Blocks
-from modules.configure import Configure
 from modules.initialize import Initialize
 from modules.payments import Payments
 from modules.stage import Stage
@@ -28,6 +28,4 @@ if __name__ == '__main__':
     
     
     # process payments
-    
-    
-    
+    print("End Processing")
