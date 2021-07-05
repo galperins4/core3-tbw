@@ -22,3 +22,23 @@ class Database:
     def close_connection(self):
         self.cursor.close()
         self.connection.close()
+        
+        
+    def get_publickey(self):
+        try:
+            self.cursor.execute(f"""SELECT "sender_public_key", "asset" FROM transactions WHERE "type" = 2""")
+            universe = self.cursor.fetchall()
+        except Exception as e:
+            print(e)
+    
+        for i in universe:
+            print(i)
+    
+    def get_current_nonce(self):
+        pass
+    
+    
+    def get_blocks(self):
+        pass
+    
+        
