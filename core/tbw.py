@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from config.configure import Configure
+from network.network import Network
 from modules.allocate import Allocate
 from modules.blocks import Blocks
 from modules.initialize import Initialize
@@ -16,7 +17,7 @@ if __name__ == '__main__':
     
     
     #load network
-    
+    network = Network()
     
     
     # check if initialized
