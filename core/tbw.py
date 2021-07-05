@@ -24,9 +24,8 @@ if __name__ == '__main__':
     #load utility
     utility = Utility()
     
-    
     # check if initialized
-    
+    Initialize()
     
     # connect to database
     database = Database(config, network)
