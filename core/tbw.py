@@ -17,23 +17,11 @@ if __name__ == '__main__':
 
     # get configuration
     config = Configure()
-    print(config.atomic)
-    print(config.network)
-    print(config.delegate)
     
     #load network
     network = Network(config.network)
-    print(network.epoch)
-    print(network.version)
-    print(network.wif)
-    print(network.api)
-    print(network.database)
-    print(network.user)
-    print(network.password)
-    
     
     # check if initialized
-    
     
     
     # connect to database
