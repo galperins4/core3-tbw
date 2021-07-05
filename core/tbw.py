@@ -14,10 +14,12 @@ if __name__ == '__main__':
 
     # get configuration
     config = Configure()
-    
+    print(config.static)
+    print(config.network)
+    print(config.delegate)
     
     #load network
-    network = Network()
+    network = Network(config.network)
     
     
     # check if initialized
