@@ -15,7 +15,7 @@ class Configure:
         
         
     def static(self, c):
-        self.atomic = c.get('static', 'atomic')
+        self.atomic = int(c.get('static', 'atomic'))
         print(type(self.atomic))
     
     
