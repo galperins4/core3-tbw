@@ -2,8 +2,9 @@ import os
 from pathlib import Path
 
 class Initialize:
-    def __init__(self):
+    def __init__(self, database):
         self.home = str(Path.home())
+        self.database = database
         data_path = self.home+'/core3-tbw/core/data/tbw.db'
         
         if os.path.exists(data_path) == False:
