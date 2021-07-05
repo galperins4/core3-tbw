@@ -37,8 +37,12 @@ class Database:
                 if k == 'delegate' and v['username']==self.delegate:
                     self.publickey = i[0]
     
+    
     def get_current_nonce(self):
-        pass
+        try:
+            self.nonce = self.cursor.execute(f"""SELECT "nonce" FROM wallets WHERE "public_key" = {self.publickey}""")
+        except Exception as e:
+            print(e)
     
     
     def get_blocks(self):
