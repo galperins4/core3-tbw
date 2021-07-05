@@ -1,8 +1,9 @@
 import os
 from pathlib import Path
+from utility.sql import Sql
 
 class Initialize:
-    def __init__(self, database, sql):
+    def __init__(self, database):
         self.home = str(Path.home())
         self.database = database
         data_path = self.home+'/core3-tbw/core/data/tbw.db'
@@ -18,7 +19,9 @@ class Initialize:
             print("Database detected - no initialization needed")
     
     def initialize(self):
-        pass
+        sql = SQL()
+        sql.setup()
+        quit()
 
     
     
