@@ -9,10 +9,10 @@ class Network:
         
         config = configparser.ConfigParser()
         config.read(env_path)
-        self.load_network()
+        self.load_network(config)
         
         
-    def load_network(self):
+    def load_network(self, c):
         self.epoch = c.get('network', 'epoch').split(',')
         self.version = int(c.get('network', 'version'))
         self.wif = int(c.get('network', 'wif'))
