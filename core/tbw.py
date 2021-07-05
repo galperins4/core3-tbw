@@ -9,7 +9,7 @@ from modules import Voters
 
 
 if __name__ == '__main__':
-    pass
+    print("Start Processing")
 
 
     # get configuration
