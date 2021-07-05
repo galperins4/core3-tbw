@@ -8,7 +8,7 @@ class Database:
         print(network.password)
     
     
-    
+    '''
     def __init__(self, db, u, pw, pk):
         self.db=db
         self.user=u
@@ -30,3 +30,4 @@ class Database:
     def close_connection(self):
         self.cursor.close()
         self.connection.close()
+    '''
