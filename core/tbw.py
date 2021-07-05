@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     # get configuration
     config = Configure()
-    print(config.static)
+    print(config.atomic)
     print(config.network)
     print(config.delegate)
     
