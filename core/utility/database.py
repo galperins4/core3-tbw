@@ -44,6 +44,15 @@ class Database:
             "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' ORDER BY "height" DESC""")
             return self.cursor.fetchall()
         except Exception as e:
-                print(e)
+            print(e)
     
+    
+    def get_limit_blocks(self):
+        try:
+            self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
+            "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' ORDER BY "height" DESC LIMIT 250""")
+            return self.cursor.fetchall()
+        except Exception as e:
+            print(e)
         
+    
