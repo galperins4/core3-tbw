@@ -1,3 +1,7 @@
+import configparser
+
 class Configure:
     def __init__(self):
-        pass
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        print(config.options('delegate'))
