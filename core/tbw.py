@@ -11,9 +11,8 @@ from modules.voters import Voters
 if __name__ == '__main__':
     print("Start Processing")
 
-
     # get configuration
-    
+    config = Configure()
     
     
     # check if initialized
