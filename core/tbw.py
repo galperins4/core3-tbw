@@ -33,7 +33,9 @@ if __name__ == '__main__':
     
     
     # process blocks
-    
+    for i in blocks;
+        print(i)
+        quit()
     
     
     # allocate block rewards
