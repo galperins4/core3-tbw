@@ -2,7 +2,7 @@ import sqlite3
 from datetime import datetime
 from pathlib import Path
 
-class SQL:
+class Sql:
     def __init__(self):
         self.home = str(Path.home())
         data_path = self.home+'/core3-tbw/core/data/tbw.db'
