@@ -6,6 +6,7 @@ class Database:
         self.database = network.database
         self.username = config.username
         self.password = network.password
+        self.delegate = config.delegate
     
     
     def open_connection(self):
@@ -33,7 +34,7 @@ class Database:
     
         for i in universe:
             for k,v in i[1].items():
-                if k == 'delegate' and v['username']=='genesis_1':
+                if k == 'delegate' and v['username']==self.delegate:
                     self.publickey = i[0]
     
     def get_current_nonce(self):
