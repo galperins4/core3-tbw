@@ -15,6 +15,10 @@ if __name__ == '__main__':
     config = Configure()
     
     
+    #load network
+    
+    
+    
     # check if initialized
     
     
