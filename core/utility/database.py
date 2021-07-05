@@ -32,7 +32,8 @@ class Database:
             print(e)
     
         for i in universe:
-            print(i[1]['delegate']['username'])
+            if i[1] = 'delegate':
+                print(i)
     
     def get_current_nonce(self):
         pass
