@@ -9,6 +9,7 @@ class Initialize:
         
         if os.path.exists(data_path) == False:
             print("Setting up database")
+            quit()
             self.initialize()
             print("Finished setting up database")
             quit()
