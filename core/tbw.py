@@ -9,7 +9,7 @@ from modules.stage import Stage
 from modules.voters import Voters
 from utility.database import Database
 #from utility.sql import Sql
-#from utility.utility import Utility
+from utility.utility import Utility
 
 
 if __name__ == '__main__':
@@ -24,15 +24,14 @@ if __name__ == '__main__':
     #load utility
     utility = Utility()
     
-    # check if initialized
-    Initialize()
-    
     # connect to database
     database = Database(config, network)
     database.open_connection()
     database.get_publickey()
     database.close_connection()
     
+    # check if initialized
+    Initialize()
     
     # process blocks
     
