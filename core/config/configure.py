@@ -20,7 +20,7 @@ class Configure:
     
     
     def delegate(self, c):
-        self.delegate = c.get('static', 'delegate')
+        self.delegate = c.get('delegate', 'delegate')
     
     
     def payment(self, c):
