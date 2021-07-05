@@ -15,13 +15,13 @@ class Configure:
         print(self.atomic)
     
     
-    def delegate(self):
+    def delegate(self, c):
         pass
     
     
-    def payment(self):
+    def payment(self, c):
         pass
     
     
-    def experimental(self):
+    def experimental(self, c):
         pass
