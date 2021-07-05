@@ -29,7 +29,6 @@ if __name__ == '__main__':
     database.open_connection()
     database.get_publickey()
     database.close_connection()
-    quit()
     # check if initialized
     Initialize(database)
     
