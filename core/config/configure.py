@@ -3,7 +3,7 @@ import configparser
 class Configure:
     def __init__(self):
         config = configparser.ConfigParser()
-        config.read('config.ini')
+        config.read('\config\config.ini')
         self.static(config)
         self.delegate(config)
         self.payment(config)
