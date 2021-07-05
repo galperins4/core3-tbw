@@ -28,6 +28,7 @@ if __name__ == '__main__':
     database = Database(config, network)
     database.open_connection()
     database.get_publickey()
+    blocks = database.get_all_blocks()
     database.close_connection()
     
     
