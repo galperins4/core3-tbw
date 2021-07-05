@@ -25,7 +25,7 @@ if __name__ == '__main__':
     
     
     # connect to database
-    database = ArkDB(network.database, data.database_user, network.database_password, data.public_key)
+    database = Database(config, network)
     
     
     # process blocks
