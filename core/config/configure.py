@@ -16,7 +16,7 @@ class Configure:
         
     def static(self, c):
         self.atomic = c.get('static', 'atomic')
-        print(self.atomic)
+        print(type(self.atomic))
     
     
     def delegate(self, c):
