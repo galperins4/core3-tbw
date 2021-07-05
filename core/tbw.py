@@ -20,6 +20,13 @@ if __name__ == '__main__':
     
     #load network
     network = Network(config.network)
+    print(network.epoch)
+    print(network.version)
+    print(network.wif)
+    print(network.api)
+    print(network.database)
+    print(network.user)
+    print(network.password)
     
     
     # check if initialized
