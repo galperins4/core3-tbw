@@ -3,23 +3,15 @@ import psycopg2
 
 class Database:
     def __init__(self, config, network):
-        print(network.database)
-        print(config.username)
-        print(network.password)
-    
-    
-    '''
-    def __init__(self, db, u, pw, pk):
-        self.db=db
-        self.user=u
-        self.password=pw
-        self.PublicKey=pk
+        self.database = network.database
+        self.username = config.username
+        self.password = network.password
     
     
     def open_connection(self):
         self.connection = psycopg2.connect(
-            dbname = self.db,
-            user = self.user,
+            dbname = self.database,
+            user = self.username,
             password= self.password,
             host='localhost',
             port='5432')
@@ -30,4 +22,3 @@ class Database:
     def close_connection(self):
         self.cursor.close()
         self.connection.close()
-    '''
