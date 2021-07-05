@@ -12,7 +12,6 @@ class Initialize:
             print("Setting up database")
             self.initialize()
             print("Finished setting up database")
-            quit()
             
         else:
             print("Database detected - no initialization needed")
