@@ -31,22 +31,22 @@ class SQL:
 
 
     def setup(self):
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS blocks (id varchar(64), timestamp int, reward int, 
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS blocks (id varchar(64), timestamp int, reward int,\
                             totalFee bigint, height int, processed_at varchar(64) null)")
 
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS voters (address varchar(36), u_balance bigint, 
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS voters (address varchar(36), u_balance bigint,\ 
                             p_balance bigint, share float )")
 
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS transactions (address varchar(36), amount varchar(64), 
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS transactions (address varchar(36), amount varchar(64),\ 
                             id varchar(64), processed_at varchar(64) )")
         
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS delegate_rewards (address varchar(36), u_balance bigint, 
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS delegate_rewards (address varchar(36), u_balance bigint,\ 
                             p_balance bigint )")
         
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS staging (address varchar(36), payamt bigint, msg varchar(64), 
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS staging (address varchar(36), payamt bigint, msg varchar(64),\ 
                             processed_at varchar(64) null )")
         
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS exchange (initial_address varchar(36), payin_address varchar(36), 
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS exchange (initial_address varchar(36), payin_address varchar(36),\ 
                             exchange_address varchar(64), payamt bigint, exchangeid varchar(64), processed_at varchar(64) null )")
 
         self.connection.commit()
