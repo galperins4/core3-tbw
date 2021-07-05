@@ -4,7 +4,7 @@ import psycopg2
 class Database:
     def __init__(self, config, network):
         print(network.database)
-        print(config.user)
+        print(config.username)
         print(network.password)
     
     
