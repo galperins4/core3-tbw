@@ -34,7 +34,7 @@ class Database:
         for i in universe:
             for k,v in i[1].items():
                 if k == 'delegate' and v['username']=='genesis_1':
-                    print("success")
+                    self.publickey = k
     
     def get_current_nonce(self):
         pass
