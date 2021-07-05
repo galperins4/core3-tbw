@@ -10,9 +10,9 @@ class Configure:
         self.experimental(config)
         
         
-    def static(self, config):
-        self.atomic = config.get('static', 'atomic')
-        print(atomic)
+    def static(self, c):
+        self.atomic = c.get('static', 'atomic')
+        print(self.atomic)
     
     
     def delegate(self):
