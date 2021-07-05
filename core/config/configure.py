@@ -1,9 +1,13 @@
 import configparser
+from pathlib import Path
 
 class Configure:
     def __init__(self):
+        self.home = str(Path.home())
+        env_path = self.home+'/core3-tbw/core/config/config.ini'
+        
         config = configparser.ConfigParser()
-        config.read('\config\config.ini')
+        config.read(env_path)
         self.static(config)
         self.delegate(config)
         self.payment(config)
