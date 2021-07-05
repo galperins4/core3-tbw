@@ -7,6 +7,9 @@ from modules.initialize import Initialize
 from modules.payments import Payments
 from modules.stage import Stage
 from modules.voters import Voters
+from utility.database import Database
+#from utility.sql import Sql
+#from utility.utility import Utility
 
 
 if __name__ == '__main__':
@@ -31,6 +34,10 @@ if __name__ == '__main__':
     
     # check if initialized
     
+    
+    
+    # connect to database
+    database = ArkDB(network.database, data.database_user, network.database_password, data.public_key)
     
     
     # process blocks
