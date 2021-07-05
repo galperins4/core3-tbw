@@ -13,7 +13,7 @@ from utility.utility import Utility
 
 
 if __name__ == '__main__':
-    print("Start Processing")
+    print("Start Script")
 
     # get configuration
     config = Configure()
@@ -40,4 +40,4 @@ if __name__ == '__main__':
     
     
     # process payments
-    print("End Processing")
+    print("End Script")
