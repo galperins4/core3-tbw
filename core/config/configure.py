@@ -17,6 +17,7 @@ class Configure:
     def static(self, c):
         self.atomic = int(c.get('static', 'atomic'))
         self.network = c.get('static', 'network')
+        self.username = c.get('static', 'username')
     
     
     def delegate(self, c):
