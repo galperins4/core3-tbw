@@ -38,11 +38,12 @@ class Database:
                     self.publickey = i[0]
     
     
-    def get_current_nonce(self):
-        pass
-    
-    
-    def get_blocks(self):
-        pass
+    def get_all_blocks(self):
+        try:
+            self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
+            "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' ORDER BY "height" DESC""")
+            return self.cursor.fetchall()
+        except Exception as e:
+                print(e)
     
         
