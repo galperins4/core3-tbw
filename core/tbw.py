@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-from modules import Allocate
-from modules import Blocks
-from modules import Configure
-from modules import Initialize
-from modules import Payments
-from modules import Stage
-from modules import Voters
+from modules.allocate import Allocate
+from modules.blocks import Blocks
+from modules.configure import Configure
+from modules.initialize import Initialize
+from modules.payments import Payments
+from modules.stage import Stage
+from modules.voters import Voters
 
 
 if __name__ == '__main__':
