@@ -32,7 +32,7 @@ class Database:
             print(e)
     
         for i in universe:
-            print(type(i[1])
+            print(type(i[1]))
             #if i[1].key() == 'delegate':
             #    print(i)
     
