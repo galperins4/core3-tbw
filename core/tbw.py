@@ -22,7 +22,7 @@ if __name__ == '__main__':
     network = Network(config.network)
     
     #load utility
-    utility = Utility()
+    utility = Utility(network)
     
     # connect to database
     database = Database(config, network)
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     database.close_connection()
     
     # check if initialized
-    Initialize()
+    Initialize(database)
     
     # process blocks
     
