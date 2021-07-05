@@ -1,8 +1,8 @@
 [Network]
-EPOCH = "2017,3,21,13,00,00"
-VERSION = 30
-WIF = 170
-API_PORT = 4003
-DATABASE = "ark_devnet"
-DATABASE_USER = "null"
-DATABASE_PASSWORD = "password"
+epoch = "2017,3,21,13,00,00"
+version = 30
+wif = 170
+api = 4003
+database = "ark_devnet"
+user = "null"
+password = "password"
