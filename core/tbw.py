@@ -21,6 +21,10 @@ if __name__ == '__main__':
     #load network
     network = Network(config.network)
     
+    #load utility
+    utility = Utility()
+    
+    
     # check if initialized
     
     
