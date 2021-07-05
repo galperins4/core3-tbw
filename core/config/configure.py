@@ -11,7 +11,8 @@ class Configure:
         
         
     def static_config(self):
-        pass
+        self.atomic = config.get('static', 'atomic')
+        print(atomic)
     
     
     def delegate_config(self):
