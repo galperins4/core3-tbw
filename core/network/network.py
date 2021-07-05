@@ -13,7 +13,7 @@ class Network:
         
         
     def load_network(self):
-        self.epoch = c.get('network', 'epoch')
+        self.epoch = c.get('network', 'epoch').split(',')
         self.version = int(c.get('network', 'version'))
         self.wif = int(c.get('network', 'wif'))
         self.api = int(c.get('network', 'api'))
