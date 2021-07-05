@@ -16,10 +16,11 @@ class Configure:
         
     def static(self, c):
         self.atomic = int(c.get('static', 'atomic'))
+        self.network = c.get('static', 'network')
     
     
     def delegate(self, c):
-        pass
+        self.delegate = c.get('static', 'delegate')
     
     
     def payment(self, c):
