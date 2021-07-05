@@ -29,6 +29,8 @@ if __name__ == '__main__':
     database.open_connection()
     database.get_publickey()
     print(database.publickey)
+    database.get_current_nonce()
+    print(database.nonce)
     database.close_connection()
     
     
