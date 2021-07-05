@@ -18,7 +18,7 @@ class Initialize:
             print("Database detected - no initialization needed")
     
     def initialize(self):
-        sql = SQL()
+        sql = Sql()
         sql.setup()
         quit()
 
