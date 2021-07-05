@@ -39,11 +39,7 @@ class Database:
     
     
     def get_current_nonce(self):
-        try:
-            print(self.publickey)
-            self.nonce = self.cursor.execute(f"""SELECT "nonce" FROM wallets WHERE "public_key" = '{self.publickey}'""")
-        except Exception as e:
-            print(e)
+        pass
     
     
     def get_blocks(self):
