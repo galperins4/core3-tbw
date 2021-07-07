@@ -26,6 +26,9 @@ class Initialize:
             self.sql.mark_processed(self.config.start_block, initial = "Y")
             self.sql.close_connection()
             
+            print("Total blocks imported - {}")
+            print("Total blocks marked as processed - {}")
+            
             print("Finished setting up database")
             quit()
             
