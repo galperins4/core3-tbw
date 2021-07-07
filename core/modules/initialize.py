@@ -3,9 +3,10 @@ from pathlib import Path
 from utility.sql import Sql
 
 class Initialize:
-    def __init__(self, database):
+    def __init__(self, config, database):
         self.home = str(Path.home())
         self.database = database
+        self.config = config
         data_path = self.home+'/core3-tbw/core/data/tbw.db'
         
         if os.path.exists(data_path) == False:
