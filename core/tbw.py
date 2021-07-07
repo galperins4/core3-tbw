@@ -30,18 +30,18 @@ if __name__ == '__main__':
     
     # check if initialized
     Initialize(config, database, sql)
-    
+    quit()
     # process blocks
     Blocks(config, database, sql)
-    
+    quit()
     # allocate block rewards
     Allocate(config, sql)
-    
+    quit()
     # stage payments
     Stage(config, sql)
-    
+    quit()
     # process payment
     Payments(config, sql)
-    
+    quit()
     
     print("End Script")
