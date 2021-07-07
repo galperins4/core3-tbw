@@ -49,5 +49,9 @@ class Initialize:
     
     def update_delegate_records:
         self.sql.open_connection()
+        accounts = [i for i in self.config.delegate_fee_address]
+        print(accounts)
+        quit()
+        #self.sql.store_delegate_rewards(accounts)
         self.sql.close_connection()
     
