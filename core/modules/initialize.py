@@ -42,12 +42,12 @@ class Initialize:
         print("Finished setting up database")
 
     
-    def update_voter_records:
+    def update_voter_records(self):
         self.sql.open_connection()
         self.sql.close_connection()
     
     
-    def update_delegate_records:
+    def update_delegate_records(self):
         self.sql.open_connection()
         accounts = [i for i in self.config.delegate_fee_address]
         print(accounts)
