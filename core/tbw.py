@@ -24,14 +24,12 @@ if __name__ == '__main__':
     #load utility
     utility = Utility(network)
     
-    # connect to database
+    # connect to ark and tbw database
     database = Database(config, network)
+    sql = Sql()
     
     # check if initialized
-    Initialize(config, database)
-    
-    # connect to tbw database
-    sql = Sql()
+    Initialize(config, database, sql)
     
     # process blocks
     Blocks(config, database, sql)
