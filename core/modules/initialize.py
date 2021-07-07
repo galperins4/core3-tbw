@@ -10,36 +10,44 @@ class Initialize:
         data_path = self.home+'/core3-tbw/core/data/tbw.db'
         
         if os.path.exists(data_path) == False:
-            print("Setting up database")
             self.initialize()
-            
-            print("Importing forged blocks")
-            self.database.open_connection()
-            total_blocks = self.database.get_all_blocks()
-            self.database.close_connection()
-            
-            print("Storing forged blocks in database")
-            self.sql.open_connection()
-            self.sql.store_blocks(total_blocks)
-            
-            print("Marking blocks proccessed up to starting block {}".format(self.config.start_block))
-            self.sql.mark_processed(self.config.start_block, initial = "Y")
-            processed_blocks = self.sql.processed_blocks().fetchall()
-            self.sql.close_connection()
-            
-            print("Total blocks imported - {}".format(len(total_blocks)))
-            print("Total blocks marked as processed - {}".format(len(processed_blocks)))
-            
-            print("Finished setting up database")
             quit()
-            
         else:
             print("Database detected - no initialization needed")
+            
+        self.update_voter_records()
+        self.update_delegate_records()
     
     def initialize(self):
         self.sql.open_connection()
+        
+        print("Setting up database")
         self.sql.setup()
+        
+        print("Importing forged blocks")
+        self.database.open_connection()
+        total_blocks = self.database.get_all_blocks()
+        self.database.close_connection()
+            
+        print("Storing forged blocks in database")
+        self.sql.store_blocks(total_blocks)
+            
+        print("Marking blocks proccessed up to starting block {}".format(self.config.start_block))
+        self.sql.mark_processed(self.config.start_block, initial = "Y")
+        processed_blocks = self.sql.processed_blocks().fetchall()
         self.sql.close_connection()
+            
+        print("Total blocks imported - {}".format(len(total_blocks)))
+        print("Total blocks marked as processed - {}".format(len(processed_blocks)))
+        print("Finished setting up database")
+
+    
+    def update_voter_records:
+        pass
+    
+    
+    def update_delegate_records:
+        pass
 
     
     
