@@ -24,10 +24,11 @@ class Initialize:
             
             print("Marking blocks proccessed up to starting block {}".format(self.config.start_block))
             self.sql.mark_processed(self.config.start_block, initial = "Y")
+            processed_blocks = self.sql.processed_blocks().fetchall()
             self.sql.close_connection()
             
-            print("Total blocks imported - {}")
-            print("Total blocks marked as processed - {}")
+            print("Total blocks imported - {}".format(len(total_blocks)))
+            print("Total blocks marked as processed - {}".format(len(processed_blocks)))
             
             print("Finished setting up database")
             quit()
