@@ -7,6 +7,7 @@ class Sql:
         self.home = str(Path.home())
         self.data_path = self.home+'/core3-tbw/core/data/tbw.db'
 
+        
     def open_connection(self):
         self.connection = sqlite3.connect(self.data_path)
         self.cursor = self.connection.cursor()
