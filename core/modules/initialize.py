@@ -12,6 +12,16 @@ class Initialize:
         if os.path.exists(data_path) == False:
             print("Setting up database")
             self.initialize()
+            
+            print("Importing forged blocks")
+            
+            
+            print("Storing forged blocks in database")
+            
+            
+            print("Marking blocks proccessed up to starting block")
+            
+            
             print("Finished setting up database")
             
         else:
