@@ -43,11 +43,11 @@ class Initialize:
 
     
     def update_voter_records:
-        pass
+        self.sql.open_connection()
+        self.sql.close_connection()
     
     
     def update_delegate_records:
-        pass
-
-    
+        self.sql.open_connection()
+        self.sql.close_connection()
     
