@@ -7,6 +7,10 @@ class Database:
         self.username = config.username
         self.password = network.password
         self.delegate = config.delegate
+        
+        self.open_connection()
+        self.get_publickey()
+        self.close_connection()
     
     
     def open_connection(self):
