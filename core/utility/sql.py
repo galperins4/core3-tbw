@@ -156,7 +156,7 @@ class Sql:
         return self.cursor.execute("SELECT * FROM blocks WHERE processed_at IS NULL ORDER BY height")
 
 
-    def stagedPayment(self, lim=40, multi='N'):
+    def staged_payment(self, lim=40, multi='N'):
         if multi is 'N':
             return self.cursor.execute(f"SELECT rowid, * FROM staging WHERE processed_at IS NULL LIMIT {lim}")
         else:
@@ -175,7 +175,7 @@ class Sql:
         self.commit()
 
     
-    def deleteTestExchange(self,p_in,p_out,amount):
+    def delete_test_exchange(self,p_in,p_out,amount):
         self.cursor.execute(f"DELETE FROM exchange WHERE initial_address = '{p_in}' AND payin_address = '{p_out}' AND payamt = '{amount}'")
         self.commit()
     
