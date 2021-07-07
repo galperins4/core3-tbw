@@ -28,17 +28,22 @@ if __name__ == '__main__':
     database = Database(config, network)
     
     # check if initialized
-    Initialize(database)
+    Initialize(config, database)
     
     # connect to tbw database
     sql = Sql()
     
     # process blocks
-    
+    Blocks(config, database, sql)
     
     # allocate block rewards
+    Allocate(config, sql)
+    
+    # stage payments
+    Stage(config, sql)
+    
+    # process payment
+    Payments(config, sql)
     
     
-    
-    # process payments
     print("End Script")
