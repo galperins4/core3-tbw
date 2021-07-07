@@ -19,7 +19,9 @@ class Initialize:
     
     def initialize(self):
         sql = Sql()
+        sql.open_connection()
         sql.setup()
+        sql.close_connection()
         quit()
 
     
