@@ -22,7 +22,7 @@ class Initialize:
             self.sql.open_connection()
             self.sql.store_blocks(total_blocks)
             
-            print("Marking blocks proccessed up to starting block")
+            print("Marking blocks proccessed up to starting block {0}".format(self.config.start_block))
             self.sql.mark_processed(self.config.start_block, initial = "Y")
             self.sql.close_connection()
             
