@@ -6,10 +6,17 @@ class Sql:
     def __init__(self):
         self.home = str(Path.home())
         data_path = self.home+'/core3-tbw/core/data/tbw.db'
+
+    def open_connection(self):
         self.connection = sqlite3.connect(data_path)
         self.cursor = self.connection.cursor()
-
-
+    
+    
+    def close_connection(self):
+        self.cursor.close()
+        self.connection.close()
+    
+    
     def commit(self):
         return self.connection.commit()
 
