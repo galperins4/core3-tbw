@@ -54,7 +54,7 @@ class Sql:
         self.connection.commit()
 
 
-    def storeExchange(self, i_address, pay_address, e_address, amount, exchangeid):
+    def store_exchange(self, i_address, pay_address, e_address, amount, exchangeid):
         ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         exchange=[]
         exchange.append((i_address, pay_address, e_address, amount, exchangeid, ts))
@@ -62,7 +62,7 @@ class Sql:
         self.commit()
     
     
-    def storePayRun(self, address, amount, msg):
+    def stage_payment(self, address, amount, msg):
         staging=[]
 
         staging.append((address, amount, msg, None))
@@ -72,7 +72,7 @@ class Sql:
         self.commit()
 
 
-    def storeBlocks(self, blocks):
+    def store_blocks(self, blocks):
         newBlocks=[]
 
         for block in blocks:
@@ -86,7 +86,7 @@ class Sql:
         self.commit()
 
 
-    def storeVoters(self, voters, share):
+    def store_voters(self, voters, share):
         newVoters=[]
 
         for voter in voters:
@@ -100,7 +100,7 @@ class Sql:
         self.commit()
 
 
-    def storeRewards(self, delegate):
+    def store_delegate_rewards(self, delegate):
         newRewards=[]
 
         for d in delegate:
@@ -114,7 +114,7 @@ class Sql:
         self.commit()
 
 
-    def storeTransactions(self, tx):
+    def store_transactions(self, tx):
         newTransactions=[]
         
         ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -130,7 +130,7 @@ class Sql:
         self.commit()
 
 
-    def markAsProcessed(self, block, initial="N"):
+    def mark_processed(self, block, initial="N"):
         ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         if initial == "N":
             self.cursor.execute(f"UPDATE blocks SET processed_at = '{ts}' WHERE height = '{block}'")
@@ -144,15 +144,15 @@ class Sql:
         return self.cursor.execute("SELECT * FROM blocks")
 
 
-    def lastBlock(self): 
+    def last_block(self): 
         return self.cursor.execute("SELECT height from blocks ORDER BY height DESC LIMIT 1")
     
     
-    def processedBlocks(self):
+    def processed_blocks(self):
         return self.cursor.execute("SELECT * FROM blocks WHERE processed_at NOT NULL")
 
 
-    def unprocessedBlocks(self):
+    def unprocessed_blocks(self):
         return self.cursor.execute("SELECT * FROM blocks WHERE processed_at IS NULL ORDER BY height")
 
 
@@ -163,14 +163,14 @@ class Sql:
             return self.cursor.execute(f"SELECT rowid, * FROM staging WHERE processed_at IS NULL")
             
 
-    def processStagedPayment(self, rows):
+    def process_staged_payment(self, rows):
         ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')		
         for i in rows:
             self.cursor.execute(f"UPDATE staging SET processed_at = '{ts}' WHERE rowid = {i}")
         self.commit()
 
     
-    def deleteStagedPayment(self):
+    def delete_staged_payment(self):
         self.cursor.execute("DELETE FROM staging WHERE processed_at NOT NULL")     
         self.commit()
 
@@ -180,7 +180,7 @@ class Sql:
         self.commit()
     
     
-    def deleteTransactionRecord(self, txid):
+    def delete_transaction_record(self, txid):
         self.cursor.execute(f"DELETE FROM transactions WHERE id = '{txid}'")
         self.commit()
 
@@ -197,32 +197,32 @@ class Sql:
         return self.cursor.execute("SELECT * FROM transactions ORDER BY processed_at DESC LIMIT 1000")
 
 
-    def updateVoterBalance(self, address, balance):
+    def update_voter_balance(self, address, balance):
         self.cursor.execute(f"UPDATE voters SET u_balance = u_balance + {balance} WHERE address = '{address}'")
         self.commit()
 
 
-    def updateDelegateBalance(self, address, balance):
+    def update_delegate_balance(self, address, balance):
         self.cursor.execute(f"UPDATE delegate_rewards SET u_balance = u_balance + {balance} WHERE address = '{address}'")
         self.commit()
 
 
-    def updateVoterPaidBalance (self, address):
+    def update_voter_paid_balance (self, address):
         self.cursor.execute(f"UPDATE voters SET p_balance = p_balance + u_balance WHERE address = '{address}'")
         self.cursor.execute(f"UPDATE voters SET u_balance = u_balance - u_balance WHERE address = '{address}'")
         self.commit()
 
 
-    def updateDelegatePaidBalance (self, address, amount):
+    def update_delegate_paid_balance (self, address, amount):
         self.cursor.execute(f"UPDATE delegate_rewards SET p_balance = p_balance + {amount} WHERE address = '{address}'")
         self.cursor.execute(f"UPDATE delegate_rewards SET u_balance = u_balance - {amount} WHERE address = '{address}'")
         self.commit()
 
     
-    def updateVoterShare(self, address, share):
+    def update_voter_share(self, address, share):
         self.cursor.execute("UPDATE voters SET share = {0} WHERE address = '{1}'".format(share, address))
         self.commit()
 
 
-    def getVoterShare(self, address):
+    def get_voter_share(self, address):
         return self.cursor.execute("SELECT share FROM voters WHERE address = '{0}'".format(address))
