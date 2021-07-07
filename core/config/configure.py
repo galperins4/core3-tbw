@@ -37,7 +37,18 @@ class Configure:
     
     def payment(self, c):
         self.interval = c.get('payment', 'interval')
+        self.multi = c.get('payment', 'multi')
+        self.passphrase = c.get('payment', 'passphrase')
+        self.secondphrase = c.get('payment', 'secondphrase')
+        self.delegate_fee = c.get('payment', 'delegate_fee')
+        self.delegate_fee_address = c.get('payment', 'delegate_fee_address')
     
     
     def experimental(self, c):
-        pass
+        self.exchange = c.get('experimental', 'exchange')
+        self.convert_from = c.get('experimental', 'convert_from')
+        self.convert_address = c.get('experimental', 'convert_address')
+        self.convert_to = c.get('experimental', 'convert_to')
+        self.address_to = c.get('experimental', 'address_to')
+        self.network_to = c.get('experimental', 'network_to')
+        self.provider = c.get('experimental', 'provider')
