@@ -27,6 +27,7 @@ class Initialize:
             self.sql.close_connection()
             
             print("Finished setting up database")
+            quit()
             
         else:
             print("Database detected - no initialization needed")
@@ -35,7 +36,6 @@ class Initialize:
         self.sql.open_connection()
         self.sql.setup()
         self.sql.close_connection()
-        quit()
 
     
     
