@@ -41,7 +41,7 @@ class Database:
                 if k == 'delegate' and v['username']==self.delegate:
                     self.publickey = i[0]
     
-    
+# BLOCK OPERATIONS    
     def get_all_blocks(self):
         try:
             self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
@@ -58,5 +58,37 @@ class Database:
             return self.cursor.fetchall()
         except Exception as e:
             print(e)
+            
+
+# VOTE OPERATIONS
+    def get_votes(self, timestamp):
+        try:
+            v = "+" + self.publickey
+            u = "-" + self.publickey
+
+            # get all votes
+            self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
+            "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
+            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, v))
+
+            vote = self.cursor.fetchall()
+
+            #get all unvotes
+            self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
+            "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
+            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u))
         
+            unvote = cursor.fetchall()
+            return vote, unvote
+        except Exception as e:
+            print(e)
+
+
+
+
+
+
+
+
+# ACCOUNT OPERATIONS
     
