@@ -1,0 +1,8 @@
+# network
+epoch = "2017,3,21,13,00,00"
+version = 23
+wif = 170
+api_port = 4003
+database = "ark_mainnet"
+database_user = "null"
+database_password = "password"
