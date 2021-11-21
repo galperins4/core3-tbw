@@ -1,4 +1,4 @@
-import psycopg2
+import psycopg
 
 
 class Database:
@@ -7,14 +7,12 @@ class Database:
         self.username = config.username
         self.password = network.password
         self.delegate = config.delegate
-        
-        self.open_connection()
-        self.get_publickey()
-        self.close_connection()
+        self.publickey = self.get_publickey()
+       
     
     
     def open_connection(self):
-        self.connection = psycopg2.connect(
+        self.connection = psycopg.connect(
             dbname = self.database,
             user = self.username,
             password= self.password,
@@ -23,16 +21,17 @@ class Database:
             
         self.cursor=self.connection.cursor()
     
-    
+    '''
     def close_connection(self):
         self.cursor.close()
         self.connection.close()
-        
+    '''    
         
     def get_publickey(self):
         try:
-            self.cursor.execute(f"""SELECT "sender_public_key", "asset" FROM transactions WHERE "type" = 2""")
-            universe = self.cursor.fetchall()
+            universe = self.cursor.execute(f"""SELECT "sender_public_key", "asset" FROM transactions WHERE 
+            "type" = 2""").fetchall()
+            # universe = self.cursor.fetchall()
         except Exception as e:
             print(e)
     
@@ -44,18 +43,20 @@ class Database:
 # BLOCK OPERATIONS    
     def get_all_blocks(self):
         try:
-            self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
-            "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' ORDER BY "height" DESC""")
-            return self.cursor.fetchall()
+            return self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
+            "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' 
+            ORDER BY "height" DESC""").fetchall()
+            # return self.cursor.fetchall()
         except Exception as e:
             print(e)
     
     
     def get_limit_blocks(self):
         try:
-            self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
-            "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' ORDER BY "height" DESC LIMIT 250""")
-            return self.cursor.fetchall()
+            return self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
+            "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' 
+            ORDER BY "height" DESC LIMIT 500""").fetchall()
+            # return self.cursor.fetchall()
         except Exception as e:
             print(e)
             
@@ -67,27 +68,21 @@ class Database:
             u = "-" + self.publickey
 
             # get all votes
-            self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
+            vote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
             "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
-            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, v))
+            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, v)).fetchall()
 
-            vote = self.cursor.fetchall()
+            # vote = self.cursor.fetchall()
 
             #get all unvotes
-            self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
+            unvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
             "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
-            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u))
+            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u)).fetchall()
         
-            unvote = cursor.fetchall()
+            # unvote = cursor.fetchall()
             return vote, unvote
         except Exception as e:
             print(e)
-
-
-
-
-
-
 
 
 # ACCOUNT OPERATIONS
