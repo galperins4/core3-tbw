@@ -24,7 +24,7 @@ if __name__ == '__main__':
     #load utility
     utility = Utility(network)
     
-    # connect to ark and tbw database
+    # connect to core and tbw script database
     database = Database(config, network)
     sql = Sql()
     
