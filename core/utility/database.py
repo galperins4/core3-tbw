@@ -85,5 +85,35 @@ class Database:
             print(e)
 
 
-# ACCOUNT OPERATIONS
-    
+    # ACCOUNT OPERATIONS
+    def get_sum_inbound(account, timestamp):
+        # get inbound non-multi transactions
+        cursor.execute(f"""SELECT SUM("amount") FROM (SELECT * FROM "transactions" WHERE "timestamp" <= {timestamp}) AS $
+        WHERE "recipient_id" = '{account}' AND "type" <> {6}""")
+        output = cursor.fetchall()
+        non_multi = [int(i) for i in output[0]]
+
+
+        # get inbound multi transactions
+        cursor.execute("""SELECT "timestamp", "fee", "sender_public_key", "asset", "id" FROM (SELECT * FROM "transaction$
+        <= %s) AS "filtered" WHERE asset::jsonb @> '{"payments": [{"recipientId":"%s"}]}'::jsonb;""" % (timestamp, accou$
+        multi_universe = cursor.fetchall()
+
+        # get amounts from multi transactions
+        multi_amount = []
+        for i in multi_universe:
+            for j in i[3]['payments']:
+                if j['recipientId'] == account:
+                    multi_amount.append(int(j['amount']))
+
+        # append total non-multi to multi
+        total = multi_amount + non_multi
+        return sum(total)
+
+
+    def get_sum_outbound(account, timestamp):
+        cursor.execute(f"""SELECT SUM("amount") as amount, SUM("fee") as fee FROM (SELECT * FROM "transactions" WHERE "t$
+        AS "filtered" WHERE "sender_public_key" = '{account}'""")
+        output =  cursor.fetchall()
+        convert = [int(i) for i in output[0]]
+        return sum(convert)
