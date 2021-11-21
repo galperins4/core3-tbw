@@ -47,10 +47,10 @@ class Configure:
     
     
     def experimental(self, c):
-        self.exchange = c.get('experimental', 'exchange')
-        self.convert_from = c.get('experimental', 'convert_from').split(',')
-        self.convert_address = c.get('experimental', 'convert_address').split(',')
-        self.convert_to = c.get('experimental', 'convert_to').split(',')
-        self.address_to = c.get('experimental', 'address_to').split(',')
-        self.network_to = c.get('experimental', 'network_to').split(',')
-        self.provider = c.get('experimental', 'provider').split(',')
+        self.exchange = c.get('exchange', 'exchange')
+        self.convert_from = c.get('exchange', 'convert_from').split(',')
+        self.convert_address = c.get('exchange', 'convert_address').split(',')
+        self.convert_to = c.get('exchange', 'convert_to').split(',')
+        self.address_to = c.get('exchange', 'address_to').split(',')
+        self.network_to = c.get('exchange', 'network_to').split(',')
+        self.provider = c.get('exchange', 'provider').split(',')
