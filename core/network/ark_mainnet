@@ -1,8 +1,8 @@
-# network
-epoch = "2017,3,21,13,00,00"
+[network]
+epoch = 2017,3,21,13,00,00
 version = 23
 wif = 170
 api = 4003
-database = "ark_mainnet"
-user = "null"
-password = "password"
+database = ark_mainnet
+user = null
+password = password
