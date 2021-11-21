@@ -7,9 +7,8 @@ class Database:
         self.username = config.username
         self.password = network.password
         self.delegate = config.delegate
-        self.publickey = self.get_publickey()
+        self.get_publickey()
        
-    
     
     def open_connection(self):
         self.connection = psycopg.connect(
@@ -21,11 +20,6 @@ class Database:
             
         self.cursor=self.connection.cursor()
     
-    '''
-    def close_connection(self):
-        self.cursor.close()
-        self.connection.close()
-    '''    
         
     def get_publickey(self):
         try:
