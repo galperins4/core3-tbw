@@ -58,6 +58,7 @@ if __name__ == '__main__':
         print(voter_roll)
         # get voter_balances
         voter_balances = allocate.get_voter_balance(unprocessed, voter_roll)
+        print(voter_balances)
         
         
         quit()
