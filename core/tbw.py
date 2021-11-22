@@ -50,6 +50,10 @@ if __name__ == '__main__':
     
     for unprocessed in unprocessed_blocks:
         print(unprocessed)
+        block_timestamp = unprocessed[1]
+        vote, unvote = allocate.get_vote_transactions(block_timestamp)
+        print(vote)
+        print(unvote)
         quit()
     
     
