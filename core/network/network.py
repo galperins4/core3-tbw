@@ -5,7 +5,7 @@ class Network:
     def __init__(self, network):
         self.home = str(Path.home())
         self.network = network
-        env_path = self.home+'/core3-tbw/core/network/'+self.network
+        env_path = self.home+'/core-tbw/core/network/'+self.network
         
         config = configparser.ConfigParser()
         config.read(env_path)
