@@ -14,25 +14,25 @@ from utility.utility import Utility
 
 if __name__ == '__main__':
     print("Start Script")
-
     # get configuration
     config = Configure()
-    
     #load network
     network = Network(config.network)
-    
     #load utility
     utility = Utility(network)
-    
     # connect to core and tbw script database
     database = Database(config, network)
     sql = Sql()
-    
     # check if initialized
     Initialize(config, database, sql)
-    quit()
     # process blocks
     Blocks(config, database, sql)
+    last_block = sql.last_block().fetchall()
+    print(last_block)
+    
+    
+    
+    
     quit()
     # allocate block rewards
     Allocate(config, sql)
