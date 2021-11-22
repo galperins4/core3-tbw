@@ -63,7 +63,7 @@ class Allocate:
 
         print("Block Reward: ", block[2])
         print("Block Fees: ", block[3])
-        print("Total BLock Allocation: ", block[2]+block[3])
+        print("Total Block Allocation: ", block[2]+block[3])
         print("Total Voter Balances: ", sum(vote_balance.values()), "\n")
         return vote_balance
 
