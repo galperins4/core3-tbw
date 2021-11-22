@@ -6,9 +6,9 @@ class Allocate:
 
         
     def get_vote_transactions(self, timestamp):
-        self.sql.open_connection()
+        self.database.open_connection()
         vote, unvote = self.database.get_votes(timestamp)
-        self.sql.close_connection()
+        self.database.close_connection()
         return vote, unvote    
 
     
