@@ -16,7 +16,7 @@ class Initialize:
             print("Database detected - no initialization needed")
           
         self.sql.open_connection()
-        last_block = self.sql.last_block()
+        last_block = self.sql.last_block().fetchall()
         self.sql.close_connection()
       
         print(last_block)
