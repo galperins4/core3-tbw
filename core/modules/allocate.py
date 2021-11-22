@@ -68,7 +68,7 @@ class Allocate:
         return vote_balance
 
         
-    def get_block_allocations(self, block, voters):
+    def block_allocations(self, block, voters):
         rewards_check = 0
         voter_check = 0
         delegate_check = 0
