@@ -53,11 +53,11 @@ class Database:
             print(e)
     
     
-    def get_limit_blocks(self):
+    def get_limit_blocks(self, timestamp):
         try:
             return self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
-            "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' 
-            ORDER BY "height" DESC LIMIT 500""").fetchall()
+            "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' AND 
+            "timestamp" > {timestamp} ORDER BY "height" """).fetchall()
             # return self.cursor.fetchall()
         except Exception as e:
             print(e)
