@@ -41,11 +41,11 @@ class Sql:
     def setup(self):
         self.cursor.execute("CREATE TABLE IF NOT EXISTS blocks (id varchar(64), timestamp int, reward int, totalFee bigint, height int, processed_at varchar(64) null)")
 
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS voters (address varchar(36), u_balance bigint, p_balance bigint, share float )")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS voters (address varchar(36), public_key varchar(66), unpaid_bal bigint, paid_bal bigint, share float )")
 
         self.cursor.execute("CREATE TABLE IF NOT EXISTS transactions (address varchar(36), amount varchar(64), id varchar(64), processed_at varchar(64) )")
         
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS delegate_rewards (address varchar(36), u_balance bigint, p_balance bigint )")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS delegate_rewards (address varchar(36), unpaid_bal bigint, paid_bal bigint )")
         
         self.cursor.execute("CREATE TABLE IF NOT EXISTS staging (address varchar(36), payamt bigint, msg varchar(64), processed_at varchar(64) null )")
         
@@ -93,9 +93,9 @@ class Sql:
             self.cursor.execute("SELECT address FROM voters WHERE address = ?", (voter[0],))
 
             if self.cursor.fetchone() is None:
-                newVoters.append((voter[0], 0, 0, share))
+                newVoters.append((voter[0], voter[1], 0, 0, share))
 
-        self.executemany("INSERT INTO voters VALUES (?,?,?,?)", newVoters)
+        self.executemany("INSERT INTO voters VALUES (?,?,?,?,?)", newVoters)
 
         self.commit()
 
@@ -186,7 +186,7 @@ class Sql:
 
         
     def voters(self):
-        return self.cursor.execute("SELECT * FROM voters ORDER BY u_balance DESC")
+        return self.cursor.execute("SELECT * FROM voters ORDER BY unpaid_bal DESC")
 
 
     def rewards(self):
@@ -198,24 +198,24 @@ class Sql:
 
 
     def update_voter_balance(self, address, balance):
-        self.cursor.execute(f"UPDATE voters SET u_balance = u_balance + {balance} WHERE address = '{address}'")
+        self.cursor.execute(f"UPDATE voters SET unpaid_bal = unpaid_bal + {balance} WHERE address = '{address}'")
         self.commit()
 
 
     def update_delegate_balance(self, address, balance):
-        self.cursor.execute(f"UPDATE delegate_rewards SET u_balance = u_balance + {balance} WHERE address = '{address}'")
+        self.cursor.execute(f"UPDATE delegate_rewards SET unpaid_bal = unpaid_bal + {balance} WHERE address = '{address}'")
         self.commit()
 
 
     def update_voter_paid_balance (self, address):
-        self.cursor.execute(f"UPDATE voters SET p_balance = p_balance + u_balance WHERE address = '{address}'")
-        self.cursor.execute(f"UPDATE voters SET u_balance = u_balance - u_balance WHERE address = '{address}'")
+        self.cursor.execute(f"UPDATE voters SET paid_bal = paid_bal + unpaid_bal WHERE address = '{address}'")
+        self.cursor.execute(f"UPDATE voters SET unpaid_bal = unpaid_bal - unpaid_bal WHERE address = '{address}'")
         self.commit()
 
 
     def update_delegate_paid_balance (self, address, amount):
-        self.cursor.execute(f"UPDATE delegate_rewards SET p_balance = p_balance + {amount} WHERE address = '{address}'")
-        self.cursor.execute(f"UPDATE delegate_rewards SET u_balance = u_balance - {amount} WHERE address = '{address}'")
+        self.cursor.execute(f"UPDATE delegate_rewards SET paid_bal = paid_bal + {amount} WHERE address = '{address}'")
+        self.cursor.execute(f"UPDATE delegate_rewards SET unpaid_bal = unpaid_bal - {amount} WHERE address = '{address}'")
         self.commit()
 
     
