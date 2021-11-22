@@ -26,7 +26,7 @@ if __name__ == '__main__':
     # check if initialized
     Initialize(config, database, sql)
     # process blocks
-    Blocks(config, database, sql)
+    # Blocks(config, database, sql)
     last_block = sql.last_block().fetchall()
     print(last_block)
     
