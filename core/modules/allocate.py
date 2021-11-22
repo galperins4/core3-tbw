@@ -38,7 +38,7 @@ class Allocate:
             self.sql.open_connection()
             self.sql.close_connection()
 
-        return roll[0]
+        return roll
     
     
     
