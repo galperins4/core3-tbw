@@ -14,7 +14,9 @@ class Initialize:
             quit()
         else:
             print("Database detected - no initialization needed")
-            
+          
+        last_block = self.sql.last_block()
+        print(last_block)
         self.update_voter_records()
         self.update_delegate_records()
     
