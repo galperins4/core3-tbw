@@ -7,7 +7,10 @@ class Database:
         self.username = config.username
         self.password = network.password
         self.delegate = config.delegate
+        
+        self.open_connection()
         self.get_publickey()
+        self.close_connection()
        
     
     def open_connection(self):
@@ -20,7 +23,11 @@ class Database:
             
         self.cursor=self.connection.cursor()
     
-        
+     def close_connection(self):
+         self.cursor.close()
+         self.connection.close() 
+    
+    
     def get_publickey(self):
         try:
             universe = self.cursor.execute(f"""SELECT "sender_public_key", "asset" FROM transactions WHERE 
