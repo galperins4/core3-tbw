@@ -90,6 +90,8 @@ class Allocate:
         delegate_block_share = delegate_share / 100
         delegate_block_reward = int((block_reward * delegate_block_share) + fee_reward)
         delegate_check += delegate_block_reward
+        
+        # update delegate reward in database - TO DO
 
         print("Delegate {} reward: {}".format(self.config.delegate, delegate_block_reward)) 
         for k, v in voters.items():
@@ -98,7 +100,9 @@ class Allocate:
             voter_check += 1
             rewards_check += single_voter_reward
             print("Voter {} with balance of {} reward: {}".format(k, v, single_voter_reward))
-
+            
+            # update voter reward in database - TO DO
+           
 
         print(f"""\nProcessed Block: {block[4]}\n
         Voters processed: {voter_check}
@@ -107,4 +111,6 @@ class Allocate:
         Delegate Reward: {delegate_check}
         Voter + Delegate Rewards: {rewards_check + delegate_check}
         Total Block Rewards: {total_reward}""")
+        
+        # mark block as processed - TO DO
         
