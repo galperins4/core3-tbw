@@ -35,7 +35,9 @@ if __name__ == '__main__':
     new_blocks = database.get_limit_blocks(last_block[0][0])
     # store all new blocks
     sql.store_blocks(new_blocks)
-    
+    # get unprocessed blocks
+    unprocessed_blocks = sql.unprocessed_blocks.fetchall()
+    print(len(unprocessed_blocks))
     
     sql.close_connection()
     database.close_connection()    
