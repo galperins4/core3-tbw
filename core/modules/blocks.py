@@ -34,7 +34,7 @@ class Blocks:
     
     def block_counter(self):
         self.sql.open_connection()
-        processed_blocks = self.sql.unprocessed_blocks().fetchall()
+        processed_blocks = self.sql.processed_blocks().fetchall()
         self.sql.close_connection()
         return len(processed_blocks)
        
