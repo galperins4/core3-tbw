@@ -68,6 +68,8 @@ class Database:
         try:
             v = "+" + self.publickey
             u = "-" + self.publickey
+            print(v)
+            print(u)
 
             # get all votes
             vote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
