@@ -90,7 +90,7 @@ class Allocate:
         delegate_block_reward = int((block_reward * delegate_share) + fee_reward)
         delegate_check += delegate_block_reward
 
-        print("Delegate {} reward: {}".format(delegate_block_reward)) 
+        print("Delegate {} reward: {}".format(self.config.delegate, delegate_block_reward)) 
         for k, v in voters.items():
             share_weight = v / total_delegate_vote_balance
             single_voter_reward = int(share_weight * voter_block_share)
