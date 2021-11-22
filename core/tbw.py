@@ -34,7 +34,7 @@ if __name__ == '__main__':
     
     
     sql.close_connection()
-    database_close_connection()
+    database.close_connection()
     print(last_block)
     print(new_blocks)
     
