@@ -27,7 +27,9 @@ if __name__ == '__main__':
     Initialize(config, database, sql)
     # process blocks
     # Blocks(config, database, sql)
+    sql.open_connection()
     last_block = sql.last_block().fetchall()
+    sql.close_connection()
     print(last_block)
     
     
