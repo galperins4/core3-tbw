@@ -4,11 +4,12 @@ class Allocate:
         self.config = config
         self.sql = sql
 
-    def get_last_block(self):
+        
+    def get_vote_transactions(self, timestamp):
         self.sql.open_connection()
-        last_block = self.sql.last_block().fetchall()
+        vote, unvote = self.database.get_votes().fetchall()
         self.sql.close_connection()
-        return     
+        return vote, unvote    
 
     
     def get_block_allocations(self, block, voters):
