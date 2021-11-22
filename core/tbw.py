@@ -28,9 +28,15 @@ if __name__ == '__main__':
     # process blocks
     # Blocks(config, database, sql)
     sql.open_connection()
+    database.open_connection()
     last_block = sql.last_block().fetchall()
+    new_blocks = database.get_limit_blocks(last_block[0][0])
+    
+    
     sql.close_connection()
+    database_close_connection()
     print(last_block)
+    print(new_blocks)
     
     
     
