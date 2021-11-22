@@ -85,7 +85,6 @@ class Allocate:
         # delegate_share = self.config.delegate_fee[0]
         delegate_share = 25
         voter_share = self.config.voter_share
-        block_reward = 20000000
 
         voter_block_share = block_reward * (voter_share / 100)
         delegate_block_share = delegate_share / 100
@@ -108,9 +107,4 @@ class Allocate:
         Delegate Reward: {delegate_check}
         Voter + Delegate Rewards: {rewards_check + delegate_check}
         Total Block Rewards: {total_reward}""")
-
-    
-    
-
-
-    
+        
