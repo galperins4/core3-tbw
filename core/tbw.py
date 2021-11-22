@@ -34,7 +34,7 @@ if __name__ == '__main__':
     # use last block timestamp to get all new blocks
     new_blocks = database.get_limit_blocks(last_block[0][0])
     # store all new blocks
-    database.store_blocks(new_blocks)
+    sql.store_blocks(new_blocks)
     
     
     sql.close_connection()
