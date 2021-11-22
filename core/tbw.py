@@ -45,9 +45,12 @@ if __name__ == '__main__':
     # get unprocessed blocks
     unprocessed_blocks = block.return_unprocessed_blocks()
     
-    quit()
+    for unprocessed in unprocessed_block:
+        print(unprocessed)
+        quit()
+    
     # allocate block rewards
-    Allocate(config, sql)
+    Allocate(database, config, sql)
     quit()
     # stage payments
     Stage(config, sql)
