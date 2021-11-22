@@ -73,19 +73,12 @@ class Database:
             vote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
             "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
             "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, v)).fetchall()
-            
-            print(vote)
 
             #get all unvotes
-            try:
-                unvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
-                "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
-                "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u)).fetchall()
-            except:
-                unvote = []
-            quit()
+            unvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
+            "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
+            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u)).fetchall()
 
-            #if unvote = None
             return vote, unvote
         except Exception as e:
             print(e)
