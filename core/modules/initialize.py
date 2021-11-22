@@ -14,12 +14,7 @@ class Initialize:
             quit()
         else:
             print("Database detected - no initialization needed")
-          
-        self.sql.open_connection()
-        self.last_block_timestamp = self.sql.last_block().fetchall()[0][0]
-        self.sql.close_connection()
-      
-        print(self.last_block_timestamp)
+
         self.update_voter_records()
         self.update_delegate_records()
     
@@ -49,6 +44,9 @@ class Initialize:
     
     def update_voter_records(self):
         self.sql.open_connection()
+        last_block_timestamp = self.sql.last_block().fetchall()[0][0]
+        print("Quitting")
+        quit()
         self.sql.close_connection()
     
     
