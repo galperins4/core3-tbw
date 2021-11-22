@@ -45,7 +45,7 @@ if __name__ == '__main__':
     # get unprocessed blocks
     unprocessed_blocks = block.return_unprocessed_blocks()
     
-    for unprocessed in unprocessed_block:
+    for unprocessed in unprocessed_blocks:
         print(unprocessed)
         quit()
     
