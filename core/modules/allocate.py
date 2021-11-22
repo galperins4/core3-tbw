@@ -1,6 +1,8 @@
 class Allocate:
     def __init__(self, database, config, sql):
-        pass
+        self.database = database
+        self.config = config
+        self.sql = sql
 
     
 def get_block_allocations(self, block, voters):
