@@ -26,21 +26,25 @@ if __name__ == '__main__':
     # check if initialized
     Initialize(config, database, sql)
     # process blocks
-    # Blocks(config, database, sql)
-    sql.open_connection()
-    database.open_connection()
+    block = Blocks(config, database, sql)
+    #sql.open_connection()
+    #database.open_connection()
     # get last block to start
-    last_block = sql.last_block().fetchall()
+    last_block = block.get_last_block()
+    # last_block = sql.last_block().fetchall()
     # use last block timestamp to get all new blocks
-    new_blocks = database.get_limit_blocks(last_block[0][0])
+    new_blocks = block.get_new_blocks(last_block)
+    # new_blocks = database.get_limit_blocks(last_block[0][0])
     # store all new blocks
-    sql.store_blocks(new_blocks)
+    block.store_new_blocks(new_blocks)
+    # sql.store_blocks(new_blocks)
     # get unprocessed blocks
-    unprocessed_blocks = sql.unprocessed_blocks().fetchall()
+    unprocessed_blocks = block.return_unprocessed_blocks()
+    # unprocessed_blocks = sql.unprocessed_blocks().fetchall()
     print(len(unprocessed_blocks))
     
-    sql.close_connection()
-    database.close_connection()    
+    #sql.close_connection()
+    #database.close_connection()    
     
     quit()
     # allocate block rewards
