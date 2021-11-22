@@ -62,7 +62,7 @@ if __name__ == '__main__':
         # allocate block rewards
         allocate.block_allocations(unprocessed, voter_balances)
         # get block count
-        block_count = block.get_block_count()
+        block_count = block.get_block_counter()
         print(f"\nCurrent block count : {block_count}")
         
         
