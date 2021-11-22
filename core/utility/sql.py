@@ -145,7 +145,7 @@ class Sql:
 
 
     def last_block(self): 
-        return self.cursor.execute("SELECT height from blocks ORDER BY height DESC LIMIT 1")
+        return self.cursor.execute("SELECT timestamp, height from blocks ORDER BY height DESC LIMIT 1")
     
     
     def processed_blocks(self):
