@@ -41,7 +41,7 @@ def get_block_allocations(self, block, voters):
     Total Block Rewards: {total_reward}""")
 
     
-    def create_voter_roll(self, v, u):
+def create_voter_roll(self, v, u):
     #create dictionary of unvotes
     unvotes = {i[0]:i[1] for i in u}
 
