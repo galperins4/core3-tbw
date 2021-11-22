@@ -19,7 +19,7 @@ class Initialize:
         self.last_block_timestamp = self.sql.last_block().fetchall()[0][0]
         self.sql.close_connection()
       
-        print(last_block)
+        print(self.last_block_timestamp)
         self.update_voter_records()
         self.update_delegate_records()
     
