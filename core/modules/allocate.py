@@ -42,6 +42,32 @@ class Allocate:
         return roll
     
        
+    def get_voter_balance(self, block, voter_roll):
+        vote_balance = {}
+        block_timestamp = block[1]
+        # vote_tx, unvote_tx = get_votes(delegate, block_timestamp)
+        # voter_roll = create_voter_roll(vote_tx, unvote_tx)
+    
+        print("Current Voters: ", len(voter_roll))
+        print("As of block id: ", block[0])
+        print("Delegate key: ", self.config.delegate)
+        
+        self.database.open_connection()
+        for i in voter_roll:
+            # print(i)
+            debit = self.database.get_sum_outbound(i[1], block_timestamp)
+            credit = self.database.get_sum_inbound(i[0], block_timestamp)
+            balance = credit - debit
+            vote_balance[i[0]] = balance
+        self.database.close_connection()
+
+        print("Block Reward: ", block[2])
+        print("Block Fees: ", block[3])
+        print("Total Allocation: ", block[2]+block[3])
+        print("Total Voter Balances: ", sum(vote_balance.values()), "\n")
+        return vote_balance
+
+        
     def get_block_allocations(self, block, voters):
         rewards_check = 0
         voter_check = 0
@@ -83,25 +109,4 @@ class Allocate:
     
 
 
-    def get_voter_balance(self, block):
-        vote_balance = {}
-        block_timestamp = block[1]
-        vote_tx, unvote_tx = get_votes(delegate, block_timestamp)
-        voter_roll = create_voter_roll(vote_tx, unvote_tx)
     
-        print("Current Voters: ", len(voter_roll))
-        print("As of block id: ", block[0])
-        print("Delegate public key: ", delegate)
-
-        for i in voter_roll:
-            # print(i)
-            debit = get_sum_outbound(i[1], block_timestamp)
-            credit = get_sum_inbound(i[0], block_timestamp)
-            balance = credit - debit
-            vote_balance[i[0]] = balance
-
-        print("Block Reward: ", block[2])
-        print("Block Fees: ", block[3])
-        print("Total Allocation: ", block[2]+block[3])
-        print("Total Voter Balances: ", sum(vote_balance.values()), "\n")
-        return vote_balance
