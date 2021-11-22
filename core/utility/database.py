@@ -85,7 +85,7 @@ class Database:
 
 
     # ACCOUNT OPERATIONS
-    def get_sum_inbound(account, timestamp):
+    def get_sum_inbound(self, account, timestamp):
         try:
             # get inbound non-multi transactions
             output = cursor.execute(f"""SELECT SUM("amount") FROM (SELECT * FROM "transactions" WHERE "timestamp" <= {timestamp}) AS
@@ -116,7 +116,7 @@ class Database:
         return sum(total)
 
 
-    def get_sum_outbound(account, timestamp):
+    def get_sum_outbound(self, account, timestamp):
         try:
             output = cursor.execute(f"""SELECT SUM("amount") as amount, SUM("fee") as fee FROM (SELECT * FROM "transactions" WHERE 
             "timestamp" <= {timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}'""").fetchall()
