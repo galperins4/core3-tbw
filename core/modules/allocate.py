@@ -82,7 +82,8 @@ class Allocate:
         total_reward = block_reward+fee_reward
 
         # HARD CODED FOR SINGLE DELEGATE FEE - FUTURE FIX
-        delegate_share = self.config.delegate_fee[0]
+        # delegate_share = self.config.delegate_fee[0]
+        delegate_share = 25
         voter_share = self.config.voter_share
 
         voter_block_share = block_reward * voter_share
