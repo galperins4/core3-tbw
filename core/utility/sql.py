@@ -5,7 +5,7 @@ from pathlib import Path
 class Sql:
     def __init__(self):
         self.home = str(Path.home())
-        self.data_path = self.home+'/core3-tbw/core/data/tbw.db'
+        self.data_path = self.home+'/core-tbw/core/data/tbw.db'
 
         
     def open_connection(self):
