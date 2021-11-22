@@ -45,8 +45,6 @@ class Allocate:
     def get_voter_balance(self, block, voter_roll):
         vote_balance = {}
         block_timestamp = block[1]
-        # vote_tx, unvote_tx = get_votes(delegate, block_timestamp)
-        # voter_roll = create_voter_roll(vote_tx, unvote_tx)
     
         print("Current Voters: ", len(voter_roll))
         print("As of block id: ", block[0])
