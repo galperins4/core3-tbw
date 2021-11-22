@@ -23,9 +23,10 @@ class Database:
             
         self.cursor=self.connection.cursor()
     
-     def close_connection(self):
-         self.cursor.close()
-         self.connection.close() 
+     
+    def close_connection(self):
+        self.cursor.close()
+        self.connection.close() 
     
     
     def get_publickey(self):
