@@ -1,3 +1,6 @@
+from crypto.identity.address import address_from_public_key
+
+
 class Allocate:
     def __init__(self, database, config, sql):
         self.database = database
