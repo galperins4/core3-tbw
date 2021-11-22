@@ -52,8 +52,8 @@ if __name__ == '__main__':
         print(unprocessed)
         block_timestamp = unprocessed[1]
         vote, unvote = allocate.get_vote_transactions(block_timestamp)
-        print(vote)
-        print(unvote)
+        voter_roll = allocate.create_voter_roll()
+        print(voter_roll)
         quit()
     
     
