@@ -112,3 +112,10 @@ class Allocate:
         
         # mark block as processed - TO DO
         
+
+    def process_delegate_allocation(self):
+        pass
+    
+    
+    def process_voter_allocation(self):
+        pass
