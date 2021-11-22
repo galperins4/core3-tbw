@@ -36,16 +36,12 @@ class Allocate:
                 
             # add voters to database
             self.sql.open_connection()
+            self.sql.store_voters(roll)
             self.sql.close_connection()
 
         return roll
     
-    
-    
-    
-    
-    
-    
+       
     def get_block_allocations(self, block, voters):
         rewards_check = 0
         voter_check = 0
