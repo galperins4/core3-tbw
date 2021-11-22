@@ -68,23 +68,20 @@ class Database:
         try:
             v = "+" + self.publickey
             u = "-" + self.publickey
-            print(v)
-            print(u)
-            print(timestamp)
 
             # get all votes
             vote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
             "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
             "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, v)).fetchall()
 
-            # vote = self.cursor.fetchall()
-
             #get all unvotes
             unvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
             "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
             "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u)).fetchall()
-        
-            # unvote = cursor.fetchall()
+            print(unvote)
+            quit()
+
+            #if unvote = None
             return vote, unvote
         except Exception as e:
             print(e)
