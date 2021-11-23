@@ -100,7 +100,6 @@ class Database:
             multi_universe = self.cursor.execute("""SELECT "timestamp", "fee", "sender_public_key", "asset", "id" FROM (SELECT * FROM 
             "transactions" WHERE "timestamp" <= %s) AS "filtered" WHERE asset::jsonb @> '{"payments": [{"recipientId":"%s"}]}'::jsonb;""" 
             % (timestamp, account)).fetchall()
-            # multi_universe = cursor.fetchall()
 
             # get amounts from multi transactions
             multi_amount = []
@@ -123,5 +122,15 @@ class Database:
             # output =  cursor.fetchall()
             convert = [int(i) for i in output[0]]
             return sum(convert)
+        except Exception as e:
+            print(e)
+
+            
+    def get_sum_block_rewards(self, account, timestamp):
+        try:
+            output = self.cursor.execute(f"""SELECT SUM("total_amount") FROM (SELECT * FROM "blocks" WHERE "timestamp" 
+            <= {timestamp}) AS "filtered" WHERE "generator_public_key" = '{account}'""").fetchall()
+            block_rewards = [int(i) for i in output[0]]
+            return block_rewards
         except Exception as e:
             print(e)
