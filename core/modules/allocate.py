@@ -70,6 +70,8 @@ class Allocate:
         rewards_check = 0
         voter_check = 0
         delegate_check = 0
+        delegate_unpaid = {}
+        voter_unpaid = {}
 
         # get total votes
         total_delegate_vote_balance = sum(voters.values())
@@ -81,17 +83,33 @@ class Allocate:
 
         # HARD CODED FOR SINGLE DELEGATE FEE - FUTURE FIX
         # delegate_share = self.config.delegate_fee[0]
-        delegate_share = 25
-        voter_share = self.config.voter_share
-
-        voter_block_share = block_reward * (voter_share / 100)
+        # delegate_share = 25
+        for count, i in enumerate(self.config.delegate_fee):
+            # check if count is 0 for reserve account
+            if count = 0:
+                rate = int(i) / 100
+                reward = int((rate * block_reward) + fee_reward)
+                delegate_check += reward
+                delegate_upaid[self.config.delegate_fee_address[count]] = reward
+            else:
+                rate = int(i) / 100
+                reward = int(rate * block_reward)
+                delegate_check += reward
+                delegate_upaid[self.config.delegate_fee_address[count]] = reward
+        
+        print(delegate_unpaid)
+        quit()        
+                
+        ''' 
         delegate_block_share = delegate_share / 100
         delegate_block_reward = int((block_reward * delegate_block_share) + fee_reward)
         delegate_check += delegate_block_reward
+        '''
         
         # update delegate reward in database - TO DO
 
         print("Delegate {} reward: {}".format(self.config.delegate, delegate_block_reward)) 
+        voter_share = self.config.voter_share
         for k, v in voters.items():
             share_weight = v / total_delegate_vote_balance
             single_voter_reward = int(share_weight * voter_block_share)
