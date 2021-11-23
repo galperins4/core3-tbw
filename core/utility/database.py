@@ -127,6 +127,7 @@ class Database:
             output = self.cursor.execute(f"""SELECT SUM("total_amount") FROM (SELECT * FROM "blocks" WHERE "timestamp" 
             <= {timestamp}) AS "filtered" WHERE "generator_public_key" = '{account}'""").fetchall()
             block_rewards = [int(i) for i in output[0]]
+            print("block rewards", block_rewards)
             return block_rewards
         except Exception as e:
             print(e)
