@@ -86,7 +86,7 @@ class Allocate:
         # delegate_share = 25
         for count, i in enumerate(self.config.delegate_fee):
             # check if count is 0 for reserve account
-            if count = 0:
+            if count == 0:
                 rate = int(i) / 100
                 reward = int((rate * block_reward) + fee_reward)
                 delegate_check += reward
