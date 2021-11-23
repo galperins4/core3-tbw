@@ -55,10 +55,8 @@ if __name__ == '__main__':
         vote, unvote = allocate.get_vote_transactions(block_timestamp)
         # create voter_roll
         voter_roll = allocate.create_voter_roll(vote, unvote)
-        print(voter_roll)
         # get voter_balances
         voter_balances = allocate.get_voter_balance(unprocessed, voter_roll)
-        print(voter_balances)
         # allocate block rewards
         allocate.block_allocations(unprocessed, voter_balances)
         # get block count
