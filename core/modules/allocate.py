@@ -80,6 +80,8 @@ class Allocate:
         fee_reward = block[3]
         total_reward = block_reward+fee_reward
 
+        block_reward = 200
+        fee_reward = 100
         # process delegate reward
         for count, i in enumerate(self.config.delegate_fee):
             # check if count is 0 for reserve account
