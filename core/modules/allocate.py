@@ -104,8 +104,7 @@ class Allocate:
             voter_check += 1
             rewards_check += single_voter_reward
             print("Voter {} with balance of {} reward: {}".format(k, v, single_voter_reward))
-            voter_unpaid[k] = single_voter_rewards
-            # update voter reward in database - TO DO
+            voter_unpaid[k] = single_voter_reward
         
         print(voter_unpaid)
         quit()
