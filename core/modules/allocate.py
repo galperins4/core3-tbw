@@ -52,7 +52,6 @@ class Allocate:
         
         self.database.open_connection()
         for i in voter_roll:
-            # print(i)
             debit = self.database.get_sum_outbound(i[1], block_timestamp)
             credit = self.database.get_sum_inbound(i[0], block_timestamp)
             balance = credit - debit
@@ -81,9 +80,7 @@ class Allocate:
         fee_reward = block[3]
         total_reward = block_reward+fee_reward
 
-        # HARD CODED FOR SINGLE DELEGATE FEE - FUTURE FIX
-        # delegate_share = self.config.delegate_fee[0]
-        # delegate_share = 25
+        # process delegate reward
         for count, i in enumerate(self.config.delegate_fee):
             # check if count is 0 for reserve account
             if count == 0:
