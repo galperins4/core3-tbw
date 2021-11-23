@@ -90,12 +90,12 @@ class Allocate:
                 rate = int(i) / 100
                 reward = int((rate * block_reward) + fee_reward)
                 delegate_check += reward
-                delegate_upaid[self.config.delegate_fee_address[count]] = reward
+                delegate_unpaid[self.config.delegate_fee_address[count]] = reward
             else:
                 rate = int(i) / 100
                 reward = int(rate * block_reward)
                 delegate_check += reward
-                delegate_upaid[self.config.delegate_fee_address[count]] = reward
+                delegate_unpaid[self.config.delegate_fee_address[count]] = reward
         
         print(delegate_unpaid)
         quit()        
