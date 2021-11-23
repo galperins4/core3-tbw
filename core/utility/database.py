@@ -48,7 +48,6 @@ class Database:
             return self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
             "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' 
             ORDER BY "height" DESC""").fetchall()
-            # return self.cursor.fetchall()
         except Exception as e:
             print(e)
     
