@@ -10,6 +10,7 @@ from modules.voters import Voters
 from utility.database import Database
 from utility.sql import Sql
 from utility.utility import Utility
+import time
 
 
 if __name__ == '__main__':
@@ -62,7 +63,7 @@ if __name__ == '__main__':
         # get block count
         block_count = block.block_counter()
         print(f"\nCurrent block count : {block_count}")
-        quit()
+        time.sleep(5)
     
     
     quit()
