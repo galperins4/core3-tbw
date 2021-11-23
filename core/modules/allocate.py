@@ -96,9 +96,7 @@ class Allocate:
         
         print(delegate_unpaid)
         
-        # update delegate reward in database - TO DO
-
-        print("Delegate {} reward: {}".format(self.config.delegate, delegate_block_reward)) 
+        # process voter reward
         voter_share = self.config.voter_share
         for k, v in voters.items():
             share_weight = v / total_delegate_vote_balance
@@ -122,10 +120,3 @@ class Allocate:
         
         # mark block as processed - TO DO
         
-
-    def process_delegate_allocation(self):
-        pass
-    
-    
-    def process_voter_allocation(self):
-        pass
