@@ -197,14 +197,16 @@ class Sql:
         return self.cursor.execute("SELECT * FROM transactions ORDER BY processed_at DESC LIMIT 1000")
 
 
-    def update_voter_balance(self, address, balance):
-        self.cursor.execute(f"UPDATE voters SET unpaid_bal = unpaid_bal + {balance} WHERE address = '{address}'")
-        self.commit()
+    def update_voter_balance(self, voter_unpaid):
+        for k,v in voter_unpaid.items():
+            self.cursor.execute(f"UPDATE voters SET unpaid_bal = unpaid_bal + {v} WHERE address = '{k}'")
+            self.commit()
 
 
-    def update_delegate_balance(self, address, balance):
-        self.cursor.execute(f"UPDATE delegate_rewards SET unpaid_bal = unpaid_bal + {balance} WHERE address = '{address}'")
-        self.commit()
+    def update_delegate_balance(self, delegate_unpaid):
+        for k,v in delegate_unpaid.items():
+            self.cursor.execute(f"UPDATE delegate_rewards SET unpaid_bal = unpaid_bal + {v} WHERE address = '{k}'")
+            self.commit()
 
 
     def update_voter_paid_balance (self, address):
