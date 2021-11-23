@@ -53,8 +53,11 @@ class Allocate:
         self.database.open_connection()
         for i in voter_roll:
             debit = self.database.get_sum_outbound(i[1], block_timestamp)
+            print(debit)
             credit = self.database.get_sum_inbound(i[0], block_timestamp)
+            print(credit)
             block_reward = self.database.get_sum_block_rewards(i[1], block_timestamp)
+            print(block_reward)
             balance = (credit + block_reward) - debit
             vote_balance[i[0]] = balance
         self.database.close_connection()
