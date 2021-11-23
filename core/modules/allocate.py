@@ -78,9 +78,6 @@ class Allocate:
         block_reward = block[2]
         fee_reward = block[3]
         total_reward = block_reward+fee_reward
-        
-        block_reward = 100000000
-        fee_reward = 10000
 
         # process delegate reward
         for count, i in enumerate(self.config.delegate_fee):
@@ -95,8 +92,6 @@ class Allocate:
                 reward = int(rate * block_reward)
                 delegate_check += reward
                 delegate_unpaid[self.config.delegate_fee_address[count]] = reward
-        
-        print(delegate_unpaid)
         
         # process voter reward
         voter_block_share = self.config.voter_share * block_reward
