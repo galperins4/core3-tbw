@@ -16,7 +16,7 @@ class Allocate:
 
     
     def create_voter_roll(self, v, u):
-        #create dictionary of unvotes
+        # create dictionary of unvotes
         unvotes = {i[0]:i[1] for i in u}
 
         roll = []
@@ -62,7 +62,6 @@ class Allocate:
         print("Block Fees: ", block[3])
         print("Total Block Allocation: ", block[2]+block[3])
         print("Total Voter Balances: ", sum(vote_balance.values()), "\n")
-        return vote_balance
 
         
     def block_allocations(self, block, voters):
@@ -108,8 +107,6 @@ class Allocate:
             rewards_check += single_voter_reward
             print("Voter {} with balance of {} reward: {}".format(k, v, single_voter_reward))
             voter_unpaid[k] = single_voter_reward
-        
-        print(voter_unpaid)
 
         print(f"""\nProcessed Block: {block[4]}\n
         Voters processed: {voter_check}
