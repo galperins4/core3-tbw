@@ -64,9 +64,6 @@ if __name__ == '__main__':
         # get block count
         block_count = block.block_counter()
         print(f"\nCurrent block count : {block_count}")
-        
-        
-        
         quit()
     
     
