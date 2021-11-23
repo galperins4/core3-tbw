@@ -107,7 +107,6 @@ class Allocate:
             voter_unpaid[k] = single_voter_reward
         
         print(voter_unpaid)
-        quit()
 
         print(f"""\nProcessed Block: {block[4]}\n
         Voters processed: {voter_check}
@@ -119,6 +118,10 @@ class Allocate:
         
         # store delegate/voter rewards and mark block as processed mark block as processed
         self.sql.open_connection()
+        self.sql.update_delegate_balance(delegate_unpaid)
+        self.sql.update_voter_balance(voter_unpaid)
+        # self.sql.mark_processed(block[4])
+        
         self.sql.close_connection()
         quit()
         
