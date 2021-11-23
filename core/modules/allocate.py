@@ -79,6 +79,9 @@ class Allocate:
         block_reward = block[2]
         fee_reward = block[3]
         total_reward = block_reward+fee_reward
+        
+        block_reward = 100000000
+        fee_reward = 10000
 
         # process delegate reward
         for count, i in enumerate(self.config.delegate_fee):
