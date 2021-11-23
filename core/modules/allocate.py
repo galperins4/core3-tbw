@@ -80,8 +80,6 @@ class Allocate:
         fee_reward = block[3]
         total_reward = block_reward+fee_reward
 
-        block_reward = 200
-        fee_reward = 100
         # process delegate reward
         for count, i in enumerate(self.config.delegate_fee):
             # check if count is 0 for reserve account
@@ -97,13 +95,6 @@ class Allocate:
                 delegate_unpaid[self.config.delegate_fee_address[count]] = reward
         
         print(delegate_unpaid)
-        quit()        
-                
-        ''' 
-        delegate_block_share = delegate_share / 100
-        delegate_block_reward = int((block_reward * delegate_block_share) + fee_reward)
-        delegate_check += delegate_block_reward
-        '''
         
         # update delegate reward in database - TO DO
 
@@ -115,9 +106,11 @@ class Allocate:
             voter_check += 1
             rewards_check += single_voter_reward
             print("Voter {} with balance of {} reward: {}".format(k, v, single_voter_reward))
-            
+            voter_unpaid[k] = single_voter_rewards
             # update voter reward in database - TO DO
-           
+        
+        print(voter_unpaid)
+        quit()
 
         print(f"""\nProcessed Block: {block[4]}\n
         Voters processed: {voter_check}
