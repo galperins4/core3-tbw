@@ -117,5 +117,8 @@ class Allocate:
         Voter + Delegate Rewards: {rewards_check + delegate_check}
         Total Block Rewards: {total_reward}""")
         
-        # mark block as processed - TO DO
+        # store delegate/voter rewards and mark block as processed mark block as processed
+        self.sql.open_connection()
+        self.sql.close_connection()
+        quit()
         
