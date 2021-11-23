@@ -58,7 +58,6 @@ class Database:
             return self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
             "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' AND 
             "timestamp" > {timestamp} ORDER BY "height" """).fetchall()
-            # return self.cursor.fetchall()
         except Exception as e:
             print(e)
             
@@ -90,7 +89,6 @@ class Database:
             # get inbound non-multi transactions
             output = self.cursor.execute(f"""SELECT SUM("amount") FROM (SELECT * FROM "transactions" WHERE "timestamp" <= {timestamp}) AS
             "filtered" WHERE "recipient_id" = '{account}' AND "type" <> {6}""").fetchall()
-            # output = cursor.fetchall()
             non_multi = [int(i) for i in output[0]]
         except Exception as e:
             print(e)
@@ -119,7 +117,6 @@ class Database:
         try:
             output = self.cursor.execute(f"""SELECT SUM("amount") as amount, SUM("fee") as fee FROM (SELECT * FROM "transactions" WHERE 
             "timestamp" <= {timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}'""").fetchall()
-            # output =  cursor.fetchall()
             convert = [int(i) for i in output[0]]
             return sum(convert)
         except Exception as e:
