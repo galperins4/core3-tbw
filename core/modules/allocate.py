@@ -96,7 +96,7 @@ class Allocate:
                 delegate_unpaid[self.config.delegate_fee_address[count]] = reward
         
         # process voter reward
-        voter_block_share = self.config.voter_share * block_reward
+        voter_block_share = (self.config.voter_share / 100) * block_reward
         for k, v in voters.items():
             share_weight = v / total_delegate_vote_balance
             single_voter_reward = int(share_weight * voter_block_share)
