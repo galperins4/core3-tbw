@@ -88,7 +88,10 @@ class Database:
             # get inbound non-multi transactions
             output = self.cursor.execute(f"""SELECT SUM("amount") FROM (SELECT * FROM "transactions" WHERE "timestamp" <= {timestamp}) AS
             "filtered" WHERE "recipient_id" = '{account}' AND "type" <> {6}""").fetchall()
-            non_multi = [int(i) for i in output[0]]
+            if output[0][0] == None:
+                non_multi = [0]
+            else:
+                non_multi = [int(i) for i in output[0]]
         except Exception as e:
             print(e)
 
@@ -116,7 +119,10 @@ class Database:
         try:
             output = self.cursor.execute(f"""SELECT SUM("amount") as amount, SUM("fee") as fee FROM (SELECT * FROM "transactions" WHERE 
             "timestamp" <= {timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}'""").fetchall()
-            convert = [int(i) for i in output[0]]
+            if output[0][0] == None:
+                convert = [0,0]
+            else:
+                convert = [int(i) for i in output[0]]
             return sum(convert)
         except Exception as e:
             print(e)
@@ -126,7 +132,10 @@ class Database:
         try:
             output = self.cursor.execute(f"""SELECT SUM("total_amount") FROM (SELECT * FROM "blocks" WHERE "timestamp" 
             <= {timestamp}) AS "filtered" WHERE "generator_public_key" = '{account}'""").fetchall()
-            block_rewards = [int(i) for i in output[0]]
+            if output[0][0] == None:
+                block_rewards = [0]
+            else:
+                block_rewards = [int(i) for i in output[0]]
             print("block rewards", block_rewards)
             return block_rewards
         except Exception as e:
