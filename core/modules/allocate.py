@@ -105,11 +105,13 @@ class Allocate:
             db_share = self.sql.get_voter_share(k).fetchall()[0][0]
             if db_share == config_voter_share:
                 # standard share rate
+                print("Standard Rate")
                 voter_block_share = (db_share / 100) * block_reward
                 single_voter_reward = int(share_weight * voter_block_share)    
                 
             else:
                 # custom share rate
+                print("Custom Rate")
                 custom_block_share = (db_share / 100) * block_reward
                 standard_voter_share = (config_voter_share / 100) * block_reward
                 single_voter_reward = int(share_weight * custom_block_share)
