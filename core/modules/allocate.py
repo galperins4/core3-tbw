@@ -103,6 +103,8 @@ class Allocate:
             db_share = self.sql.get_voter_share(k).fetchall()[0][0]
             print("config share: ", self.config.voter_share)
             print("stored share: ", db_share)
+            if db_share == self.config.voter_share:
+                print("Standard Share Rate")
             quit()
             
             
