@@ -107,8 +107,7 @@ class Allocate:
                 # standard share rate
                 print("Standard Rate")
                 voter_block_share = (db_share / 100) * block_reward
-                single_voter_reward = int(share_weight * voter_block_share)    
-                
+                single_voter_reward = int(share_weight * voter_block_share)        
             else:
                 # custom share rate
                 print("Custom Rate")
@@ -123,7 +122,7 @@ class Allocate:
             rewards_check += single_voter_reward
             print("Voter {} with balance of {} reward: {}".format(k, v, single_voter_reward))
             voter_unpaid[k] = single_voter_reward
-            quit() 
+        quit()
         self.sql.close_connection()
 
         print(f"""\nProcessed Block: {block[4]}\n
