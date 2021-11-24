@@ -114,7 +114,7 @@ class Allocate:
                 custom_block_share = (db_share / 100) * block_reward
                 standard_voter_share = (config_voter_share / 100) * block_reward
                 single_voter_reward = int(share_weight * custom_block_share)
-                remainder = int(share_weight * standard_voter_share) - single_voter_share
+                remainder = int(share_weight * standard_voter_share) - single_voter_reward
                 delegate_check += remainder
                 delegate_unpaid[self.config.delegate_fee_address[0]] += remainder
                           
