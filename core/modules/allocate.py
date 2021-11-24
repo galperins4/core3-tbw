@@ -96,24 +96,32 @@ class Allocate:
                 delegate_unpaid[self.config.delegate_fee_address[count]] = reward
         
         # process voter reward
-        #voter_block_share = (self.config.voter_share / 100) * block_reward
+        config_voter_share = self.config.voter_share
         self.sql.open_connection()
         for k, v in voters.items():
-            # get voter_share
-            db_share = self.sql.get_voter_share(k).fetchall()[0][0]
-            print("config share: ", self.config.voter_share)
-            print("stored share: ", db_share)
-            if db_share == self.config.voter_share:
-                print("Standard Share Rate")
-            quit()
-            
-            
+            # get voter_weight
             share_weight = v / total_delegate_vote_balance
-            single_voter_reward = int(share_weight * voter_block_share)
+            # get voter share
+            db_share = self.sql.get_voter_share(k).fetchall()[0][0]
+            if db_share == config_voter_share:
+                # standard share rate
+                voter_block_share = (db_share / 100) * block_reward
+                single_voter_reward = int(share_weight * voter_block_share)    
+                
+            else:
+                # custom share rate
+                custom_block_share = (db_share / 100) * block_reward
+                standard_voter_share = (config_voter_share / 100) * block_reward
+                single_voter_reward = int(share_weight * custom_block_share)
+                remainder = int(share_weight * standard_voter_share) - single_voter_share
+                delegate_check += remainder
+                delegate_unpaid[self.config.delegate_fee_address[0]] += remainder
+                          
             voter_check += 1
             rewards_check += single_voter_reward
             print("Voter {} with balance of {} reward: {}".format(k, v, single_voter_reward))
             voter_unpaid[k] = single_voter_reward
+            quit() 
         self.sql.close_connection()
 
         print(f"""\nProcessed Block: {block[4]}\n
