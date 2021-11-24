@@ -46,9 +46,9 @@ class Allocate:
         vote_balance = {}
         block_timestamp = block[1]
     
-        print("Current Voters: ", len(voter_roll))
-        print("As of block id: ", block[0])
-        print("Delegate key: ", self.config.delegate)
+        # print("Current Voters: ", len(voter_roll))
+        # print("As of block id: ", block[0])
+        # print("Delegate key: ", self.config.delegate)
         
         self.database.open_connection()
         for i in voter_roll:
@@ -59,10 +59,10 @@ class Allocate:
             vote_balance[i[0]] = balance
         self.database.close_connection()
 
-        print("Block Reward: ", block[2])
-        print("Block Fees: ", block[3])
-        print("Total Block Allocation: ", block[2]+block[3])
-        print("Total Voter Balances: ", sum(vote_balance.values()), "\n")
+        # print("Block Reward: ", block[2])
+        # print("Block Fees: ", block[3])
+        # print("Total Block Allocation: ", block[2]+block[3])
+        # print("Total Voter Balances: ", sum(vote_balance.values()), "\n")
         return vote_balance
 
         
