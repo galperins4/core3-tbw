@@ -136,7 +136,6 @@ class Database:
                 block_rewards = [0,0]
             else:
                 block_rewards = [int(i) for i in output[0]]
-            print("block rewards", sum(block_rewards))
             return sum(block_rewards)
         except Exception as e:
             print(e)
