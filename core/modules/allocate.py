@@ -96,14 +96,23 @@ class Allocate:
                 delegate_unpaid[self.config.delegate_fee_address[count]] = reward
         
         # process voter reward
-        voter_block_share = (self.config.voter_share / 100) * block_reward
+        #voter_block_share = (self.config.voter_share / 100) * block_reward
+        self.sql.open_connection()
         for k, v in voters.items():
+            # get voter_share
+            db_share = self.sql.get_voter_share(k).fetchall()
+            print("config share: ", self.config.voter_share)
+            print("stored share: ", db_share)
+            quit()
+            
+            
             share_weight = v / total_delegate_vote_balance
             single_voter_reward = int(share_weight * voter_block_share)
             voter_check += 1
             rewards_check += single_voter_reward
             print("Voter {} with balance of {} reward: {}".format(k, v, single_voter_reward))
             voter_unpaid[k] = single_voter_reward
+        self.sql.close_connection()
 
         print(f"""\nProcessed Block: {block[4]}\n
         Voters processed: {voter_check}
