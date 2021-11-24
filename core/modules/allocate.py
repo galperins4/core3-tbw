@@ -100,7 +100,7 @@ class Allocate:
         self.sql.open_connection()
         for k, v in voters.items():
             # get voter_share
-            db_share = self.sql.get_voter_share(k).fetchall()
+            db_share = self.sql.get_voter_share(k).fetchall()[0][0]
             print("config share: ", self.config.voter_share)
             print("stored share: ", db_share)
             quit()
