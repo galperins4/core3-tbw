@@ -48,6 +48,7 @@ if __name__ == '__main__':
     
     # allocate block rewards
     allocate = Allocate(database, config, sql)
+    voter_options = Voters(config)
     
     for unprocessed in unprocessed_blocks:
         print(unprocessed)
@@ -58,6 +59,17 @@ if __name__ == '__main__':
         voter_roll = allocate.create_voter_roll(vote, unvote)
         # get voter_balances
         voter_balances = allocate.get_voter_balance(unprocessed, voter_roll)
+        # run voters through various vote_options
+        if config.whitelist == 'Y':
+            pass
+        if config.whitelist =='N' AND config.blacklist =='Y':
+            pass
+        
+        
+            
+        
+        
+        
         # allocate block rewards
         allocate.block_allocations(unprocessed, voter_balances)
         # get block count
