@@ -122,7 +122,6 @@ class Allocate:
             rewards_check += single_voter_reward
             print("Voter {} with balance of {} reward: {}".format(k, v, single_voter_reward))
             voter_unpaid[k] = single_voter_reward
-        quit()
         self.sql.close_connection()
 
         print(f"""\nProcessed Block: {block[4]}\n
@@ -132,7 +131,7 @@ class Allocate:
         Delegate Reward: {delegate_check}
         Voter + Delegate Rewards: {rewards_check + delegate_check}
         Total Block Rewards: {total_reward}""")
-        
+        quit()
         # store delegate/voter rewards and mark block as processed mark block as processed
         self.sql.open_connection()
         self.sql.update_delegate_balance(delegate_unpaid)
