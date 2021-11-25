@@ -59,21 +59,33 @@ if __name__ == '__main__':
         voter_roll = allocate.create_voter_roll(vote, unvote)
         # get voter_balances
         voter_balances = allocate.get_voter_balance(unprocessed, voter_roll)
+        print("\noriginal voter_balances")
         for k, v in voter_balances.items():
             print(k,v)
-        quit()
         # run voters through various vote_options
         if config.whitelist == 'Y':
             voter_balances = voter_options.process_whitelist(voter_balances)
         if config.whitelist == 'N' and config.blacklist =='Y':
             voter_balances = voter_options.process_blacklist(voter_balances)
+        print("\n voter_balances post whitelist or blacklist")
+        for k, v in voter_balances.items():
+            print(k,v)
         quit()
             
         voter_balances = voter_options.process_voter_cap(voter_balances)
+        print("\n voter_balances post voter cap")
+        for k, v in voter_balances.items():
+            print(k,v)
         quit()
         voter_balances = voter_options.process_voter_min(voter_balances)
+        print("\n voter_balances post voter min")
+        for k, v in voter_balances.items():
+            print(k,v)
         quit()
         voter_balances = voter_options.process_anti_dilution(voter_balances)
+        print("\n voter_balances post anti_dulite")
+        for k, v in voter_balances.items():
+            print(k,v)
         quit()
         
         # allocate block rewards
