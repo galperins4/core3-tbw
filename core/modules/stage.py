@@ -8,10 +8,9 @@ class Stage:
         
         # get transactions
         fees = self.get_transaction_fees()
-        print(fees)
-        quit()
         
         # stage delegate payments
+        self.stage_delegate_payments(fees)
         
         # stage voter paymnets
         
@@ -51,8 +50,10 @@ class Stage:
         return transaction_fees
         
     
-    def stage_delegate_payments(self):
-        pass
+    def stage_delegate_payments(self, f):
+        for k, v in self.delegate.items():
+            print(k, v)
+        quit()
     
     
     def stage_voter_payments(self):
