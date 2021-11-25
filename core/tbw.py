@@ -131,7 +131,7 @@ if __name__ == '__main__':
         
         # check interval for payout
         stage, unpaid_voters, unpaid_delegate = interval_check(block_count)
-        print(result)
+        print(stage)
         print(unpaid_voters)
         print(unpaid_delegate)
         
