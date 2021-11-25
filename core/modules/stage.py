@@ -26,12 +26,15 @@ class Stage:
         if self.config.multi == "Y":
             multi_limit = self.dynamic.get_multipay_limit()
             if total_tx % multi_limit == 0:
+                print("Option A")
                 transactions = round(total_tx / multi_limit)
                 transaction_fees = int(transactions * (self.config.multi_fee * self.config.atomic))
             elif total_tx % multi_limit == 1:
+                print("Option B")
                 multi_transactions = round(total_tx / multi_limit)
                 transaction_fees = int(((multi_transactions * (self.config.multi_fee * self.config.atomic)) + self.dynamic.get_dynamic_fee()))
             else:
+                print("Option C")
                 transactions = round(total_tx // multi_limit) + 1
                 transaction_fees = int(transactions * (self.config.multi_fee * self.config.atomic))
         else:
