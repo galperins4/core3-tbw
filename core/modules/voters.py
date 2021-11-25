@@ -15,7 +15,12 @@ class Voters():
 
     
     def process_blacklist(self, voter_balances):
-        pass
+        adjusted_voters = {}
+        for k, v in voter_balances.items():
+            if k not in self.config.blacklist_address:
+                adjusted_voters[k] = v
+        
+        return adjusted_voters
     
     
     def process_voter_cap(self, voter_balances):
