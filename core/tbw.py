@@ -16,7 +16,14 @@ import time
 
 def interval_check(block_count):
     if block_count % config.interval == 0:
-        # 
+        print("Payout interval reached")
+        sql.open_connection()
+        balances = sql.voters().fetchall()
+        sql.close_connection()
+        
+        unpaid = {i[0]:i[2] for i in balances}
+        print(sum(unpaid.values())
+        quit()
 
 
 if __name__ == '__main__':
@@ -100,6 +107,9 @@ if __name__ == '__main__':
         # get block count
         block_count = block.block_counter()
         print(f"\nCurrent block count : {block_count}")
+        
+        # check interval for payout
+        interval_check(block_count)
         time.sleep(10)
     
     
