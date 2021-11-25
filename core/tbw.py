@@ -24,10 +24,18 @@ def interval_check(block_count):
         
         voter_unpaid = {i[0]:i[2] for i in voter_balances}
         delegate_unpaid = {i[0]:i[1] for i in delegate_balances}
-        print(sum(voter_unpaid.values()))
-        print(sum(delegate_unpaid.values()))
-        quit()
-
+        
+        # check if there is a positive unpaid balance
+        if sum(voter_unpaid.values()) > 0
+            stage = True
+        else:
+            stage = False
+    else:
+        stage = False
+        voter_unpaid = {}
+        delegate_unpaid = {}
+    
+    return stage, voter_unpaid, delegate_unpaid
 
 if __name__ == '__main__':
     # set sql / database / config as global variables
@@ -117,7 +125,14 @@ if __name__ == '__main__':
         print(f"\nCurrent block count : {block_count}")
         
         # check interval for payout
-        interval_check(block_count)
+        result, unpaid_voters, unpaid_delegate = interval_check(block_count)
+        print(result)
+        print(unpaid_voters)
+        print(unpaid_delegate)
+        quit()
+        
+        
+        # check result and stage payments (if necessary)
         time.sleep(10)
     
     
