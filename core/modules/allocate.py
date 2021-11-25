@@ -101,24 +101,28 @@ class Allocate:
         config_voter_share = self.config.voter_share
         self.sql.open_connection()
         for k, v in voters.items():
-            # get voter_weight
-            share_weight = v / total_delegate_vote_balance
-            # get voter share
-            db_share = self.sql.get_voter_share(k).fetchall()[0][0]
-            if db_share == config_voter_share:
-                # standard share rate
-                # print("Standard Rate")
-                voter_block_share = (db_share / 100) * block_reward
-                single_voter_reward = int(share_weight * voter_block_share)        
+            # check to make sure to skip 0 balances
+            if v > 0:
+                # get voter_weight
+                share_weight = v / total_delegate_vote_balance
+                # get voter share
+                db_share = self.sql.get_voter_share(k).fetchall()[0][0]
+                if db_share == config_voter_share:
+                    # standard share rate
+                    # print("Standard Rate")
+                    voter_block_share = (db_share / 100) * block_reward
+                    single_voter_reward = int(share_weight * voter_block_share)        
+                else:
+                    # custom share rate
+                    # print("Custom Rate")
+                    custom_block_share = (db_share / 100) * block_reward
+                    standard_voter_share = (config_voter_share / 100) * block_reward
+                    single_voter_reward = int(share_weight * custom_block_share)
+                    remainder = int(share_weight * standard_voter_share) - single_voter_reward
+                    delegate_check += remainder
+                    delegate_unpaid[self.config.delegate_fee_address[0]] += remainder
             else:
-                # custom share rate
-                # print("Custom Rate")
-                custom_block_share = (db_share / 100) * block_reward
-                standard_voter_share = (config_voter_share / 100) * block_reward
-                single_voter_reward = int(share_weight * custom_block_share)
-                remainder = int(share_weight * standard_voter_share) - single_voter_reward
-                delegate_check += remainder
-                delegate_unpaid[self.config.delegate_fee_address[0]] += remainder
+                single_voter_reward = 0
            
             voter_check += 1
             rewards_check += single_voter_reward
@@ -128,7 +132,6 @@ class Allocate:
         for k , v in delegate_unpaid.items():
             print("Delegate {} account reward: {}".format(k, (v / self.atomic)))
         self.sql.close_connection()
-        quit()
         
                           
         print(f"""\nProcessed Block: {block[4]}\n
