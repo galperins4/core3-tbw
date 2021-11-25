@@ -89,18 +89,18 @@ class Allocate:
                 rate = int(i) / 100
                 reward = int((rate * block_reward) + fee_reward)
                 delegate_check += reward
-                delegate_unpaid[self.config.delegate_fee_address[count]] += reward
+                delegate_unpaid[self.config.delegate_fee_address[count]] = reward
             else:
                 rate = int(i) / 100
                 reward = int(rate * block_reward)
                 delegate_check += reward
-                delegate_unpaid[self.config.delegate_fee_address[count]] += reward
-            print("Delegate Account {} reward: {}".format(self.config.delegate_fee_address[count], (reward / self.atomic)))
+                delegate_unpaid[self.config.delegate_fee_address[count]] = reward
+            # print("Delegate Account {} reward: {}".format(self.config.delegate_fee_address[count], (reward / self.atomic)))
         
         # process voter reward
         config_voter_share = self.config.voter_share
         self.sql.open_connection()
-        for k, v in voters.items():
+        for k, v in voters.items() if v > 0:
             # get voter_weight
             share_weight = v / total_delegate_vote_balance
             # get voter share
