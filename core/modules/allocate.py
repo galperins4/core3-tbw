@@ -100,7 +100,7 @@ class Allocate:
         # process voter reward
         config_voter_share = self.config.voter_share
         self.sql.open_connection()
-        for k, v in voters.items() if v > 0:
+        for k, v in voters.items():
             # get voter_weight
             share_weight = v / total_delegate_vote_balance
             # get voter share
@@ -124,8 +124,9 @@ class Allocate:
             rewards_check += single_voter_reward
             print("Voter {} with balance of {} reward: {}".format(k, (v / self.atomic), (single_voter_reward / self.atomic)))
             voter_unpaid[k] = single_voter_reward
-            for k , v in delegate_unpaid.items():
-                print("Delegate {} account reward: {}".format(k, (v / self.atomic))
+        
+        for k , v in delegate_unpaid.items():
+            print("Delegate {} account reward: {}".format(k, (v / self.atomic))
         self.sql.close_connection()
         quit()
         
