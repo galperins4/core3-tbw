@@ -62,15 +62,15 @@ class Sql:
         self.commit()
     
     
-    def stage_payment(self, address, amount, msg):
-        staging=[]
+    def stage_payment(self, paid, msg):
+        staging = []
+        for k, v in paid.items():
+            staging.append((k, v, msg, None))
 
-        staging.append((address, amount, msg, None))
+        # staging.append((address, amount, msg, None))
 
         self.executemany("INSERT INTO staging VALUES (?,?,?,?)", staging)
-
         self.commit()
-
 
     def store_blocks(self, blocks):
         newBlocks=[]
@@ -209,16 +209,18 @@ class Sql:
             self.commit()
 
 
-    def update_voter_paid_balance (self, address):
-        self.cursor.execute(f"UPDATE voters SET paid_bal = paid_bal + unpaid_bal WHERE address = '{address}'")
-        self.cursor.execute(f"UPDATE voters SET unpaid_bal = unpaid_bal - unpaid_bal WHERE address = '{address}'")
-        self.commit()
+    def update_voter_paid_balance (self, paid):
+        for k, v in paid.items():
+            self.cursor.execute(f"UPDATE voters SET paid_bal = paid_bal + unpaid_bal WHERE address = '{k}'")
+            self.cursor.execute(f"UPDATE voters SET unpaid_bal = unpaid_bal - unpaid_bal WHERE address = '{k}'")
+            self.commit()
 
 
-    def update_delegate_paid_balance (self, address, amount):
-        self.cursor.execute(f"UPDATE delegate_rewards SET paid_bal = paid_bal + {amount} WHERE address = '{address}'")
-        self.cursor.execute(f"UPDATE delegate_rewards SET unpaid_bal = unpaid_bal - {amount} WHERE address = '{address}'")
-        self.commit()
+    def update_delegate_paid_balance (self, paid):
+        for k,v in paid.items():
+            self.cursor.execute(f"UPDATE delegate_rewards SET paid_bal = paid_bal + {v} WHERE address = '{k}'")
+            self.cursor.execute(f"UPDATE delegate_rewards SET unpaid_bal = unpaid_bal - {v} WHERE address = '{k}'")
+            self.commit()
 
     
     def update_voter_share(self, address, share):
