@@ -24,7 +24,21 @@ class Voters():
     
     
     def process_voter_cap(self, voter_balances):
-        pass
+        adjusted_voters = {}
+        
+        # no voter cap
+        if self.config.voter_cap == 0:
+            adjusted_voters = voter_balances
+        else:
+            # get max cap
+            max_votes = int(self.config.voter_cap * self.config.atomic)
+            for k, v in voter_balances.items():
+                if v > max_votes:
+                    adjusted_voters[k] = max_votes
+                else:
+                    adjusted_voters[k] = v
+        
+        return adjusted_voters
     
     
     def process_voter_min(self, voter_balances):
