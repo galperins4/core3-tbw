@@ -85,14 +85,13 @@ if __name__ == '__main__':
         print("\n voter_balances post anti_dulite")
         for k, v in voter_balances.items():
             print(k,v)
-        quit()
         
         # allocate block rewards
         allocate.block_allocations(unprocessed, voter_balances)
         # get block count
         block_count = block.block_counter()
         print(f"\nCurrent block count : {block_count}")
-        time.sleep(20)
+        time.sleep(10)
     
     
     quit()
