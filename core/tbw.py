@@ -75,7 +75,7 @@ if __name__ == '__main__':
         print("\n voter_balances post voter cap")
         for k, v in voter_balances.items():
             print(k,v)
-        quit()
+ 
         voter_balances = voter_options.process_voter_min(voter_balances)
         print("\n voter_balances post voter min")
         for k, v in voter_balances.items():
