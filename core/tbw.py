@@ -22,7 +22,7 @@ def interval_check(block_count):
         sql.close_connection()
         
         unpaid = {i[0]:i[2] for i in balances}
-        print(sum(unpaid.values())
+        print(sum(unpaid.values()))
         quit()
 
 
