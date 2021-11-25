@@ -62,7 +62,7 @@ if __name__ == '__main__':
         # run voters through various vote_options
         if config.whitelist == 'Y':
             pass
-        if config.whitelist =='N' AND config.blacklist =='Y':
+        if config.whitelist == 'N' and config.blacklist =='Y':
             pass
         
         
