@@ -70,7 +70,6 @@ if __name__ == '__main__':
         print("\n voter_balances post whitelist or blacklist")
         for k, v in voter_balances.items():
             print(k,v)
-        quit()
             
         voter_balances = voter_options.process_voter_cap(voter_balances)
         print("\n voter_balances post voter cap")
