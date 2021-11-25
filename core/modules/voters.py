@@ -64,7 +64,7 @@ class Voters():
         
         self.sql.open_connection()
         dilute = self.sql.voters().fetchall()
-        self.sql_close_connection()
+        self.sql.close_connection()
         
         print(dilute)
         unpaid = {i[0]:i[2] for i in dilute}
