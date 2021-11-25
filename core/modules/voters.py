@@ -60,4 +60,8 @@ class Voters():
     
     
     def process_anti_dilution(self, voter_balances):
-        pass
+        self.sql.open_connection()
+        dilute = self.sql.voters().fetchall()
+        print(dilute)
+        quit()
+        self.sql_close_connection()
