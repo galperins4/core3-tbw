@@ -130,10 +130,14 @@ if __name__ == '__main__':
         print(f"\nCurrent block count : {block_count}")
         
         # check interval for payout
-        result, unpaid_voters, unpaid_delegate = interval_check(block_count)
+        stage, unpaid_voters, unpaid_delegate = interval_check(block_count)
         print(result)
         print(unpaid_voters)
         print(unpaid_delegate)
+        
+        # check if true to stage payments
+        if stage:
+            s = Stage(config, utility, unpaid_voters, unpaid_delegate)
         
         
         # check result and stage payments (if necessary)
