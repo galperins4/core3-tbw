@@ -18,11 +18,14 @@ def interval_check(block_count):
     if block_count % config.interval == 0:
         print("Payout interval reached")
         sql.open_connection()
-        balances = sql.voters().fetchall()
+        voter_balances = sql.voters().fetchall()
+        delegate_balances = sql.rewards().fetchall()
         sql.close_connection()
         
-        unpaid = {i[0]:i[2] for i in balances}
-        print(sum(unpaid.values()))
+        voter_unpaid = {i[0]:i[2] for i in voter_balances}
+        delegate_unpaid = {i[0]:i[1] for i in delegate_balances}
+        print(sum(voter_unpaid.values()))
+        print(sum(delegate_unpaid.values()))
         quit()
 
 
