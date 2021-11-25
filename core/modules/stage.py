@@ -20,7 +20,7 @@ class Stage:
         delegate_tx = len([v for v in self.delegate.values() if v >= 0])
         voter_tx = len([v for v in self.voters.values() if v > 0])
         total_tx = voter_tx + delegate_tx
-        print(total_tx)
+        print("Total Transactions: ", total_tx)
         
         # check if multipayments
         if self.config.multi == "Y":
