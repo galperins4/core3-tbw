@@ -7,6 +7,7 @@
 class Dynamic:
     def __init__(self, utility, config):
         self.client = utility.get_client()
+        self.config = config
         
         #self.username = u
         #self.msg = msg
