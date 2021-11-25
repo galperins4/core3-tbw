@@ -137,6 +137,7 @@ if __name__ == '__main__':
         
         # check if true to stage payments
         if stage:
+            print("\nStaging payments")
             s = Stage(config, utility, unpaid_voters, unpaid_delegate)
         
         
