@@ -51,6 +51,7 @@ class Stage:
         
     
     def stage_delegate_payments(self, f):
+        paid_delegate = {}
         count = 1
         for k, v in self.delegate.items():
             # this is the reserve account
@@ -64,6 +65,8 @@ class Stage:
             else:
                 pay_amount = v
             count += 1
+            paid_delegate[k] = pay_amount
+        print(paid_delegate)
             
         quit()
     
