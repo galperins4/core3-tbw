@@ -25,6 +25,7 @@ class Stage:
         # check if multipayments
         if self.config.multi == "Y":
             multi_limit = self.dynamic.get_multipay_limit()
+            print("Multipay Limit")
             if total_tx % multi_limit == 0:
                 print("Option A")
                 transactions = round(total_tx / multi_limit)
