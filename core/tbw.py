@@ -8,6 +8,7 @@ from modules.payments import Payments
 from modules.stage import Stage
 from modules.voters import Voters
 from utility.database import Database
+from utility.dynamic import Dynamic
 from utility.sql import Sql
 from utility.utility import Utility
 import sys
