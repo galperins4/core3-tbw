@@ -1,20 +1,7 @@
-#import os.path
-#import json
-#from .util import Util
-#atomic = 100000000
-
-
 class Dynamic:
     def __init__(self, utility, config):
         self.client = utility.get_client()
         self.config = config
-        
-        #self.username = u
-        #self.msg = msg
-        #self.network = network
-        #self.port = port
-        #self.u = Util(self.network)
-        #self.client = self.u.get_client(self.port)
         
     
     def get_dynamic_fee(self):        
