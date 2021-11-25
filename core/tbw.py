@@ -45,7 +45,6 @@ if __name__ == '__main__':
     print("Start Script")
     # get configuration
     config = Configure()
-    print(config.multi_fee)
     
     # load network
     network = Network(config.network)
@@ -54,9 +53,8 @@ if __name__ == '__main__':
     utility = Utility(network)
     dynamic = Dynamic(utility, config)
     
-    print(dynamic.get_dynamic_fee())
-    print(dynamic.get_multipay_limit())
-    quit()
+    # print(dynamic.get_dynamic_fee())
+    # print(dynamic.get_multipay_limit())
     
     # connect to core and tbw script database
     database = Database(config, network)
