@@ -6,7 +6,12 @@ class Voters():
         self.sql = sql
 
     def process_whitelist(self, voter_balances):
-        pass
+        adjusted_voters = {}
+        for k, v in voter_balances.items():
+            if k in self.config.whitelist_address:
+                adjusted_voters[k] = v
+        
+        return adjusted_voters
 
     
     def process_blacklist(self, voter_balances):
