@@ -6,6 +6,7 @@ class Allocate:
         self.database = database
         self.config = config
         self.sql = sql
+        self.atomic = self.config.atomic
 
         
     def get_vote_transactions(self, timestamp):
@@ -59,10 +60,10 @@ class Allocate:
             vote_balance[i[0]] = balance
         self.database.close_connection()
 
-        # print("Block Reward: ", block[2])
-        # print("Block Fees: ", block[3])
-        # print("Total Block Allocation: ", block[2]+block[3])
-        # print("Total Voter Balances: ", sum(vote_balance.values()), "\n")
+        # print("Block Reward: ", block[2] / self.atomic)
+        # print("Block Fees: ", block[3] / self.atomic)
+        # print("Total Block Allocation: ", (block[2]+block[3]) / self.atomic)
+        # print("Total Voter Balances: ", (sum(vote_balance.values()) / self.atomic), "\n")
         return vote_balance
 
         
@@ -126,11 +127,11 @@ class Allocate:
 
         print(f"""\nProcessed Block: {block[4]}\n
         Voters processed: {voter_check}
-        Total Approval: {total_delegate_vote_balance}
-        Voters Rewards: {rewards_check}
-        Delegate Reward: {delegate_check}
-        Voter + Delegate Rewards: {rewards_check + delegate_check}
-        Total Block Rewards: {total_reward}""")
+        Total Approval: {total_delegate_vote_balance / self.atomic}
+        Voters Rewards: {rewards_check / self.atomic}
+        Delegate Reward: {delegate_check / self.atomic}
+        Voter + Delegate Rewards: {(rewards_check + delegate_check / self.atomic)}
+        Total Block Rewards: {total_reward / self.atomic}""")
         # store delegate/voter rewards and mark block as processed mark block as processed
         self.sql.open_connection()
         self.sql.update_delegate_balance(delegate_unpaid)
