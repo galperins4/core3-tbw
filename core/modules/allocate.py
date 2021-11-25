@@ -46,10 +46,6 @@ class Allocate:
     def get_voter_balance(self, block, voter_roll):
         vote_balance = {}
         block_timestamp = block[1]
-    
-        # print("Current Voters: ", len(voter_roll))
-        # print("As of block id: ", block[0])
-        # print("Delegate key: ", self.config.delegate)
         
         self.database.open_connection()
         for i in voter_roll:
@@ -60,14 +56,11 @@ class Allocate:
             vote_balance[i[0]] = balance
         self.database.close_connection()
 
-        # print("Block Reward: ", block[2] / self.atomic)
-        # print("Block Fees: ", block[3] / self.atomic)
-        # print("Total Block Allocation: ", (block[2]+block[3]) / self.atomic)
-        # print("Total Voter Balances: ", (sum(vote_balance.values()) / self.atomic), "\n")
         return vote_balance
 
         
     def block_allocations(self, block, voters):
+        print("\n")
         rewards_check = 0
         voter_check = 0
         delegate_check = 0
@@ -95,7 +88,6 @@ class Allocate:
                 reward = int(rate * block_reward)
                 delegate_check += reward
                 delegate_unpaid[self.config.delegate_fee_address[count]] = reward
-            # print("Delegate Account {} reward: {}".format(self.config.delegate_fee_address[count], (reward / self.atomic)))
         
         # process voter reward
         config_voter_share = self.config.voter_share
