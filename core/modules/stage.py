@@ -51,8 +51,20 @@ class Stage:
         
     
     def stage_delegate_payments(self, f):
+        count = 1
         for k, v in self.delegate.items():
-            print(k, v)
+            # this is the reserve account
+            if count == 1:
+                if (v - f) <= 0:
+                    print("Not enough to cover transaction fees in reserve")
+                    print("Update interval and restart")
+                    quit()
+                else:
+                    pay_amount = v - f   
+            else:
+                pay_amount = v
+            count += 1
+            
         quit()
     
     
