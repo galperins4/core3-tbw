@@ -81,20 +81,6 @@ class Allocate:
         block_reward = block[2]
         fee_reward = block[3]
         total_reward = block_reward+fee_reward
-
-        # process delegate reward
-        for count, i in enumerate(self.config.delegate_fee):
-            # check if count is 0 for reserve account
-            if count == 0:
-                rate = int(i) / 100
-                reward = int((rate * block_reward) + fee_reward)
-                delegate_check += reward
-                delegate_unpaid[self.config.delegate_fee_address[count]] = reward
-            else:
-                rate = int(i) / 100
-                reward = int(rate * block_reward)
-                delegate_check += reward
-                delegate_unpaid[self.config.delegate_fee_address[count]] = reward
         
         # process voter reward
         config_voter_share = self.config.voter_share
@@ -118,12 +104,30 @@ class Allocate:
                 remainder = int(share_weight * standard_voter_share) - single_voter_reward
                 delegate_check += remainder
                 delegate_unpaid[self.config.delegate_fee_address[0]] += remainder
-                          
+           
             voter_check += 1
             rewards_check += single_voter_reward
             print("Voter {} with balance of {} reward: {}".format(k, (v / self.atomic), (single_voter_reward / self.atomic)))
-            voter_unpaid[k] = single_voter_reward
+            voter_unpaid[k] = single_voter_reward  
         self.sql.close_connection()
+        
+        # process delegate reward
+        for count, i in enumerate(self.config.delegate_fee):
+            # check if count is 0 for reserve account
+            if count == 0:
+                rate = int(i) / 100
+                reward = int((rate * block_reward) + fee_reward)
+                delegate_check += reward
+                delegate_unpaid[self.config.delegate_fee_address[count]] += reward
+            else:
+                rate = int(i) / 100
+                reward = int(rate * block_reward)
+                delegate_check += reward
+                delegate_unpaid[self.config.delegate_fee_address[count]] += reward
+            print("Delegate Account {} reward: {}".format(self.config.delegate_fee_address[count], (reward / self.atomic))
+                          
+            
+        
 
         print(f"""\nProcessed Block: {block[4]}\n
         Voters processed: {voter_check}
