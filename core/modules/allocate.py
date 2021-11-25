@@ -124,11 +124,8 @@ class Allocate:
                 reward = int(rate * block_reward)
                 delegate_check += reward
                 delegate_unpaid[self.config.delegate_fee_address[count]] += reward
-            print("Delegate Account {} reward: {}".format(self.config.delegate_fee_address[count], (reward / self.atomic))
+            print("Delegate Account {} reward: {}".format(self.config.delegate_fee_address[count], (reward / self.atomic)))
                           
-            
-        
-
         print(f"""\nProcessed Block: {block[4]}\n
         Voters processed: {voter_check}
         Total Approval: {total_delegate_vote_balance / self.atomic}
