@@ -48,7 +48,7 @@ if __name__ == '__main__':
     
     # allocate block rewards
     allocate = Allocate(database, config, sql)
-    voter_options = Voters(config)
+    voter_options = Voters(config, sql)
     
     for unprocessed in unprocessed_blocks:
         print(unprocessed)
@@ -64,14 +64,17 @@ if __name__ == '__main__':
         quit()
         # run voters through various vote_options
         if config.whitelist == 'Y':
-            pass
+            voter_balances = voter_options.process_whitelist(voter_balances)
         if config.whitelist == 'N' and config.blacklist =='Y':
-            pass
-        
-        
+            voter_balances = voter_options.process_blacklist(voter_balances)
+        quit()
             
-        
-        
+        voter_balances = voter_options.process_voter_cap(voter_balances)
+        quit()
+        voter_balances = voter_options.process_voter_min(voter_balances)
+        quit()
+        voter_balances = voter_options.process_anti_dilution(voter_balances)
+        quit()
         
         # allocate block rewards
         allocate.block_allocations(unprocessed, voter_balances)
