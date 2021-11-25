@@ -70,7 +70,7 @@ class Stage:
         
         self.sql.open_connection()
         self.sql.update_delegate_paid_balance(paid_delegate)
-        self.sql.stage_payment(paid_delegate)
+        self.sql.stage_payment(paid_delegate, msg = "Reward")
         self.sql.close_connection()
     
     
