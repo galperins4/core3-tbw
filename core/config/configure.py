@@ -40,6 +40,7 @@ class Configure:
     def payment(self, c):
         self.interval = int(c.get('payment', 'interval'))
         self.multi = c.get('payment', 'multi')
+        self.multi_fee = int(c.get('payment', 'multi_fee') * self.atomic)
         self.passphrase = c.get('payment', 'passphrase')
         self.secondphrase = c.get('payment', 'secondphrase')
         self.delegate_fee = c.get('payment', 'delegate_fee').split(',')
