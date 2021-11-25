@@ -70,6 +70,6 @@ class Voters():
         unpaid = {i[0]:i[2] for i in dilute}
         print(unpaid)
         for k, v in voter_balances.items():
-            adjusted_voters[k] += (v+ unpaid[k])
+            adjusted_voters[k] = (v + unpaid[k])
         
         return adjusted_voters
