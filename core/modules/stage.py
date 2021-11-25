@@ -25,7 +25,7 @@ class Stage:
         # check if multipayments
         if self.config.multi == "Y":
             multi_limit = self.dynamic.get_multipay_limit()
-            print("Multipay Limit")
+            print("Multipay Limit", multi_limit)
             if total_tx < multi_limit:
                 # only requires a single  multipayment tx
                 print("Option A")
