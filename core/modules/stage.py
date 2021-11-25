@@ -32,7 +32,7 @@ class Stage:
                 multi_transactions = round(total_tx / multi_limit)
                 transaction_fees = int(((multi_transactions * (self.config.multi_fee * self.config.atomic)) + self.dynamic.get_dynamic_fee()))
             else:
-                transactions = round(tx_count // multi_limit) + 1
+                transactions = round(total_tx // multi_limit) + 1
                 transaction_fees = int(transactions * (self.config.multi_fee * self.config.atomic))
         else:
             transaction_fees = int(total_tx * self.dynamic.get_dynamic_fee())
