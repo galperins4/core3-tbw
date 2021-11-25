@@ -126,7 +126,7 @@ class Allocate:
             voter_unpaid[k] = single_voter_reward
         
         for k , v in delegate_unpaid.items():
-            print("Delegate {} account reward: {}".format(k, (v / self.atomic))
+            print("Delegate {} account reward: {}".format(k, (v / self.atomic)))
         self.sql.close_connection()
         quit()
         
