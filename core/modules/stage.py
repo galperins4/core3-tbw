@@ -8,7 +8,11 @@ class Stage:
         
         
     def get_transaction_fees(self):
-        pass
+        delegate_tx = len([v for v in self.delegate.values() if v >= 0])
+        voter_tx = len([v for v in self.voters.values() if v > 0])
+        total_tx = voter_tx + delegate_tx
+        print(total_tx)
+        quit()
     
     
     stage_delegate_payments(self):
