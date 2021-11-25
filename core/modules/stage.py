@@ -7,7 +7,9 @@ class Stage:
         self.delegate = delegate
         
         # get transactions
-        self.get_transaction_fees()
+        fees = self.get_transaction_fees()
+        print(fees)
+        quit()
         
         # stage delegate payments
         
