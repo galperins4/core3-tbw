@@ -14,7 +14,15 @@ import sys
 import time
 
 
+def interval_check(block_count):
+    if block_count % config.interval == 0:
+        # 
+
+
 if __name__ == '__main__':
+    # set sql / database / config as global variables
+    global config, sql, database
+    
     print("Start Script")
     # get configuration
     config = Configure()
