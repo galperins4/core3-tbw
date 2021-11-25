@@ -47,6 +47,11 @@ if __name__ == '__main__':
     # check if initialized
     Initialize(config, database, sql)
     
+    # MAIN FUNCTION LOOP SHOULD START HERE
+    
+    # check for staged payments to process
+    # TO DO
+    
     # get blocks
     block = Blocks(config, database, sql)
     
