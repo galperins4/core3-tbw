@@ -45,6 +45,7 @@ if __name__ == '__main__':
     print("Start Script")
     # get configuration
     config = Configure()
+    print(config.multi_fee)
     
     # load network
     network = Network(config.network)
