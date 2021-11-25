@@ -29,7 +29,7 @@ class Stage:
             if total_tx < multi_limit:
                 # only requires a single  multipayment tx
                 print("Option A")
-                transaction_fees = int(self.config.multi_fee * self.config.atomic))
+                transaction_fees = int(self.config.multi_fee * self.config.atomic)
             else:
                 # number of transactions fit exactly in x number of multipays
                 if total_tx % multi_limit == 0:
