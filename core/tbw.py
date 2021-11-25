@@ -136,7 +136,7 @@ if __name__ == '__main__':
         print(unpaid_delegate)
         
         # check if true to stage payments
-        if stage:
+        if stage and sum(unpaid_voters.values()) > 0:
             print("\nStaging payments")
             s = Stage(config, utility, sql, unpaid_voters, unpaid_delegate)
         
