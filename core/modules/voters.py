@@ -42,7 +42,21 @@ class Voters():
     
     
     def process_voter_min(self, voter_balances):
-        pass
+        adjusted_voters = {}
+        
+        # no minimum
+        if self.config.voter_min == 0:
+            adjusted_voters = voter_balances
+        else:
+            # get max cap
+            min_votes = int(self.config.voter_min * self.config.atomic)
+            for k, v in voter_balances.items():
+                if v > min_votes:
+                    adjusted_voters[k] = v
+                else:
+                    adjusted_voters[k] = 0
+        
+        return adjusted_voters
     
     
     def process_anti_dilution(self, voter_balances):
