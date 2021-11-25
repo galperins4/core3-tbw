@@ -26,18 +26,26 @@ class Stage:
         if self.config.multi == "Y":
             multi_limit = self.dynamic.get_multipay_limit()
             print("Multipay Limit")
-            if total_tx % multi_limit == 0:
+            if total_tx < multi_limit:
+                # only requires a single  multipayment tx
                 print("Option A")
-                transactions = round(total_tx / multi_limit)
-                transaction_fees = int(transactions * (self.config.multi_fee * self.config.atomic))
-            elif total_tx % multi_limit == 1:
-                print("Option B")
-                multi_transactions = round(total_tx / multi_limit)
-                transaction_fees = int(((multi_transactions * (self.config.multi_fee * self.config.atomic)) + self.dynamic.get_dynamic_fee()))
+                transaction_fees = int(self.config.multi_fee * self.config.atomic))
             else:
-                print("Option C")
-                transactions = round(total_tx // multi_limit) + 1
-                transaction_fees = int(transactions * (self.config.multi_fee * self.config.atomic))
+                # number of transactions fit exactly in x number of multipays
+                if total_tx % multi_limit == 0:
+                    print("Option B")
+                    transactions = round(total_tx / multi_limit)
+                    transaction_fees = int(transactions * (self.config.multi_fee * self.config.atomic))
+                # number of transactions is 1 greater than limit which splits last payment into regular transaction
+                elif total_tx % multi_limit == 1:
+                    print("Option C")
+                    multi_transactions = round(total_tx / multi_limit)
+                    transaction_fees = int(((multi_transactions * (self.config.multi_fee * self.config.atomic)) + self.dynamic.get_dynamic_fee()))
+                # number of transactions falls into n+1 multipayment
+                else:
+                    print("Option D")
+                    transactions = round(total_tx // multi_limit) + 1
+                    transaction_fees = int(transactions * (self.config.multi_fee * self.config.atomic))
         else:
             transaction_fees = int(total_tx * self.dynamic.get_dynamic_fee())
         return transaction_fees
