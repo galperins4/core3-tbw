@@ -156,7 +156,7 @@ class Sql:
         return self.cursor.execute("SELECT * FROM blocks WHERE processed_at IS NULL ORDER BY height")
 
 
-    def staged_payment(self, lim=40, multi='N'):
+    def get_staged_payment(self, lim=40, multi='N'):
         if multi is 'N':
             return self.cursor.execute(f"SELECT rowid, * FROM staging WHERE processed_at IS NULL LIMIT {lim}")
         else:
