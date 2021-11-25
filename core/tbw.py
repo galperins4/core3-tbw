@@ -40,7 +40,7 @@ def interval_check(block_count):
 
 if __name__ == '__main__':
     # set sql / database / config as global variables
-    global config, sql, database
+    global config, sql, database, dynamic
     
     print("Start Script")
     # get configuration
@@ -49,8 +49,13 @@ if __name__ == '__main__':
     # load network
     network = Network(config.network)
     
-    # load utility
+    # load utility and dynamic
     utility = Utility(network)
+    dynamic = Dynamic(utility, config)
+    
+    print(dynamic.get_dynamic_fee())
+    print(dynamic.get_multipay_limit())
+    quit()
     
     # connect to core and tbw script database
     database = Database(config, network)
