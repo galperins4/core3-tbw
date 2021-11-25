@@ -15,7 +15,6 @@ class Initialize:
         else:
             print("Database detected - no initialization needed")
 
-        # self.update_voter_records()
         self.update_delegate_records()
     
     def initialize(self):
@@ -41,14 +40,6 @@ class Initialize:
         print("Total blocks marked as processed - {}".format(len(processed_blocks)))
         print("Finished setting up database")
 
-    '''
-    def update_voter_records(self):
-        self.sql.open_connection()
-        last_block_timestamp = self.sql.last_block().fetchall()[0][0]
-        print("Quitting")
-        quit()
-        self.sql.close_connection()
-    '''
     
     def update_delegate_records(self):
         self.sql.open_connection()
