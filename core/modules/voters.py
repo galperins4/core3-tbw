@@ -66,9 +66,8 @@ class Voters():
         dilute = self.sql.voters().fetchall()
         self.sql.close_connection()
         
-        print(dilute)
         unpaid = {i[0]:i[2] for i in dilute}
-        print(unpaid)
+        
         for k, v in voter_balances.items():
             adjusted_voters[k] = (v + unpaid[k])
         
