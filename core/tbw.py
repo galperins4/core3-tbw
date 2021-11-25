@@ -26,7 +26,7 @@ def interval_check(block_count):
         delegate_unpaid = {i[0]:i[1] for i in delegate_balances}
         
         # check if there is a positive unpaid balance
-        if sum(voter_unpaid.values()) > 0
+        if sum(voter_unpaid.values()) > 0:
             stage = True
         else:
             stage = False
