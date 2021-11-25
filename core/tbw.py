@@ -59,8 +59,8 @@ if __name__ == '__main__':
         voter_roll = allocate.create_voter_roll(vote, unvote)
         # get voter_balances
         voter_balances = allocate.get_voter_balance(unprocessed, voter_roll)
-        for i in voter_balances:
-            print(i)
+        for k, v in voter_balances.items():
+            print(k,v)
         quit()
         # run voters through various vote_options
         if config.whitelist == 'Y':
