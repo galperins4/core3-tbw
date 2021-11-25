@@ -6,6 +6,13 @@ class Stage:
         self.voters = voters
         self.delegate = delegate
         
+        # get transactions
+        self.get_transaction_fees()
+        
+        # stage delegate payments
+        
+        # stage voter paymnets
+        
         
     def get_transaction_fees(self):
         delegate_tx = len([v for v in self.delegate.values() if v >= 0])
@@ -15,9 +22,9 @@ class Stage:
         quit()
     
     
-    stage_delegate_payments(self):
+    def stage_delegate_payments(self):
         pass
     
     
-    stage_voter_payments(self):
+    def stage_voter_payments(self):
         pass
