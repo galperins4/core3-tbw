@@ -8,7 +8,19 @@ class Payments:
         self.dynamic = dynamic
         self.utility = utility
 
-        
+    
+    def non_accept_check(self, c, a):
+        removal_check = []
+        for k, v in c.items():
+            if k not in a:
+                removal_check.append(v)
+                self.sql.open_connection()
+                self.sql.delete_transaction_record(k)
+                self.sql.close_connection()
+    
+        return removal_check
+    
+    
     def get_nonce(self):
         client = self.utility.get_client()
         n = client.wallets.get(self.config.delegate)
