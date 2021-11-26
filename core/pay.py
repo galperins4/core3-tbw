@@ -15,9 +15,11 @@ def process_multi_payments(payment, unprocessed):
     signed_tx = []
 
     # process unpaid transactions
-    unique_rowid = [y[0] for y in unprocessed_pay]
+    unique_rowid = [y[0] for y in unprocessed]
     check = {}
-    temp_nonce = get_nonce()+1
+    temp_nonce = payment.get_nonce()+1
+    print(temp_nonce)
+    quit()
         
     for i in unprocessed_pay:
         transaction_fee = dynamic.get_dynamic_fee()
