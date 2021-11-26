@@ -16,7 +16,7 @@ def chunks(l, n):
         yield l[i:i+n]
 
 
-def process_multi_payments(payment, unprocessed, dynamic, config, exchange):
+def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql):
     print("Multi Payment")
     print(unprocessed)
     signed_tx = []
@@ -25,7 +25,7 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange):
     multi_limit = dynamic.get_multipay_limit()
    
     if len(unprocessed) == 1:
-        process_standard_payments(payments, unprocessed, dynamic, config, exchange)
+        process_standard_payments(payments, unprocessed, dynamic, config, exchange, sql)
     else:
         temp_multi_chunk = list(chunks(unprocessed, multi_limit))
         # remove any items over request_tx_limit
@@ -52,16 +52,16 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange):
                 sql.close_connection()
             else:
                 #delete all transaction records with relevant multipay txid
-                self.sql.open_connection()
-                self.sql.delete_transaction_record(k)
-                self.sql.close_connection()
+                sql.open_connection()
+                sql.delete_transaction_record(k)
+                sql.close_connection()
                 # snekdb.deleteTransactionRecord(k) 
 
         # payment run complete
         print('Payment Run Completed!')
     
 
-def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
+def process_standard_payments(payment, unprocessed, dynamic, config, exchange, sql):
     print("Standard Payment")
     signed_tx = []
     check = {}
@@ -105,7 +105,7 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
 
 if __name__ == '__main__':
     # set sql / config as global variables
-    global config, sql, dynamic
+    # global config, sql, dynamic
     
     print("Start Script")
     # get configuration
@@ -137,11 +137,11 @@ if __name__ == '__main__':
         if config.multi == "Y":
             unprocessed = sql.get_staged_payment(multi=config.multi).fetchall()
             sql.close_connection()
-            process_multi_payments(payments, unprocessed, dynamic, config, exchange)
+            process_multi_payments(payments, unprocessed, dynamic, config, exchange, sql)
         else:
             unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit()).fetchall()
             sql.close_connection()
-            process_standard_payments(payments, unprocessed, dynamic, config, exchange)
+            process_standard_payments(payments, unprocessed, dynamic, config, exchange, sql)
  
     print("End Script - Looping")
     time.sleep(600)
