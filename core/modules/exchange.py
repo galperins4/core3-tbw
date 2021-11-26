@@ -8,8 +8,8 @@ from lowercase_booleans import false
 class Exchange:
     def __init__(self, database, config):
         self.config = config
-        self.database = database
-        self.atomic = 100000000
+        self.sql = sql
+        #self.atomic = 100000000
 
         
     def truncate(self,f, n):
@@ -18,9 +18,9 @@ class Exchange:
 
     def exchange_select(self, index, address, amount, provider):
         if provider == "ChangeNow":
-            pay = self.process_changenow_exchange(index,address,amount)
+            pay = self.process_changenow_exchange(index, address, amount)
         elif provider == "SimpleSwap":
-            pay = self.process_simpleswap_exchange(index,address,amount)
+            pay = self.process_simpleswap_exchange(index, address, amount)
         else:
             pay = address
         time.sleep(5)
@@ -29,7 +29,7 @@ class Exchange:
     def process_simpleswap_exchange(self, index, address, amount):
         fixed = false
         print("Processing Exchange")
-        amount = self.truncate((amount / self.atomic),4)
+        amount = self.truncate((amount / self.config.atomic),4)
         print("Exchange Amount:", amount)
         url = 'https://t1mi6dwix2.execute-api.us-west-2.amazonaws.com/Test/exchange'
         data_in = {"fixed": fixed,
@@ -47,7 +47,9 @@ class Exchange:
             if r.json()['status'] == "success":
                 payin_address = r.json()['payinAddress']
                 exchangeid = r.json()['exchangeId']
-                self.database.storeExchange(address, payin_address, self.config.address_to[index], amount, exchangeid)
+                self.sql.open_connection()
+                self.sql.store_exchange(address, payin_address, self.config.address_to[index], amount, exchangeid)
+                self.sql.close_connection()
                 print("Exchange Success") 
             else:
                 payin_address = address
@@ -62,7 +64,7 @@ class Exchange:
     
     def process_changenow_exchange(self, index, address, amount):
         print("Processing Exchange")
-        amount = self.truncate((amount / self.atomic),4)
+        amount = self.truncate((amount / self.config.atomic),4)
         print("Exchange Amount:", amount)
         url = 'https://mkcnus24ib.execute-api.us-west-2.amazonaws.com/Test/exchange'
         data_in = {"fromCurrency": self.config.convert_from[index],
@@ -76,7 +78,9 @@ class Exchange:
             if r.json()['status'] == "success":
                 payin_address = r.json()['payinAddress']
                 exchangeid = r.json()['exchangeId']
-                self.database.storeExchange(address, payin_address, self.config.address_to[index], amount, exchangeid)
+                self.sql.open_connection()
+                self.sql.store_exchange(address, payin_address, self.config.address_to[index], amount, exchangeid)
+                self.sql.close_connection()
                 print("Exchange Success") 
             else:
                 payin_address = address
