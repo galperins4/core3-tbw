@@ -137,7 +137,7 @@ if __name__ == '__main__':
         if config.multi == "Y":
             unprocessed = sql.get_staged_payment(multi=config.multi).fetchall()
             sql.close_connection()
-            process_multi_payments(payment, unprocessed, dynamic, config, exchange)
+            process_multi_payments(payments, unprocessed, dynamic, config, exchange)
         else:
             unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit()).fetchall()
             sql.close_connection()
