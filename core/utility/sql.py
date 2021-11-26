@@ -157,7 +157,7 @@ class Sql:
     
     
     def unprocessed_staged_payments(self):
-        return self.cursor.execute("SELECT COUNT(*) FROM staging WHERE processed_at is NULL")
+        return self.cursor.execute("SELECT COUNT(*) FROM staging WHERE processed_at is NULL").fetchall()
 
 
     def get_staged_payment(self, lim=40, multi='N'):
