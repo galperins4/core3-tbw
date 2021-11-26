@@ -54,13 +54,13 @@ class Payments:
             # exchange processing
             if i[1] in self.config.convert_address and self.config.exchange == "Y":
                 index = self.config.convert_address.index(i[1])
-                pay_in = exchange.exchange_select(index, i[1], i[2],data.provider[index])
+                pay_in = self.exchange.exchange_select(index, i[1], i[2], self.config.provider[index])
                 transaction.add_payment(i[2], pay_in)
             else:
                 transaction.add_payment(i[2], i[1])
 
-        transaction.schnorr_sign(data.passphrase)
-        sp = data.secondphrase
+        transaction.schnorr_sign(self.config.passphrase)
+        sp = self.config.secondphrase
         if sp == 'None':
             sp = None
         if sp is not None:
