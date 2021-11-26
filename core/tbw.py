@@ -136,8 +136,8 @@ if __name__ == '__main__':
             stage, unpaid_voters, unpaid_delegate = interval_check(block_count)
         
             # check if true to stage payments
-            if stage and sum(unpaid_voters.values()) > 0:
-                print("\nStaging payments")
+            if stage == True and sum(unpaid_voters.values()) > 0:
+                print("Staging payments")
                 s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
         
             # pause betweeen blocks
