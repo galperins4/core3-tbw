@@ -218,8 +218,8 @@ class Sql:
 
     def update_delegate_paid_balance (self, paid):
         for k,v in paid.items():
-            self.cursor.execute(f"UPDATE delegate_rewards SET paid_bal = paid_bal + {v} WHERE address = '{k}'")
-            self.cursor.execute(f"UPDATE delegate_rewards SET unpaid_bal = unpaid_bal - {v} WHERE address = '{k}'")
+            self.cursor.execute(f"UPDATE delegate_rewards SET paid_bal = paid_bal + unpaid_bal WHERE address = '{k}'")
+            self.cursor.execute(f"UPDATE delegate_rewards SET unpaid_bal = unpaid_bal - unpaid_bal WHERE address = '{k}'")
             self.commit()
 
     
