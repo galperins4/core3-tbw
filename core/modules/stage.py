@@ -77,6 +77,7 @@ class Stage:
     
     
     def stage_voter_payments(self):
+        print(self.voters)
         self.sql.open_connection()
         self.sql.update_voter_paid_balance(self.voters)
         self.sql.stage_payment(self.voters, msg = self.config.message)
