@@ -16,12 +16,14 @@ from utility.utility import Utility
 import time
 
 
-def process_multi_payments(payment):
+def process_multi_payments(payment, unprocessed):
     print("Multi Payment")
+    print(unprocessed)
 
 
-def process_standard_payments(payment):
+def process_standard_payments(payment, unprocessed):
      print("Standard Payment")
+     print(unprocessed)
 
 
 if __name__ == '__main__':
@@ -54,10 +56,14 @@ if __name__ == '__main__':
         print("Staged Payments Detected.......Begin Payment Processing")
         payments = Payments(config, sql, dynamic, utility)
         
+        sql.open_connection()
         if config.multi == "Y":
-            process_multi_payments(payments)
+            unprocessed = sql.get_staged_payment(multi=data.multi).fetchall()
+            process_multi_payments(payments, unprocessed)
         else:
-            process_standard_payments(payments)
+            unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit().fetchall()
+            process_standard_payments(payments, unprocessed)
+        sql.close_connection()
  
     print("End Script - Looping")
     time.sleep(600)
