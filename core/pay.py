@@ -88,11 +88,12 @@ if __name__ == '__main__':
         sql.open_connection()
         if config.multi == "Y":
             unprocessed = sql.get_staged_payment(multi=config.multi).fetchall()
+            sql.close_connection()
             process_multi_payments(payments, unprocessed)
         else:
             unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit()).fetchall()
+            sql.close_connection()
             process_standard_payments(payments, unprocessed, dynamic, config, exchange)
-        sql.close_connection()
  
     print("End Script - Looping")
     time.sleep(600)
