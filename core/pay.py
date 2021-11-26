@@ -7,6 +7,8 @@ from network.network import Network
 # from modules.stage import Stage
 # from modules.voters import Voters
 # from utility.database import Database
+#### BUILD EXCHANGE MODULE
+from modules.exchange import Exchange
 from modules.payments import Payments
 from utility.dynamic import Dynamic
 from utility.sql import Sql
