@@ -1,13 +1,6 @@
 #!/usr/bin/env python
 from config.configure import Configure
 from network.network import Network
-# from modules.allocate import Allocate
-# from modules.blocks import Blocks
-# from modules.initialize import Initialize
-# from modules.stage import Stage
-# from modules.voters import Voters
-# from utility.database import Database
-#### BUILD EXCHANGE MODULE
 from modules.exchange import Exchange
 from modules.payments import Payments
 from utility.dynamic import Dynamic
