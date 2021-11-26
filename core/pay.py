@@ -13,8 +13,16 @@ from modules.payments import Payments
 from utility.dynamic import Dynamic
 from utility.sql import Sql
 from utility.utility import Utility
-
 import time
+
+
+def process_multi_payments(payment):
+    print("Multi Payment")
+
+
+def process_standard_payments(payment):
+     print("Standard Payment")
+
 
 if __name__ == '__main__':
     # set sql / config as global variables
@@ -35,9 +43,6 @@ if __name__ == '__main__':
     # connect to core and tbw script database
     sql = Sql()
     
-    print(dynamic.get_tx_request_limit())
-    quit()
-    
     # MAIN FUNCTION LOOP SHOULD START HERE
     
     sql.open_connection()
@@ -48,6 +53,11 @@ if __name__ == '__main__':
         # staged payments detected
         print("Staged Payments Detected.......Begin Payment Processing")
         payments = Payments(config, sql, dynamic, utility)
+        
+        if config.multi == "Y":
+            process_multi_payments(payment)
+        else:
+            process_standard_payments(payment)
  
     print("End Script - Looping")
     time.sleep(600)
