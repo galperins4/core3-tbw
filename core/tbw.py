@@ -65,7 +65,11 @@ if __name__ == '__main__':
     sql.open_connection()
     check = sql.unprocessed_staged_payments()
     sql.close_connection()
-    print(check)
+    
+    if check > 0:
+        # staged payments detected
+        print("Staged Payments Detected..... Begin Payment Processing")
+        payments = Payments(config, sql, dynamic, utility)
     quit()
     
     # get blocks
