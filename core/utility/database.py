@@ -33,7 +33,6 @@ class Database:
         try:
             universe = self.cursor.execute(f"""SELECT "sender_public_key", "asset" FROM transactions WHERE 
             "type" = 2""").fetchall()
-            # universe = self.cursor.fetchall()
         except Exception as e:
             print(e)
     
