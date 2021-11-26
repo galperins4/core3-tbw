@@ -25,7 +25,7 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
     temp_nonce = payment.get_nonce()+1
     transaction_fee = dynamic.get_dynamic_fee()
         
-    for i in unprocessed_pay:
+    for i in unprocessed:
         # exchange processing
         if i[1] in config.convert_address and config.exchange == "Y":
             index = config.convert_address.index(i[1])
