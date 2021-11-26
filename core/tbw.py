@@ -131,23 +131,16 @@ if __name__ == '__main__':
         
         # check interval for payout
         stage, unpaid_voters, unpaid_delegate = interval_check(block_count)
-        print(stage)
-        print(unpaid_voters)
-        print(unpaid_delegate)
         
         # check if true to stage payments
         if stage and sum(unpaid_voters.values()) > 0:
             print("\nStaging payments")
             s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
         
-        
-        # check result and stage payments (if necessary)
+        # pause betweeen blocks
         time.sleep(10)
+ 
     
-    
-    quit()
-    # stage payments
-    Stage(config, sql)
     quit()
     # process payment
     Payments(config, sql)
