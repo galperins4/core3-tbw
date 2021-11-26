@@ -41,8 +41,8 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
                      
     print(signed_tx)
     quit()
-    accepted = broadcast(signed_tx)
-    for_removal = non_accept_check(check, accepted)
+    accepted = payment.broadcast_standard(signed_tx)
+    for_removal = payment.non_accept_check(check, accepted)
             
     # remove non-accepted transactions from being marked as completed
     if len(for_removal) > 0:
@@ -50,7 +50,9 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
             print("Removing RowId: ", i)
             unique_rowid.remove(i)
                     
+    sql.open_connection()
     snekdb.processStagedPayment(unique_rowid)
+    sql.close_connection()
 
     # payment run complete
     print('Payment Run Completed!')
