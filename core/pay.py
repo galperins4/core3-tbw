@@ -36,8 +36,8 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
             tx = payment.build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, config.passphrase, config.secondphrase, str(temp_nonce))
         check[tx['id']] = i[0]
         signed_tx.append(tx)
-        temp_nonce+=1
-        time.sleep(0.25)
+        temp_nonce += 1
+        # time.sleep(0.25)
                      
     print(signed_tx)
     quit()
