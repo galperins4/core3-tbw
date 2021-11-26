@@ -63,7 +63,7 @@ if __name__ == '__main__':
     # MAIN FUNCTION LOOP SHOULD START HERE
     # check for staged payments to process
     sql.open_connection()
-    check = unprocessed_staged_payments()
+    check = sql.unprocessed_staged_payments()
     sql.close_connection()
     print(check)
     quit()
