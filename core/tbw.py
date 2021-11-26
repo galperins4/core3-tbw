@@ -4,7 +4,6 @@ from network.network import Network
 from modules.allocate import Allocate
 from modules.blocks import Blocks
 from modules.initialize import Initialize
-from modules.payments import Payments
 from modules.stage import Stage
 from modules.voters import Voters
 from utility.database import Database
@@ -61,7 +60,7 @@ if __name__ == '__main__':
     Initialize(config, database, sql)
     
     # MAIN FUNCTION LOOP SHOULD START HERE
-    # check for staged payments to process
+    '''
     sql.open_connection()
     check = sql.unprocessed_staged_payments()
     sql.close_connection()
@@ -70,8 +69,7 @@ if __name__ == '__main__':
         # staged payments detected
         print("Staged Payments Detected.......Begin Payment Processing")
         payments = Payments(config, sql, dynamic, utility)
-    quit()
-    
+    '''
     # get blocks
     block = Blocks(config, database, sql)
     
