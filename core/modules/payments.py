@@ -7,7 +7,7 @@ class Payments:
         self.sql = sql
         self.dynamic = dynamic
         self.utility = utility
-        self.client - self.utility.get_client()
+        self.client = self.utility.get_client()
 
     
     def non_accept_check(self, c, a):
