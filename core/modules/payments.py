@@ -15,7 +15,7 @@ class Payments:
         return int(n['data']['nonce'])
 
     
-    def build_transfer_transaction(address, amount, vendor, fee, pp, sp, nonce):
+    def build_transfer_transaction(self, address, amount, vendor, fee, pp, sp, nonce):
         # python3 crypto version    
         transaction = Transfer(recipientId=address, amount=amount, vendorField=vendor, fee=fee)
         transaction.set_nonce(int(nonce))
