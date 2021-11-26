@@ -68,7 +68,7 @@ if __name__ == '__main__':
     
     if check > 0:
         # staged payments detected
-        print("Staged Payments Detected..... Begin Payment Processing")
+        print("Staged Payments Detected.......Begin Payment Processing")
         payments = Payments(config, sql, dynamic, utility)
     quit()
     
