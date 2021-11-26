@@ -154,6 +154,10 @@ class Sql:
 
     def unprocessed_blocks(self):
         return self.cursor.execute("SELECT * FROM blocks WHERE processed_at IS NULL ORDER BY height")
+    
+    
+    def unprocessed_staged_payments(self):
+        return self.cursor.execute("SELECT COUNT(*) FROM staging WHERE processed_at is NULL")
 
 
     def get_staged_payment(self, lim=40, multi='N'):
