@@ -30,10 +30,10 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
         if i[1] in config.convert_address and config.exchange == "Y":
             index = config.convert_address.index(i[1])
             pay_in = exchange.exchange_select(index, i[1], i[2], config.provider[index])
-            tx = build_transfer_transaction(pay_in, (i[2]), i[3], transaction_fee, config.passphrase, config.secondphrase, str(temp_nonce))
+            tx = payment.build_transfer_transaction(pay_in, (i[2]), i[3], transaction_fee, config.passphrase, config.secondphrase, str(temp_nonce))
         # standard tx processing
         else:           
-            tx = build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, config.passphrase, config.secondphrase, str(temp_nonce))
+            tx = payment.build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, config.passphrase, config.secondphrase, str(temp_nonce))
         check[tx['id']] = i[0]
         signed_tx.append(tx)
         temp_nonce+=1
