@@ -13,11 +13,11 @@ class Payments:
         removal_check = []
         for k, v in c.items():
             if k not in a:
+                print("Transaction ID Not Accepted")
                 removal_check.append(v)
                 self.sql.open_connection()
                 self.sql.delete_transaction_record(k)
                 self.sql.close_connection()
-    
         return removal_check
     
     
