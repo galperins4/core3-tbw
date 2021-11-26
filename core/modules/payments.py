@@ -30,12 +30,13 @@ class Payments:
         return int(n['data']['nonce'])
 
     
-    def build_transfer_transaction(self, address, amount, vendor, fee, pp, sp, nonce):
+    def build_transfer_transaction(self, address, amount, vendor, fee, nonce):
         # python3 crypto version    
         transaction = Transfer(recipientId=address, amount=amount, vendorField=vendor, fee=fee)
         transaction.set_nonce(int(nonce))
-        transaction.schnorr_sign(pp)
+        transaction.schnorr_sign(self.config.passphrase)
 
+        sp = self.config.secondphrase
         if sp == 'None':
             sp = None
         if sp is not None:
