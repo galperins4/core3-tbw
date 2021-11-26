@@ -6,7 +6,7 @@ from lowercase_booleans import false
 
 
 class Exchange:
-    def __init__(self, database, config):
+    def __init__(self, sql, config):
         self.config = config
         self.sql = sql
         #self.atomic = 100000000
