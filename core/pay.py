@@ -16,7 +16,6 @@ def process_multi_payments(payment, unprocessed):
 
 def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
     print("Standard Payment")
-    print(unprocessed)
     signed_tx = []
 
     # process unpaid transactions
@@ -39,8 +38,6 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
         temp_nonce += 1
         # time.sleep(0.25)
                      
-    print(signed_tx)
-    quit()
     accepted = payment.broadcast_standard(signed_tx)
     for_removal = payment.non_accept_check(check, accepted)
             
@@ -51,7 +48,7 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
             unique_rowid.remove(i)
                     
     sql.open_connection()
-    snekdb.processStagedPayment(unique_rowid)
+    sql.process_staged_payment(unique_rowid)
     sql.close_connection()
 
     # payment run complete
