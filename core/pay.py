@@ -9,9 +9,49 @@ from utility.utility import Utility
 import time
 
 
-def process_multi_payments(payment, unprocessed):
+def process_multi_payments(payment, unprocessed, dynamic):
     print("Multi Payment")
     print(unprocessed)
+    
+    signed_tx = []
+    check = {}       
+   
+      
+    # set max multipayment
+    max_tx = dynamic.get_multipay_limit()
+    # hard code multipay for test
+    #max_tx = 6
+    unprocessed_pay = snekdb.stagedArkPayment(multi=data.multi).fetchall()
+    if len(unprocessed_pay) == 1:
+        share()
+    elif unprocessed_pay:
+        temp_multi_chunk = list(chunks(unprocessed_pay, max_tx))
+        # remove any items over tax_tx_limit
+        multi_chunk = temp_multi_chunk[:max_tx_limit]
+        nonce = int(get_nonce() + 1)
+        for i in multi_chunk:
+            if len(i) > 1:
+                unique_rowid = [y[0] for y in i]
+                tx = build_multi_transaction(i, str(nonce))
+                check[tx['id']] = unique_rowid
+                signed_tx.append(tx)
+                nonce += 1        
+        accepted = broadcast_multi(signed_tx)
+        #check for accepted and non-accepted transactions
+        for k,v in check.items():
+            if k in accepted:
+                # mark all accepted records complete
+                snekdb.processStagedPayment(v)
+            else:
+                #delete all transaction records with relevant multipay txid
+                snekdb.deleteTransactionRecord(k) 
+
+        # payment run complete
+        print('Payment Run Completed!')
+        # sleep 3 minutes between tx blasts
+        time.sleep(300)
+    else:
+        time.sleep(300)
     
 
 def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
@@ -89,7 +129,7 @@ if __name__ == '__main__':
         if config.multi == "Y":
             unprocessed = sql.get_staged_payment(multi=config.multi).fetchall()
             sql.close_connection()
-            process_multi_payments(payments, unprocessed)
+            process_multi_payments(payments, unprocessed, dynamic)
         else:
             unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit()).fetchall()
             sql.close_connection()
