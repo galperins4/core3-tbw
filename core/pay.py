@@ -16,7 +16,7 @@ def chunks(l, n):
         yield l[i:i+n]
 
 
-def process_multi_payments(payment, unprocessed, dynamic):
+def process_multi_payments(payment, unprocessed, dynamic, config, exchange):
     print("Multi Payment")
     print(unprocessed)
     signed_tx = []
