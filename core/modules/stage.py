@@ -12,7 +12,9 @@ class Stage:
         # stage delegate payments
         self.stage_delegate_payments(fees)
         
-        # stage voter paymnets
+        # stage voter payments
+        self.stage_voter_payments()
+        quit()
         
         
     def get_transaction_fees(self):
