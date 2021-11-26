@@ -184,7 +184,11 @@ class Sql:
         self.cursor.execute(f"DELETE FROM transactions WHERE id = '{txid}'")
         self.commit()
 
-        
+    
+    def all_voters(self):
+        return self.cursor.execute("SELECT * FROM voters ORDER BY unpaid_bal DESC")
+    
+    
     def voters(self):
         return self.cursor.execute("SELECT * FROM voters WHERE unpaid_bal > 0 ORDER BY unpaid_bal DESC")
 
