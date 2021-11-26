@@ -67,8 +67,6 @@ class Sql:
         for k, v in paid.items():
             staging.append((k, v, msg, None))
 
-        # staging.append((address, amount, msg, None))
-
         self.executemany("INSERT INTO staging VALUES (?,?,?,?)", staging)
         self.commit()
 
