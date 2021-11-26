@@ -15,8 +15,8 @@ def process_multi_payments(payment, unprocessed):
     
 
 def process_standard_payments(payment, unprocessed):
-     print("Standard Payment")
-     print(unprocessed)
+    print("Standard Payment")
+    print(unprocessed)
     signed_tx = []
 
     # process unpaid transactions
