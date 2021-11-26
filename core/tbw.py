@@ -14,8 +14,8 @@ import sys
 import time
 
 
-def interval_check(block_count):
-    if block_count % config.interval == 0:
+def interval_check(block_count, interval):
+    if block_count % interval == 0:
         print("Payout interval reached")
         sql.open_connection()
         voter_balances = sql.voters().fetchall()
@@ -39,7 +39,7 @@ def interval_check(block_count):
 
 if __name__ == '__main__':
     # set sql / database / config as global variables
-    global config, sql, database, dynamic
+    #global config, sql, database, dynamic
     
     print("Start Script")
     # get configuration
@@ -123,7 +123,7 @@ if __name__ == '__main__':
             print(f"\nCurrent block count : {block_count}")
         
             # check interval for payout
-            stage, unpaid_voters, unpaid_delegate = interval_check(block_count)
+            stage, unpaid_voters, unpaid_delegate = interval_check(block_count, config.interval)
         
             # check if true to stage payments
             if stage == True and sum(unpaid_voters.values()) > 0:
