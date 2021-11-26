@@ -12,6 +12,11 @@ import time
 def process_multi_payments(payment, unprocessed):
     print("Multi Payment")
     print(unprocessed)
+    
+
+def process_standard_payments(payment, unprocessed):
+     print("Standard Payment")
+     print(unprocessed)
     signed_tx = []
 
     # process unpaid transactions
@@ -55,11 +60,6 @@ def process_multi_payments(payment, unprocessed):
 
     # payment run complete
     print('Payment Run Completed!')
-    
-
-def process_standard_payments(payment, unprocessed):
-     print("Standard Payment")
-     print(unprocessed)
 
 
 if __name__ == '__main__':
