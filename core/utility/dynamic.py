@@ -34,3 +34,11 @@ class Dynamic:
             limit = 20
         return limit
     
+    
+    def get_tx_request_limit(self):
+        try:
+            limit = self.client.node.configuration()['data']['transactionPool']['maxTransactionsPerRequest']
+        except:
+            limit = 20
+        return limit
+    
