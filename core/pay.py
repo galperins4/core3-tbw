@@ -32,6 +32,9 @@ if __name__ == '__main__':
     # connect to core and tbw script database
     sql = Sql()
     
+    print(dynamic.get_tx_request_limit())
+    quit()
+    
     # MAIN FUNCTION LOOP SHOULD START HERE
     
     sql.open_connection()
