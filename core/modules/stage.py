@@ -14,7 +14,6 @@ class Stage:
         
         # stage voter payments
         self.stage_voter_payments()
-        quit()
         
         
     def get_transaction_fees(self):
