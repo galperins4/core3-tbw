@@ -61,7 +61,7 @@ if __name__ == '__main__':
             unprocessed = sql.get_staged_payment(multi=data.multi).fetchall()
             process_multi_payments(payments, unprocessed)
         else:
-            unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit().fetchall()
+            unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit().fetchall())
             process_standard_payments(payments, unprocessed)
         sql.close_connection()
  
