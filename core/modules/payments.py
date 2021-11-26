@@ -43,6 +43,34 @@ class Payments:
         transaction_dict = transaction.to_dict()
         return transaction_dict
 
+
+    def build_multi_transaction(self, payments, nonce):
+        f = int(self.config.multi_fee * self.config.atomic)
+        transaction = MultiPayment(vendorField=data.voter_msg, fee=f)
+        transaction.set_nonce(int(nonce))
+
+        for i in payments:
+            # exchange processing
+            if i[1] in data.convert_address and :
+                if data.exchange == "Y":
+                    index = data.convert_address.index(i[1])
+                    pay_in = exchange.exchange_select(index, i[1], i[2],data.provider[index])
+                    transaction.add_payment(i[2], pay_in)
+                else:
+                    transaction.add_payment(i[2], i[1])
+            else:
+                transaction.add_payment(i[2], i[1])
+
+        transaction.schnorr_sign(data.passphrase)
+        sp = data.secondphrase
+        if sp == 'None':
+            sp = None
+        if sp is not None:
+            transaction.second_sign(sp)
+    
+        transaction_dict = transaction.to_dict()
+        return transaction_dict
+    
     
     def broadcast_standard(self, tx):
         # broadcast to relay
