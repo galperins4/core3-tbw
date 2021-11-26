@@ -14,7 +14,7 @@ def process_multi_payments(payment, unprocessed):
     print(unprocessed)
     
 
-def process_standard_payments(payment, unprocessed):
+def process_standard_payments(payment, unprocessed, dynamic):
     print("Standard Payment")
     print(unprocessed)
     signed_tx = []
@@ -23,7 +23,8 @@ def process_standard_payments(payment, unprocessed):
     unique_rowid = [y[0] for y in unprocessed]
     check = {}
     temp_nonce = payment.get_nonce()+1
-    print(temp_nonce)
+    transaction_fee = dynamic.get_dynamic_fee()
+    print(transaction_fee)
     quit()
         
     for i in unprocessed_pay:
@@ -98,7 +99,7 @@ if __name__ == '__main__':
             process_multi_payments(payments, unprocessed)
         else:
             unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit()).fetchall()
-            process_standard_payments(payments, unprocessed)
+            process_standard_payments(payments, unprocessed, dynamic)
         sql.close_connection()
  
     print("End Script - Looping")
