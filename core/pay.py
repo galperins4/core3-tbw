@@ -24,8 +24,6 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
     check = {}
     temp_nonce = payment.get_nonce()+1
     transaction_fee = dynamic.get_dynamic_fee()
-    print(transaction_fee)
-    quit()
         
     for i in unprocessed_pay:
         # exchange processing
@@ -41,6 +39,8 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
         temp_nonce+=1
         time.sleep(0.25)
                      
+    print(signed_tx)
+    quit()
     accepted = broadcast(signed_tx)
     for_removal = non_accept_check(check, accepted)
             
