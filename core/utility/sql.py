@@ -186,11 +186,11 @@ class Sql:
 
         
     def voters(self):
-        return self.cursor.execute("SELECT * FROM voters ORDER BY unpaid_bal DESC")
+        return self.cursor.execute("SELECT * FROM voters WHERE unpaid_bal > 0 ORDER BY unpaid_bal DESC")
 
 
     def rewards(self):
-        return self.cursor.execute("SELECT * FROM delegate_rewards")
+        return self.cursor.execute("SELECT * FROM delegate_rewards WHERE unpaid_bal > 0")
 
 
     def transactions(self):
