@@ -52,6 +52,7 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
                 sql.close_connection()
             else:
                 #delete all transaction records with relevant multipay txid
+                print("Transaction ID Not Accepted")
                 sql.open_connection()
                 sql.delete_transaction_record(k)
                 sql.close_connection()
