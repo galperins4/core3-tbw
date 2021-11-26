@@ -66,7 +66,11 @@ if __name__ == '__main__':
     # MAIN FUNCTION LOOP SHOULD START HERE
     
     # check for staged payments to process
-    # TO DO
+    sql.open_connection()
+    check = unprocessed_stage_payments()
+    sql.close_connection()
+    print(check)
+    quit()
     
     # get blocks
     block = Blocks(config, database, sql)
