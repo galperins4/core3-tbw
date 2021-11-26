@@ -14,7 +14,7 @@ def process_multi_payments(payment, unprocessed):
     print(unprocessed)
     
 
-def process_standard_payments(payment, unprocessed, dynamic):
+def process_standard_payments(payment, unprocessed, dynamic, config):
     print("Standard Payment")
     print(unprocessed)
     signed_tx = []
@@ -28,13 +28,8 @@ def process_standard_payments(payment, unprocessed, dynamic):
     quit()
         
     for i in unprocessed_pay:
-        transaction_fee = dynamic.get_dynamic_fee()
-
-        # fixed and exchange processing
-        if i[1] in data.fixed.keys():
-            fixed_amt = int(data.fixed[i[1]] * data.atomic)
-            tx = build_transfer_transaction(i[1], (fixed_amt), i[3], transaction_fee, data.passphrase, data.secondphrase, str(temp_nonce))
-        elif i[1] in data.convert_address:
+        # exchange processing
+        if i[1] in config.convert_address and config.exchange == "Y":
             if data.exchange == "Y":
                 index = data.convert_address.index(i[1])
                 pay_in = exchange.exchange_select(index, i[1], i[2], data.provider[index])
@@ -99,7 +94,7 @@ if __name__ == '__main__':
             process_multi_payments(payments, unprocessed)
         else:
             unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit()).fetchall()
-            process_standard_payments(payments, unprocessed, dynamic)
+            process_standard_payments(payments, unprocessed, dynamic, config)
         sql.close_connection()
  
     print("End Script - Looping")
