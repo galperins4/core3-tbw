@@ -14,7 +14,7 @@ def process_multi_payments(payment, unprocessed):
     print(unprocessed)
     
 
-def process_standard_payments(payment, unprocessed, dynamic, config):
+def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
     print("Standard Payment")
     print(unprocessed)
     signed_tx = []
@@ -30,14 +30,12 @@ def process_standard_payments(payment, unprocessed, dynamic, config):
     for i in unprocessed_pay:
         # exchange processing
         if i[1] in config.convert_address and config.exchange == "Y":
-            if data.exchange == "Y":
-                index = data.convert_address.index(i[1])
-                pay_in = exchange.exchange_select(index, i[1], i[2], data.provider[index])
-                tx = build_transfer_transaction(pay_in, (i[2]), i[3], transaction_fee, data.passphrase, data.secondphrase, str(temp_nonce))
-            else:
-                tx = build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, data.passphrase, data.secondphrase, str(temp_nonce))
+            index = config.convert_address.index(i[1])
+            pay_in = exchange.exchange_select(index, i[1], i[2], config.provider[index])
+            tx = build_transfer_transaction(pay_in, (i[2]), i[3], transaction_fee, config.passphrase, config.secondphrase, str(temp_nonce))
+        # standard tx processing
         else:           
-            tx = build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, data.passphrase, data.secondphrase, str(temp_nonce))
+            tx = build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, config.passphrase, config.secondphrase, str(temp_nonce))
         check[tx['id']] = i[0]
         signed_tx.append(tx)
         temp_nonce+=1
@@ -94,7 +92,7 @@ if __name__ == '__main__':
             process_multi_payments(payments, unprocessed)
         else:
             unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit()).fetchall()
-            process_standard_payments(payments, unprocessed, dynamic, config)
+            process_standard_payments(payments, unprocessed, dynamic, config, exchange)
         sql.close_connection()
  
     print("End Script - Looping")
