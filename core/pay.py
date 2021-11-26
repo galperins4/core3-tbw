@@ -38,7 +38,7 @@ if __name__ == '__main__':
     # load utility and dynamic
     utility = Utility(network)
     dynamic = Dynamic(utility, config)
-    exchange - Exchange(sql, config)
+    exchange = Exchange(sql, config)
     
     # connect to core and tbw script database
     sql = Sql()
