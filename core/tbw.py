@@ -70,82 +70,78 @@ if __name__ == '__main__':
         print("Staged Payments Detected.......Begin Payment Processing")
         payments = Payments(config, sql, dynamic, utility)
     '''
-    # get blocks
-    block = Blocks(config, database, sql)
+    while True:
+        # get blocks
+        block = Blocks(config, database, sql)
     
-    # get last block to start
-    last_block = block.get_last_block()
+        # get last block to start
+        last_block = block.get_last_block()
     
-    # use last block timestamp to get all new blocks
-    new_blocks = block.get_new_blocks(last_block)
+        # use last block timestamp to get all new blocks
+        new_blocks = block.get_new_blocks(last_block)
     
-    # store all new blocks
-    block.store_new_blocks(new_blocks)
+        # store all new blocks
+        block.store_new_blocks(new_blocks)
     
-    # get unprocessed blocks
-    unprocessed_blocks = block.return_unprocessed_blocks()
+        # get unprocessed blocks
+        unprocessed_blocks = block.return_unprocessed_blocks()
     
-    # allocate block rewards
-    allocate = Allocate(database, config, sql)
-    voter_options = Voters(config, sql)
-    
-    for unprocessed in unprocessed_blocks:
-        print(unprocessed)
-        block_timestamp = unprocessed[1]
-        # get vote and unvote transactions
-        vote, unvote = allocate.get_vote_transactions(block_timestamp)
-        # create voter_roll
-        voter_roll = allocate.create_voter_roll(vote, unvote)
-        # get voter_balances
-        voter_balances = allocate.get_voter_balance(unprocessed, voter_roll)
-        print("\noriginal voter_balances")
-        for k, v in voter_balances.items():
-            print(k,v)
-        # run voters through various vote_options
-        if config.whitelist == 'Y':
-            voter_balances = voter_options.process_whitelist(voter_balances)
-        if config.whitelist == 'N' and config.blacklist =='Y':
-            voter_balances = voter_options.process_blacklist(voter_balances)
-        print("\n voter_balances post whitelist or blacklist")
-        for k, v in voter_balances.items():
-            print(k,v)
-            
-        voter_balances = voter_options.process_voter_cap(voter_balances)
-        print("\n voter_balances post voter cap")
-        for k, v in voter_balances.items():
-            print(k,v)
- 
-        voter_balances = voter_options.process_voter_min(voter_balances)
-        print("\n voter_balances post voter min")
-        for k, v in voter_balances.items():
-            print(k,v)
- 
-        voter_balances = voter_options.process_anti_dilution(voter_balances)
-        print("\n voter_balances post anti_dulite")
-        for k, v in voter_balances.items():
-            print(k,v)
-        
         # allocate block rewards
-        allocate.block_allocations(unprocessed, voter_balances)
-        # get block count
-        block_count = block.block_counter()
-        print(f"\nCurrent block count : {block_count}")
-        
-        # check interval for payout
-        stage, unpaid_voters, unpaid_delegate = interval_check(block_count)
-        
-        # check if true to stage payments
-        if stage and sum(unpaid_voters.values()) > 0:
-            print("\nStaging payments")
-            s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
-        
-        # pause betweeen blocks
-        time.sleep(10)
+        allocate = Allocate(database, config, sql)
+        voter_options = Voters(config, sql)
+    
+        for unprocessed in unprocessed_blocks:
+            print(unprocessed)
+            block_timestamp = unprocessed[1]
+            # get vote and unvote transactions
+            vote, unvote = allocate.get_vote_transactions(block_timestamp)
+            # create voter_roll
+            voter_roll = allocate.create_voter_roll(vote, unvote)
+            # get voter_balances
+            voter_balances = allocate.get_voter_balance(unprocessed, voter_roll)
+            print("\noriginal voter_balances")
+            for k, v in voter_balances.items():
+                print(k,v)
+            # run voters through various vote_options
+            if config.whitelist == 'Y':
+                voter_balances = voter_options.process_whitelist(voter_balances)
+            if config.whitelist == 'N' and config.blacklist =='Y':
+                voter_balances = voter_options.process_blacklist(voter_balances)
+            print("\n voter_balances post whitelist or blacklist")
+            for k, v in voter_balances.items():
+                print(k,v)
+            
+            voter_balances = voter_options.process_voter_cap(voter_balances)
+            print("\n voter_balances post voter cap")
+            for k, v in voter_balances.items():
+                print(k,v)
  
-    
-    quit()
-    # process payment
-    Payments(config, sql)
-    quit()
-    
-    print("End Script")
+            voter_balances = voter_options.process_voter_min(voter_balances)
+            print("\n voter_balances post voter min")
+            for k, v in voter_balances.items():
+                print(k,v)
+ 
+            voter_balances = voter_options.process_anti_dilution(voter_balances)
+            print("\n voter_balances post anti_dulite")
+            for k, v in voter_balances.items():
+                print(k,v)
+        
+            # allocate block rewards
+            allocate.block_allocations(unprocessed, voter_balances)
+            # get block count
+            block_count = block.block_counter()
+            print(f"\nCurrent block count : {block_count}")
+        
+            # check interval for payout
+            stage, unpaid_voters, unpaid_delegate = interval_check(block_count)
+        
+            # check if true to stage payments
+            if stage and sum(unpaid_voters.values()) > 0:
+                print("\nStaging payments")
+                s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
+        
+            # pause betweeen blocks
+            time.sleep(10)
+ 
+    print("End Script - Looping")
+    time.sleep(600)
