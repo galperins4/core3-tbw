@@ -3,11 +3,12 @@ from crypto.transactions.builder.multi_payment import MultiPayment
 import time
 
 class Payments:
-    def __init__(self, config, sql, dynamic, utility):
+    def __init__(self, config, sql, dynamic, utility, exchange):
         self.config = config
         self.sql = sql
         self.dynamic = dynamic
         self.utility = utility
+        self.exchange = exchange
         self.client = self.utility.get_client()
 
     
@@ -46,18 +47,15 @@ class Payments:
 
     def build_multi_transaction(self, payments, nonce):
         f = int(self.config.multi_fee * self.config.atomic)
-        transaction = MultiPayment(vendorField=data.voter_msg, fee=f)
+        transaction = MultiPayment(vendorField=self.config.message, fee=f)
         transaction.set_nonce(int(nonce))
 
         for i in payments:
             # exchange processing
-            if i[1] in data.convert_address and :
-                if data.exchange == "Y":
-                    index = data.convert_address.index(i[1])
-                    pay_in = exchange.exchange_select(index, i[1], i[2],data.provider[index])
-                    transaction.add_payment(i[2], pay_in)
-                else:
-                    transaction.add_payment(i[2], i[1])
+            if i[1] in self.config.convert_address and self.config.exchange == "Y":
+                index = self.config.convert_address.index(i[1])
+                pay_in = exchange.exchange_select(index, i[1], i[2],data.provider[index])
+                transaction.add_payment(i[2], pay_in)
             else:
                 transaction.add_payment(i[2], i[1])
 
