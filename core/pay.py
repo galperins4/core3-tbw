@@ -19,7 +19,48 @@ import time
 def process_multi_payments(payment, unprocessed):
     print("Multi Payment")
     print(unprocessed)
+    signed_tx = []
 
+    # process unpaid transactions
+    unique_rowid = [y[0] for y in unprocessed_pay]
+    check = {}
+    temp_nonce = get_nonce()+1
+        
+    for i in unprocessed_pay:
+        transaction_fee = dynamic.get_dynamic_fee()
+
+        # fixed and exchange processing
+        if i[1] in data.fixed.keys():
+            fixed_amt = int(data.fixed[i[1]] * data.atomic)
+            tx = build_transfer_transaction(i[1], (fixed_amt), i[3], transaction_fee, data.passphrase, data.secondphrase, str(temp_nonce))
+        elif i[1] in data.convert_address:
+            if data.exchange == "Y":
+                index = data.convert_address.index(i[1])
+                pay_in = exchange.exchange_select(index, i[1], i[2], data.provider[index])
+                tx = build_transfer_transaction(pay_in, (i[2]), i[3], transaction_fee, data.passphrase, data.secondphrase, str(temp_nonce))
+            else:
+                tx = build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, data.passphrase, data.secondphrase, str(temp_nonce))
+        else:           
+            tx = build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, data.passphrase, data.secondphrase, str(temp_nonce))
+        check[tx['id']] = i[0]
+        signed_tx.append(tx)
+        temp_nonce+=1
+        time.sleep(0.25)
+                     
+    accepted = broadcast(signed_tx)
+    for_removal = non_accept_check(check, accepted)
+            
+    # remove non-accepted transactions from being marked as completed
+    if len(for_removal) > 0:
+        for i in for_removal:
+            print("Removing RowId: ", i)
+            unique_rowid.remove(i)
+                    
+    snekdb.processStagedPayment(unique_rowid)
+
+    # payment run complete
+    print('Payment Run Completed!')
+    
 
 def process_standard_payments(payment, unprocessed):
      print("Standard Payment")
