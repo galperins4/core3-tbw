@@ -53,9 +53,6 @@ if __name__ == '__main__':
     utility = Utility(network)
     dynamic = Dynamic(utility, config)
     
-    # print(dynamic.get_dynamic_fee())
-    # print(dynamic.get_multipay_limit())
-    
     # connect to core and tbw script database
     database = Database(config, network)
     sql = Sql()
@@ -64,10 +61,9 @@ if __name__ == '__main__':
     Initialize(config, database, sql)
     
     # MAIN FUNCTION LOOP SHOULD START HERE
-    
     # check for staged payments to process
     sql.open_connection()
-    check = unprocessed_stage_payments()
+    check = unprocessed_staged_payments()
     sql.close_connection()
     print(check)
     quit()
