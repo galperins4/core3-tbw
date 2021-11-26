@@ -61,3 +61,26 @@ class Payments:
         self.sql.close_connection()
     
         return transaction['data']['accept']
+    
+    
+    def broadcast_multi(self, tx):    
+        # broadcast to relay
+        try:
+            transaction = self.client.transactions.create(tx)
+            print(transaction)
+            for i in tx:
+                records = []
+                id = i['id']
+                records = [[j['recipientId'], j['amount'], id] for j in i['asset']['payments']]
+                # snekdb.storeTransactions(records)
+            time.sleep(1)
+        except BaseException as e:
+            # error
+            print("Something went wrong", e)
+            quit()
+    
+        self.sql.open_connection()
+        self.sql.store_transactions(records)
+        self.sql.close_connection()
+        
+        return transaction['data']['accept']
