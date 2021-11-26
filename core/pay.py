@@ -12,7 +12,6 @@ import time
 def process_multi_payments(payment, unprocessed, dynamic):
     print("Multi Payment")
     print(unprocessed)
-    
     signed_tx = []
     check = {}       
    
@@ -57,10 +56,11 @@ def process_multi_payments(payment, unprocessed, dynamic):
 def process_standard_payments(payment, unprocessed, dynamic, config, exchange):
     print("Standard Payment")
     signed_tx = []
+    check = {}
 
     # process unpaid transactions
     unique_rowid = [y[0] for y in unprocessed]
-    check = {}
+
     temp_nonce = payment.get_nonce()+1
     transaction_fee = dynamic.get_dynamic_fee()
         
