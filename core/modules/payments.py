@@ -43,7 +43,7 @@ class Payments:
         return transaction_dict
 
     
-    def broadcast_standard(tx):
+    def broadcast_standard(self, tx):
         # broadcast to relay
         try:
             transaction = self.client.transactions.create(tx)
