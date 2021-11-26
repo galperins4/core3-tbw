@@ -55,9 +55,9 @@ if __name__ == '__main__':
         payments = Payments(config, sql, dynamic, utility)
         
         if config.multi == "Y":
-            process_multi_payments(payment)
+            process_multi_payments(payments)
         else:
-            process_standard_payments(payment)
+            process_standard_payments(payments)
  
     print("End Script - Looping")
     time.sleep(600)
