@@ -7,6 +7,7 @@ class Payments:
         self.sql = sql
         self.dynamic = dynamic
         self.utility = utility
+        self.client - self.utility.get_client()
 
     
     def non_accept_check(self, c, a):
@@ -22,8 +23,8 @@ class Payments:
     
     
     def get_nonce(self):
-        client = self.utility.get_client()
-        n = client.wallets.get(self.config.delegate)
+        # client = self.utility.get_client()
+        n = self.client.wallets.get(self.config.delegate)
         return int(n['data']['nonce'])
 
     
@@ -40,3 +41,22 @@ class Payments:
 
         transaction_dict = transaction.to_dict()
         return transaction_dict
+
+    
+    def broadcast_standard(tx):
+        # broadcast to relay
+        try:
+            transaction = self.client.transactions.create(tx)
+            print(transaction)
+            records = [[j['recipientId'], j['amount'], j['id']] for j in tx]
+            time.sleep(1)
+        except BaseException as e:
+            # error
+            print("Something went wrong", e)
+            quit()
+
+        self.sql.open_connection()
+        self.sql.store_transactions(records)
+        self.sql.close_connection()
+    
+        return transaction['data']['accept']
