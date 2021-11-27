@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
     # check if custom share flag is set
     if config.custom == "Y":
-        update_custom_share()
+        update_custom_share(sql)
     
     # MAIN FUNCTION LOOP SHOULD START HERE
     while True:
