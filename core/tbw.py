@@ -24,7 +24,7 @@ def update_voter_share(sql, config):
             sql.update_voter_share(i[0], config.voter_share)
     
     sql.close_connection()
-    
+    quit()
 
 
 def update_custom_share():
