@@ -178,5 +178,5 @@ if __name__ == '__main__':
             # pause betweeen blocks
             time.sleep(5)
  
-    print("End Script - Looping")
-    time.sleep(1200)
+        print("End Script - Looping")
+        time.sleep(1200)
