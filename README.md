@@ -1,4 +1,4 @@
-# core-tbw
+# core3-tbw
 
 install required packages ```pip3 install -r requirements.txt```
 
