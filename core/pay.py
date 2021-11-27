@@ -104,10 +104,7 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
     print('Payment Run Completed!')
 
 
-if __name__ == '__main__':
-    # set sql / config as global variables
-    # global config, sql, dynamic
-    
+if __name__ == '__main__':    
     print("Start Script")
     # get configuration
     config = Configure()
