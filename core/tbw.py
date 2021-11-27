@@ -125,7 +125,7 @@ if __name__ == '__main__':
         voter_options = Voters(config, sql)
     
         for unprocessed in unprocessed_blocks:
-            print(unprocessed)
+            print("Block Information", unprocessed)
             block_timestamp = unprocessed[1]
             # get vote and unvote transactions
             vote, unvote = allocate.get_vote_transactions(block_timestamp)
