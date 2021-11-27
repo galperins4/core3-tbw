@@ -127,7 +127,7 @@ if __name__ == '__main__':
     
         for unprocessed in unprocessed_blocks:
             tic_a = time.perf_counter()
-            print("Unprocessed Block Information", unprocessed)
+            print("\nUnprocessed Block Information\n", unprocessed)
             block_timestamp = unprocessed[1]
             # get vote and unvote transactions
             vote, unvote = allocate.get_vote_transactions(block_timestamp)
