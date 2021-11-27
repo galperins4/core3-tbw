@@ -62,6 +62,14 @@ class Stage:
                     print("Not enough to cover transaction fees in reserve")
                     print("Update interval and restart")
                     quit()
+                # process donation
+                elif self.config.donate == "Y":
+                    donate_amt = 
+                    reserve_amt =
+                    print('Old Reserve Amount', v)
+                    print('Donate Amount', donate_amt)
+                    print('New Reserve Amount', reserve_amt)
+                    quit()
                 else:
                     pay_amount = v - f   
             else:
