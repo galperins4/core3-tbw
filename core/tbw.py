@@ -131,10 +131,16 @@ if __name__ == '__main__':
             block_timestamp = unprocessed[1]
             # get vote and unvote transactions
             vote, unvote = allocate.get_vote_transactions(block_timestamp)
+            tic_b = time.perf_counter()
+            print(f"Get all Vote and Unvote transactions in {tic_b - tic_a:0.4f} seconds")
             # create voter_roll
             voter_roll = allocate.create_voter_roll(vote, unvote)
+            tic_c = time.perf_counter()
+            print(f"Create voter rolls in {tic_c - tic_b:0.4f} seconds")
             # get voter_balances
             voter_balances = allocate.get_voter_balance(unprocessed, voter_roll)
+            tic_d = time.perf_counter()
+            print(f"Get all voter balances in {tic_d - tic_c:0.4f} seconds")
             print("\noriginal voter_balances")
             for k, v in voter_balances.items():
                 print(k,v)
@@ -162,14 +168,18 @@ if __name__ == '__main__':
             for k, v in voter_balances.items():
                 print(k,v / config.atomic)
         
+            tic_e = time.perf_counter()
+            print(f"Process all voter options in {tic_e - tic_d:0.4f} seconds")
             # allocate block rewards
             allocate.block_allocations(unprocessed, voter_balances)
+            tic_f = time.perf_counter()
+            print(f"Allocate block rewards in {tic_f - tic_e:0.4f} seconds")
             # get block count
             block_count = block.block_counter()
             print(f"\nCurrent block count : {block_count}")
             
-            tic_b = time.perf_counter()
-            print(f"Processed block in {tic_b - tic_a:0.4f} seconds")
+            tic_g = time.perf_counter()
+            print(f"Processed block in {tic_g - tic_a:0.4f} seconds")
         
             # check interval for payout
             stage, unpaid_voters, unpaid_delegate = interval_check(block_count, config.interval)
