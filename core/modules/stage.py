@@ -64,10 +64,10 @@ class Stage:
                 else:
                     pay_amount = v - f   
             else:
-                pay_amount = v - f
+                pay_amount = v
             count += 1
             paid_delegate[k] = pay_amount
-        print(paid_delegate)
+        print("Delegate Payments\n", paid_delegate)
         
         self.sql.open_connection()
         self.sql.update_delegate_paid_balance(paid_delegate)
@@ -76,7 +76,7 @@ class Stage:
     
     
     def stage_voter_payments(self):
-        print(self.voters)
+        print("Voter Payments\n", self.voters)
         self.sql.open_connection()
         self.sql.update_voter_paid_balance(self.voters)
         self.sql.stage_payment(self.voters, msg = self.config.message)
