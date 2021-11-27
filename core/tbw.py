@@ -38,9 +38,6 @@ def interval_check(block_count, interval):
     return stage, voter_unpaid, delegate_unpaid
 
 if __name__ == '__main__':
-    # set sql / database / config as global variables
-    #global config, sql, database, dynamic
-    
     print("Start Script")
     # get configuration
     config = Configure()
@@ -99,22 +96,22 @@ if __name__ == '__main__':
                 voter_balances = voter_options.process_blacklist(voter_balances)
             print("\n voter_balances post whitelist or blacklist")
             for k, v in voter_balances.items():
-                print(k,v)
+                print(k,v / config.atomic)
             
             voter_balances = voter_options.process_voter_cap(voter_balances)
             print("\n voter_balances post voter cap")
             for k, v in voter_balances.items():
-                print(k,v)
+                print(k,v / config.atomic)
  
             voter_balances = voter_options.process_voter_min(voter_balances)
             print("\n voter_balances post voter min")
             for k, v in voter_balances.items():
-                print(k,v)
+                print(k,v / config.atomic)
  
             voter_balances = voter_options.process_anti_dilution(voter_balances)
             print("\n voter_balances post anti_dulite")
             for k, v in voter_balances.items():
-                print(k,v)
+                print(k,v / config.atomic)
         
             # allocate block rewards
             allocate.block_allocations(unprocessed, voter_balances)
