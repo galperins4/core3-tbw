@@ -178,4 +178,4 @@ if __name__ == '__main__':
             time.sleep(5)
  
     print("End Script - Looping")
-    time.sleep(600)
+    time.sleep(1200)
