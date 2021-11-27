@@ -39,9 +39,8 @@ def force_manual_pay(config, dynamic, sql):
         s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
 
 
-
 def interval_check(block_count, interval, manual = "N"):
-    if block_count % interval == 0 or manual = "Y":
+    if block_count % interval == 0 or manual == "Y":
         print("Payout interval reached")
         sql.open_connection()
         voter_balances = sql.voters().fetchall()
