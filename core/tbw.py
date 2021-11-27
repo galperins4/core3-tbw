@@ -15,7 +15,7 @@ import time
 
 
 def update_voter_share(sql, config):
-    old_rate = loat(input("Enter old share rate in the following format (80): "))
+    old_rate = float(input("Enter old share rate in the following format (80): "))
     sql.open_connection()
     voters = sql.all_voters().fetchall()
     
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     Initialize(config, database, sql)
     
     # update all voter share
-    update_voter_share(sql, config)
+    update_voter_share(sql, config) if config.update_share == "Y":
     
     # check if manual pay flag is set
     
