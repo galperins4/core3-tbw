@@ -31,6 +31,8 @@ def update_custom_share():
 
 
 def force_manual_pay(config, dynamic, sql):
+    # set fake block_count
+    block_count = 1
     stage, unpaid_voters, unpaid_delegate = interval_check(block_count, config.interval, config.manual_pay)
         
     # check if true to stage payments
