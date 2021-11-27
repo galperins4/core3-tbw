@@ -31,13 +31,18 @@ def update_custom_share():
     pass
 
 
-def force_manual_pay():
-    pass
+def force_manual_pay(config, dynamic, sql):
+    stage, unpaid_voters, unpaid_delegate = interval_check(block_count, config.interval)
+        
+    # check if true to stage payments
+    if stage == True and sum(unpaid_voters.values()) > 0:
+        print("Staging payments")
+        s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
 
 
 
-def interval_check(block_count, interval):
-    if block_count % interval == 0:
+def interval_check(block_count, interval, manual = "N"):
+    if block_count % interval == 0 or manual = "Y":
         print("Payout interval reached")
         sql.open_connection()
         voter_balances = sql.voters().fetchall()
@@ -84,7 +89,7 @@ if __name__ == '__main__':
     
     # check if manual pay flag is set
     if config.manual_pay == "Y":
-        force_manual_pay()
+        force_manual_pay(config, dynamic, sql)
 
     # check if custom share flag is set
     if config.custom == "Y":
