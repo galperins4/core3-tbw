@@ -64,7 +64,7 @@ class Stage:
                 else:
                     pay_amount = v - f   
             else:
-                pay_amount = v
+                pay_amount = v - f
             count += 1
             paid_delegate[k] = pay_amount
         print(paid_delegate)
