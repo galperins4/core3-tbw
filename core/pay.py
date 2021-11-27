@@ -119,25 +119,25 @@ if __name__ == '__main__':
     exchange = Exchange(sql, config)
     
     # MAIN FUNCTION LOOP SHOULD START HERE
-    
-    sql.open_connection()
-    check = sql.unprocessed_staged_payments()
-    sql.close_connection()
-    
-    if check > 0:
-        # staged payments detected
-        print("Staged Payments Detected.......Begin Payment Processing")
-        payments = Payments(config, sql, dynamic, utility, exchange)
-        
+    while True:
         sql.open_connection()
-        if config.multi == "Y":
-            unprocessed = sql.get_staged_payment(multi=config.multi).fetchall()
-            sql.close_connection()
-            process_multi_payments(payments, unprocessed, dynamic, config, exchange, sql)
-        else:
-            unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit()).fetchall()
-            sql.close_connection()
-            process_standard_payments(payments, unprocessed, dynamic, config, exchange, sql)
+        check = sql.unprocessed_staged_payments()
+        sql.close_connection()
+    
+        if check > 0:
+            # staged payments detected
+            print("Staged Payments Detected.......Begin Payment Processing")
+            payments = Payments(config, sql, dynamic, utility, exchange)
+        
+            sql.open_connection()
+            if config.multi == "Y":
+                unprocessed = sql.get_staged_payment(multi=config.multi).fetchall()
+                sql.close_connection()
+                process_multi_payments(payments, unprocessed, dynamic, config, exchange, sql)
+            else:
+                unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit()).fetchall()
+                sql.close_connection()
+                process_standard_payments(payments, unprocessed, dynamic, config, exchange, sql)
  
-    print("End Script - Looping")
-    time.sleep(600)
+        print("End Script - Looping")
+        time.sleep(600)
