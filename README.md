@@ -20,7 +20,11 @@ git clone https://github.com/galperins4/core3-tbw
 cd ~/core3-tbw
 nano core/config/config
 # fill out config (see below)
-bash tbw.sh
+# initialize
+cd ~core3-tbw/core
+python3 tbw.py
+# run script with pm2
+pm2 start apps.json
 ```
 
 ## Configuration & Usage
