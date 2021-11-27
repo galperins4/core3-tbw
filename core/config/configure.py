@@ -20,7 +20,6 @@ class Configure:
         self.atomic = int(c.get('static', 'atomic'))
         self.network = c.get('static', 'network')
         self.username = c.get('static', 'username')
-        self.block_check = int(c.get('static', 'block_check'))
         self.start_block = int(c.get('static', 'start_block'))
     
     
