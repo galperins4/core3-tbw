@@ -79,7 +79,7 @@ if __name__ == '__main__':
     Initialize(config, database, sql)
     
     # update all voter share
-    update_voter_share(sql, config) if config.update_share == "Y":
+    update_voter_share(sql, config) if config.update_share == "Y"
     
     # check if manual pay flag is set
     
