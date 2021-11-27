@@ -46,17 +46,15 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
         for k, v in check.items():
             if k in accepted:
                 # mark all accepted records complete
-                # snekdb.processStagedPayment(v)
                 sql.open_connection()
                 sql.process_staged_payment(v)
                 sql.close_connection()
             else:
-                #delete all transaction records with relevant multipay txid
+                # delete all transaction records with relevant multipay txid
                 print("Transaction ID Not Accepted")
                 sql.open_connection()
                 sql.delete_transaction_record(k)
                 sql.close_connection()
-                # snekdb.deleteTransactionRecord(k) 
 
         # payment run complete
         print('Payment Run Completed!')
