@@ -68,9 +68,7 @@ class Stage:
                     donate_amt = int((self.config.donate_percent / 100) * v)
                     reserve_amt = v - donate_amt
                     paid_donation[self.config.donate_address] = donate_amt
-                    print('Old Reserve Amount', v)
-                    print('Donate Amount', donate_amt)
-                    print('New Reserve Amount', reserve_amt)
+                    
                     # update staging table with donation line
                     self.sql.open_connection()
                     self.sql.stage_payment(paid_donation, msg = "Donation")
