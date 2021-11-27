@@ -1,25 +1,42 @@
-from config.config import Config
+from config.configure import Configure
 from network.network import Network
-from util.sql import SnekDB
-from util.exchange import Exchange
-from util.util import Util
+from modules.exchange import 
+from utility.sql import Sql
+from utility.utility import Utility
 
 if __name__ == '__main__':
-   
+    '''
     data = Config()
     network = Network(data.network)
     u = Util(data.network)
     snekdb = SnekDB(data.database_user, data.network, data.delegate)
     exchange = Exchange(snekdb, data)
+    '''
+      
+    print("Start Script")
+    # get configuration
+    config = Configure()
     
-    addresses = [i for i in data.convert_address]
+    # load network
+    network = Network(config.network)
+    
+    # load utility
+    utility = Utility(network)
+   
+    # connect to tbw script database and exchange module
+    sql = Sql()
+    exchange = Exchange(sql, config)
+    
+    addresses = [i for i in config.convert_address]
     
     for i in addresses:
         amount = 50000000000
-        if i in data.convert_address:
-            index = data.convert_address.index(i)
-            pay_in = exchange.exchange_select(index, i, amount,data.provider[index])
+        if i in config.convert_address:
+            index = config.convert_address.index(i)
+            pay_in = exchange.exchange_select(index, i, amount, config.provider[index])
             
-            #delete exchange record
-            new_amount = exchange.truncate(amount/data.atomic,4)
-            snekdb.deleteTestExchange(i,pay_in,new_amount)
+            # delete exchange record
+            new_amount = exchange.truncate(amount/config.atomic,4)
+            sql.open_connection()
+            sql.delete_test_exchange(i,pay_in,new_amount)
+            sql.close_connection()
