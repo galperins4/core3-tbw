@@ -126,6 +126,7 @@ if __name__ == '__main__':
         voter_options = Voters(config, sql)
     
         for unprocessed in unprocessed_blocks:
+            tic_a = time.perf_counter()
             print("Unprocessed Block Information", unprocessed)
             block_timestamp = unprocessed[1]
             # get vote and unvote transactions
@@ -166,6 +167,9 @@ if __name__ == '__main__':
             # get block count
             block_count = block.block_counter()
             print(f"\nCurrent block count : {block_count}")
+            
+            tic_b = time.perf_counter()
+            print(f"Processed block {unprocessed[4]} in {tic_a - tic_b:0.4f} seconds")
         
             # check interval for payout
             stage, unpaid_voters, unpaid_delegate = interval_check(block_count, config.interval)
