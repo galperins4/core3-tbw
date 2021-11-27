@@ -12,6 +12,8 @@ class Configure:
         self.delegate(config)
         self.payment(config)
         self.experimental(config)
+        self.other(config)
+        self.donate(config)
         
         
     def static(self, c):
@@ -52,3 +54,13 @@ class Configure:
         self.address_to = c.get('exchange', 'address_to').split(',')
         self.network_to = c.get('exchange', 'network_to').split(',')
         self.provider = c.get('exchange', 'provider').split(',')
+        
+        
+    def other(self, c):
+        self.custom = c.get('other', 'custom')
+        self.manual_pay = c.get('other', 'manual_pay')
+
+        
+    def donate(self, c):
+        self.donate = c.get('donate', 'donate')
+        self.donate_address = c.get('donate', 'donate_address')
