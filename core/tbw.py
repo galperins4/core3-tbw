@@ -110,6 +110,7 @@ if __name__ == '__main__':
     
         # get last block to start
         last_block = block.get_last_block()
+        print("Last Block Processed: ", last_block)
     
         # use last block timestamp to get all new blocks
         new_blocks = block.get_new_blocks(last_block)
@@ -125,7 +126,7 @@ if __name__ == '__main__':
         voter_options = Voters(config, sql)
     
         for unprocessed in unprocessed_blocks:
-            print("Block Information", unprocessed)
+            print("Unprocessed Block Information", unprocessed)
             block_timestamp = unprocessed[1]
             # get vote and unvote transactions
             vote, unvote = allocate.get_vote_transactions(block_timestamp)
