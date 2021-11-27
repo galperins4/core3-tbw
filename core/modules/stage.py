@@ -64,8 +64,8 @@ class Stage:
                     quit()
                 # process donation
                 elif self.config.donate == "Y":
-                    donate_amt = 
-                    reserve_amt =
+                    donate_amt = int((self.config.donate_percent / 100) * v)
+                    reserve_amt = v - donate_amt
                     print('Old Reserve Amount', v)
                     print('Donate Amount', donate_amt)
                     print('New Reserve Amount', reserve_amt)
