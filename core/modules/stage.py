@@ -62,9 +62,10 @@ class Stage:
                     print("Not enough to cover transaction fees in reserve")
                     print("Update interval and restart")
                     quit()
+                ''''
                 # check if donations are enabled
-                
                 elif 
+                ''''
                 else:
                     pay_amount = v - f   
             else:
