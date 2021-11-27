@@ -20,8 +20,7 @@ def update_voter_share(sql, config):
     voters = sql.all_voters().fetchall()
     
     for i in voters:
-        print("Old Rate: ", i[3])
-        if i[3] == old_rate:
+        if i[4] == old_rate:
             sql.update_voter_share(i[0], config.voter_share)
 
     sql.close_connection()
