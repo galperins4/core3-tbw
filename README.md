@@ -1,4 +1,4 @@
-# Python True Block Weight
+# Python True Block Weight - Core 3
 
 ## Prerequisites
 
