@@ -82,8 +82,7 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
             tx = payment.build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, str(temp_nonce))
         check[tx['id']] = i[0]
         signed_tx.append(tx)
-        temp_nonce += 1
-        # time.sleep(0.25)
+        temp_nonce += 1    
                      
     accepted = payment.broadcast_standard(signed_tx)
     for_removal = payment.non_accept_check(check, accepted)
