@@ -110,7 +110,7 @@ if __name__ == '__main__':
     
         # get last block to start
         last_block = block.get_last_block()
-        print("Last Block Processed: ", last_block)
+        print("Last Block Height Retrieved: ", last_block[0][1])
     
         # use last block timestamp to get all new blocks
         new_blocks = block.get_new_blocks(last_block)
