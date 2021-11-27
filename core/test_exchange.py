@@ -4,15 +4,7 @@ from modules.exchange import Exchange
 from utility.sql import Sql
 from utility.utility import Utility
 
-if __name__ == '__main__':
-    '''
-    data = Config()
-    network = Network(data.network)
-    u = Util(data.network)
-    snekdb = SnekDB(data.database_user, data.network, data.delegate)
-    exchange = Exchange(snekdb, data)
-    '''
-      
+if __name__ == '__main__':      
     print("Start Script")
     # get configuration
     config = Configure()
