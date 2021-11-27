@@ -23,11 +23,18 @@ def update_voter_share(sql, config):
             sql.update_voter_share(i[0], config.voter_share)
 
     sql.close_connection()
+    print("Share rate updated")
     quit()
 
 
-def update_custom_share():
-    pass
+def update_custom_share(sql):
+    address = input("Enter address to update with custom rate: ")
+    new_rate = float(input("Enter custom share rate in the following format (80): "))
+    sql.open_connection()
+    sql.update_voter_share(address, new_rate)
+    sql.close_connection()
+    print("Address {} updated with custom rate of: {}".format(address, new_rate))
+    quit()
 
 
 def force_manual_pay(config, dynamic, sql):
