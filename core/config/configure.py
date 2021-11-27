@@ -65,3 +65,4 @@ class Configure:
     def donate(self, c):
         self.donate = c.get('donate', 'donate')
         self.donate_address = c.get('donate', 'donate_address')
+        self.donate_percent = int(c.get('donate', 'donate_percent')
