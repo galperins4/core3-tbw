@@ -87,7 +87,7 @@ if __name__ == '__main__':
         force_manual_pay()
 
     # check if custom share flag is set
-    if config.custom == "Y:
+    if config.custom == "Y":
         update_custom_share()
     
     # MAIN FUNCTION LOOP SHOULD START HERE
