@@ -39,6 +39,7 @@ def force_manual_pay(config, dynamic, sql):
     if stage == True and sum(unpaid_voters.values()) > 0:
         print("Staging payments")
         s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
+    quit()
 
 
 def interval_check(block_count, interval, manual = "N"):
