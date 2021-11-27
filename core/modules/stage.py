@@ -57,10 +57,14 @@ class Stage:
         for k, v in self.delegate.items():
             # this is the reserve account
             if count == 1:
+                # reserve account insuffient to pay fees
                 if (v - f) <= 0:
                     print("Not enough to cover transaction fees in reserve")
                     print("Update interval and restart")
                     quit()
+                # check if donations are enabled
+                
+                elif 
                 else:
                     pay_amount = v - f   
             else:
