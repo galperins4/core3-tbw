@@ -7,7 +7,7 @@ class Initialize:
         self.database = database
         self.sql = sql
         self.config = config
-        data_path = self.home+'/core-tbw/core/data/tbw.db'
+        data_path = self.home+'/core3-tbw/core/data/tbw.db'
         
         if os.path.exists(data_path) == False:
             self.initialize()
