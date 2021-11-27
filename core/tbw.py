@@ -14,6 +14,28 @@ import sys
 import time
 
 
+def update_voter_share(sql, config):
+    old_rate = loat(input("Enter old share rate in the following format (80): "))
+    sql.open_connection()
+    voters = sql.all_voters().fetchall()
+    
+    for i in voters:
+        if i[3] == old_rate:
+            sql.update_voter_share(i[0], config.voter_share)
+    
+    sql.close_connection()
+    
+
+
+def update_custom_share():
+    pass
+
+
+def force_manual_pay():
+    pass
+
+
+
 def interval_check(block_count, interval):
     if block_count % interval == 0:
         print("Payout interval reached")
@@ -55,6 +77,9 @@ if __name__ == '__main__':
     
     # check if initialized
     Initialize(config, database, sql)
+    
+    # update all voter share
+    update_voter_share(sql, config)
     
     # check if manual pay flag is set
     
