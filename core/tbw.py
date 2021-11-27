@@ -56,6 +56,10 @@ if __name__ == '__main__':
     # check if initialized
     Initialize(config, database, sql)
     
+    # check if manual pay flag is set
+    
+    # check if custom share flag is set
+    
     # MAIN FUNCTION LOOP SHOULD START HERE
     while True:
         # get blocks
