@@ -59,6 +59,7 @@ class Configure:
     def other(self, c):
         self.custom = c.get('other', 'custom')
         self.manual_pay = c.get('other', 'manual_pay')
+        self.update_share = c.get('other', 'update_share')
 
         
     def donate(self, c):
