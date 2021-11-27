@@ -1,6 +1,6 @@
 from config.configure import Configure
 from network.network import Network
-from modules.exchange import 
+from modules.exchange import Exchange
 from utility.sql import Sql
 from utility.utility import Utility
 
