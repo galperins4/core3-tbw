@@ -83,8 +83,12 @@ if __name__ == '__main__':
         update_voter_share(sql, config)
     
     # check if manual pay flag is set
-    
+    if config.manual_pay == "Y":
+        force_manual_pay()
+
     # check if custom share flag is set
+    if config.custom == "Y:
+        update_custom_share()
     
     # MAIN FUNCTION LOOP SHOULD START HERE
     while True:
