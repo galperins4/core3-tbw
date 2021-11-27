@@ -10,7 +10,6 @@ from utility.database import Database
 from utility.dynamic import Dynamic
 from utility.sql import Sql
 from utility.utility import Utility
-import sys
 import time
 
 
