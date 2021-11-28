@@ -58,6 +58,8 @@ Python 3.6+ is required.
 | start_block | 0 | Script will start calculations only for blocks after specified start block |
 
 ### [Delegate]
+| Config Option | Default Setting | Description | 
+| :--- | :---: | :--- |
 | delegate | delegate | Delegate name |
 | message | message | ARK and ARK Fork coins only - message you want in vendor field for share payments |
 | voter_share | 50  | Percentage to share with voters |
