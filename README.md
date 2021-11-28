@@ -12,7 +12,7 @@ npm install pm2@latest -g
 yarn global add pm2
 ```
 
-## Clean/New Installation
+## Clean / New Installation
 
 ```sh
 # Install and sync relay server
