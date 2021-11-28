@@ -110,10 +110,9 @@ Python 3.6+ is required.
 ### Donate
 | Option | Default Setting | Description | 
 | :--- | :---: | :--- |
-| donate | N | Changing value to Y will enable exchange swap functionality |
-| donate_address | addr1 | Changing value to Y will enable exchange swap functionality |
-| donate_percent | 0 | Changing value to Y will enable exchange swap functionality |
-
+| donate | N | Changing value to Y will enable donations to a specified address |
+| donate_address | addr1 | This is the donation address. If you like my work, please consider adding a donation to your payment runs. Please contact Delegate Goose on Discord/Telegram for an address |
+| donate_percent | 0 | This is the donation percentage. The value is a percent of the reserve account rewards. For example, if the current payment run has 2 Ark rewards in the reserve account and this is set at 10 (percent), the donation will be 0.2 Ark and the new reserve account payment will be reduced to 1.8 Ark |
 
 ## To Do
 
