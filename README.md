@@ -82,16 +82,16 @@ Python 3.6+ is required.
 | delegate_fee_address | addr1,addr2 | These are the addresses to go with the delegate feeskeep percentages (Note: first entry is reserve account and is required! All others are optional |
 
 
-### Exchange (Experimental - ark network only)
-| Config Option | Default Setting | Description | 
+### Exchange (Experimental - Ark network only)
+| Option | Default Setting | Description | 
 | :--- | :---: | :--- |
-| EXCHANGE | N | Changing value to Y will enable exchange swap functionality |
-| CONVERT_FROM | ark, ark | Network the swap is sending from - ark only |
-| CONVERT_ADDRESS | addr1, addr2 | Reward address we are converting from for the swap - can support one or many|
-| CONVERT_TO | usdc, xrp | Cryptocurrency we want to swap / exchange into - can support one or many |
-| ADDRESS_TO | usdc_addr1, xrp_addr2 | Addresses to exchange into - can support one or many |
-| NETWORK_TO | eth, xrp | Network for the receving swap cryptocurrency - can support one or many |
-| PROVIDER | provider, provider | Provider of the swap - Available options are "SimpleSwap" or "ChangeNow" |
+| exchange | N | Changing value to Y will enable exchange swap functionality |
+| convert_from | ark, ark | Network the swap is sending from - ark only |
+| convert_address | addr1,addr2 | Reward address we are converting from for the swap - can support one or many|
+| convert_to | usdc,xrp | Cryptocurrency we want to swap / exchange into - can support one or many |
+| address_to | usdc_addr1,xrp_addr2 | Addresses to exchange into - can support one or many |
+| network_to | eth,xrp | Network for the receving swap cryptocurrency - can support one or many |
+| provider | provider,provider | Provider of the swap - Available options are "SimpleSwap" or "ChangeNow" |
 
 **NOTE 1**: Exchange address does not currently work with fixed amount/address processing. Do NOT enable exchange for fixed accounts
 
