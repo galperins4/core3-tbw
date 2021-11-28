@@ -82,7 +82,7 @@ Python 3.6+ is required.
 | delegate_fee_address | addr1,addr2 | These are the addresses to go with the delegate feeskeep percentages (Note: first entry is reserve account and is required! All others are optional |
 
 
-### Exchange (Experimental - Ark network only)
+### [Exchange] (Experimental - Ark network only)
 | Option | Default Setting | Description | 
 | :--- | :---: | :--- |
 | exchange | N | Changing value to Y will enable exchange swap functionality |
@@ -97,7 +97,7 @@ Python 3.6+ is required.
 **NOTE 2**: For full disclosure - swap exchanges require an API key to create. All swaps are requested through my affiliate accounts at SimpleSwap / ChangeNow which generates a referral fee. All exchange/swap processing is the responsibility of SimpleSwap and ChangeNow.
 **NOTE 3**: exchange_configtest.py (under core folder) has been created to test exchange config to prior to turning on. To execute run `python3 test_exchange.py` after setting up configuration as described in the table above
 
-### Other 
+### [Other] 
 | Option | Default Setting | Description | 
 | :--- | :---: | :--- |
 | custom | N | Changing value to Y will enable the script to set custom share rates. Run ```python3 tbw.py``` and you will be prompted to enter a voter address and share rate to update. Note - this change only affects a single voter |
@@ -106,8 +106,7 @@ Python 3.6+ is required.
 
 **NOTE 1**: Each of these settings should be reset to N in the config after running the script with the specific option enabled
 
-
-### Donate
+### [Donate]
 | Option | Default Setting | Description | 
 | :--- | :---: | :--- |
 | donate | N | Changing value to Y will enable donations to a specified address |
