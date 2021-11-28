@@ -143,7 +143,7 @@ if __name__ == '__main__':
             print(f"Get all voter balances in {tic_d - tic_c:0.4f} seconds")
             print("\noriginal voter_balances")
             for k, v in voter_balances.items():
-                print(k,v)
+                print(k, v / config.atomic)
             # run voters through various vote_options
             if config.whitelist == 'Y':
                 voter_balances = voter_options.process_whitelist(voter_balances)
