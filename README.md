@@ -50,7 +50,7 @@ Python 3.6+ is required.
 
 ## Available Configuration Options 
 ### [Static]
-| Config Option | Default Setting | Description | 
+| Option | Default Setting | Description | 
 | :--- | :---: | :--- |
 | atomic | 100000000 | atomic value - do not change |
 | network | ark_devnet | ark_mainnet or persona_mainnet or qredit_mainnet etc.. |
@@ -58,7 +58,7 @@ Python 3.6+ is required.
 | start_block | 0 | Script will start calculations only for blocks after specified start block |
 
 ### [Delegate]
-| Config Option | Default Setting | Description | 
+| Option | Default Setting | Description | 
 | :--- | :---: | :--- |
 | delegate | delegate | Delegate name |
 | message | message | ARK and ARK Fork coins only - message you want in vendor field for share payments |
@@ -70,22 +70,17 @@ Python 3.6+ is required.
 | blacklist | N | Enable blocking of payments to specific addresses |
 | blacklist_addr | addr1,addr2,addr3 | Comma seperated list of addresses to block from voter payments |
 
+### [Payment]
+| Option | Default Setting | Description | 
+| :--- | :---: | :--- |
+| interval | 211  | The interval you want to pay voters in blocks. A setting of 211 would pay ever 211 blocks (or 422 ark) |
+| multi | N | Change to "Y" if you'd like payments to be made using Multipayments |
+| multi_fee | 0.1 | Experimental setting to adjust default Multipayments fee |
+| passphrase | passphrase | 12 word delegate passphrase |
+| secondphrase | None | Second 12 word delegate passphrase |
+| delegate_fee | 25,25 | These are the percentages for delegates to keep and distribute among x accounts (Note: first entry is reserve account and is required! All others are optional |
+| delegate_fee_address | addr1,addr2 | These are the addresses to go with the delegate feeskeep percentages (Note: first entry is reserve account and is required! All others are optional |
 
-
-
-| PASSPHRASE | passphrase | 12 word delegate passphrase |
-| SECONDPHRASE | None | Second 12 word delegate passphrase |
-| INTERVAL | 211  | The interval you want to pay voters in blocks. A setting of 211 would pay ever 211 blocks (or 422 ark) |
-
-
-
-
-
-| MIN_PAYMENT| 0 | Minimum threshold for payment. If set to 1, any payout less than 1 ARK will be held until the next pay run and accumulated |
-| KEEP | reserve:0.25,second:0.25 | These are the percentages for delegates to keep and distribute among x accounts (Note: reserve:your_addr1 is required! all others are optional |
-| PAY_ADDRESSES | reserve:addr1,second:addr2 | These are the addresses to go with the keep percentages (Note: reserve:your_addr1 is required! all others are optional) |
-| MULTI | N | Change to "Y" if you'd like payments to be made using Multipayments |
-| MULTI_FEE | 0.1 | Experimental setting to adjust default Multipayments fee |
 
 ### Exchange (Experimental - ark network only)
 | Config Option | Default Setting | Description | 
