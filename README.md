@@ -52,25 +52,33 @@ Python 3.6+ is required.
 ### [Static]
 | Config Option | Default Setting | Description | 
 | :--- | :---: | :--- |
-| START_BLOCK | 0 | Script will start calculations only for blocks after specified start block |
-| NETWORK | network | ark_mainnet or persona_mainnet or qredit_mainnet etc.. |
-| DATABASE_USER | dbname | This is the postgresql database username nodeDB (usually your os username) |
-| DELEGATE | delegate | Delegate name |
-| PUBLIC_KEY | publicKey | Delegate public key |
-| INTERVAL | 211  | The interval you want to pay voters in blocks. A setting of 211 would pay ever 211 blocks (or 422 ark) |
-| VOTER_SHARE | 0.50  | Percentage to share with voters (0.xx format) |
+| atomic | 100000000 | atomic value - do not change |
+| network | ark_devnet | ark_mainnet or persona_mainnet or qredit_mainnet etc.. |
+| username | username | This is the postgresql database username (usually your os username) |
+| start_block | 0 | Script will start calculations only for blocks after specified start block |
+
+### [Delegate]
+| delegate | delegate | Delegate name |
+| message | message | ARK and ARK Fork coins only - message you want in vendor field for share payments |
+| voter_share | 50  | Percentage to share with voters |
+| vote_cap| 0 | Cap voters for how much they can earn with votes. For example 10000 will mean any wallet over 10K will only be paid based on 10K weight |
+| vote_min | 0 | Use this if you have a minimum wallet balance to be eligible for payments |
+| whitelist | N | Enable payment to only whitelisted addresses |
+| whitelist_addr | addr1,addr2,addr3 | Comma seperated list of addresses to allow voter payments to only whitelisted addresses |
+| blacklist | N | Enable blocking of payments to specific addresses |
+| blacklist_addr | addr1,addr2,addr3 | Comma seperated list of addresses to block from voter payments |
+
+
+
+
 | PASSPHRASE | passphrase | 12 word delegate passphrase |
 | SECONDPHRASE | None | Second 12 word delegate passphrase |
-| VOTER_MSG | Delegate X - True Block Weight | ARK and ARK Fork coins only - message you want in vendor field for share payments |
-| BLOCK_CHECK | 30 | How often you want the script to check for new blocks in seconds. Recommend low value (e.g., 30 seconds) |
-| VOTE_CAP | 0 | Cap voters for how much they can earn with votes. For example 10000 will mean any wallet over 10K will only be paid based on 10K weight |
-| VOTE_MIN | 0 | Use this if you have a minimum wallet balance to be eligible for payments |
-| FIXED | addr1:0,addr2:0 | Use this for fixed deals. Amount will be spread evenly over the set interval |
-| WHITELIST | N | Enable payment to only whitelisted addresses |
-| WHITELIST_ADDR | addr1,addr2,addr3 | Comma seperated list of addresses to allow voter payments to |
-| BLACKLIST | block | Options are block or assign. Block zero's out blocked accounts which then distributes their earnings to voters. Assign does the same but assigns weight to a designated account |
-| BLACKLIST_ADDR | addr1,addr2,addr3 | Comma seperated list of addresses to block from voter payments |
-| BLACKLIST_ASSIGN | addr | If assign option is picked, this is the address those blacklisted shares go to. DO NOT SET to an account voting for said delegate. It is HIGHLY recommended this is set to the reserve address! |
+| INTERVAL | 211  | The interval you want to pay voters in blocks. A setting of 211 would pay ever 211 blocks (or 422 ark) |
+
+
+
+
+
 | MIN_PAYMENT| 0 | Minimum threshold for payment. If set to 1, any payout less than 1 ARK will be held until the next pay run and accumulated |
 | KEEP | reserve:0.25,second:0.25 | These are the percentages for delegates to keep and distribute among x accounts (Note: reserve:your_addr1 is required! all others are optional |
 | PAY_ADDRESSES | reserve:addr1,second:addr2 | These are the addresses to go with the keep percentages (Note: reserve:your_addr1 is required! all others are optional) |
