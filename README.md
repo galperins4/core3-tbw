@@ -45,21 +45,11 @@ Main values to update here are the following sections of the config file:
 [donate]
 ```
 
-2. Once this has been done navigate to core3-tbw folder and execute `bash tbw.sh` to get to the main menu script. Install required packages with option `1` and `2`. You can then select options `3`-`7` to either run all modules of tbw or parts.
-
-_Important_ - pay_addresses and keep keys should match in config. DO NOT delete the reserve key as it is required. All other's can be deleted or more added. In addition, payment is triggered to start based on when total blocks forged / interval is an integer (with no remainder).
-
-To use custom voter shares, the following 2 options are available:
-
-1) Directly update the column "share" column in the voters table of `your_network`.db
-2) Turn on custom.py and send a POST request to the http://ip:port/updateShare endpoint. See below for example: `{"address":"DKahhVFVJfqCcCmaQHuYzAVFKcWjBu5i6Z", "share":0.10}`
-
-IMPORTANT: If at any time you change you share rate you must stop tbw, update your config.json and run the following command `python3 tbw.py --shareChange`
 
 Python 3.6+ is required.
 
 ## Available Configuration Options 
-### True Block Weight
+### [Static]
 | Config Option | Default Setting | Description | 
 | :--- | :---: | :--- |
 | START_BLOCK | 0 | Script will start calculations only for blocks after specified start block |
