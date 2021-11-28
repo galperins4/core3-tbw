@@ -94,22 +94,26 @@ Python 3.6+ is required.
 | provider | provider,provider | Provider of the swap - Available options are "SimpleSwap" or "ChangeNow" |
 
 **NOTE 1**: Exchange address does not currently work with fixed amount/address processing. Do NOT enable exchange for fixed accounts
-
 **NOTE 2**: For full disclosure - swap exchanges require an API key to create. All swaps are requested through my affiliate accounts at SimpleSwap / ChangeNow which generates a referral fee. All exchange/swap processing is the responsibility of SimpleSwap and ChangeNow.
+**NOTE 3**: exchange_configtest.py (under core folder) has been created to test exchange config to prior to turning on. To execute run `python3 test_exchange.py` after setting up configuration as described in the table above
 
-**NOTE 3**: exchange_configtest.py (under core folder) has been created to test exchange config to prior to turning on. To execute run `python3 exchange_configtest.py` after setting up configuration as described in the table above
-
-
-### Pool
-| Config Option | Default Setting | Description | 
+### Other 
+| Option | Default Setting | Description | 
 | :--- | :---: | :--- |
-| POOL_IP | xx.xx.xx.xx | IP of the node the pool is installed on |
-| EXPLORER | https://dexplorer.ark.io/ | The address of the explorer for the coin |
-| COIN | DARK | Coin name, DARK, ARK, QREDIT, PRSN etc |
-| PROPOSAL | https://xx.xx.xx/ | Link to delegate proposal (if any) |
-| POOL_PORT | 5000 | Port for pool/webhooks |
-| CUSTOM_PORT | 5004 | Custom port for using custom voter share update functionality |
-| POOL_VERSION | original | Set the pool website version - options are "original" or "geops" |
+| custom | N | Changing value to Y will enable the script to set custom share rates. Run ```python3 tbw.py``` and you will be prompted to enter a voter address and share rate to update. Note - this change only affects a single voter |
+| manual_pay | N | Changing value to Y will enable the script to run a manual pay run outside of the normal interval. Run ```python3 tbw.py``` which will force unpaid rewards to stage for a payrun.  |
+| update_share | N | Changing value to Y will enable exchange swap functionality |
+
+**NOTE 1**: Each of these settings should be reset to N in the config after running the script with the specific option enabled
+
+
+### Donate
+| Option | Default Setting | Description | 
+| :--- | :---: | :--- |
+| donate | N | Changing value to Y will enable exchange swap functionality |
+| donate_address | addr1 | Changing value to Y will enable exchange swap functionality |
+| donate_percent | 0 | Changing value to Y will enable exchange swap functionality |
+
 
 ## To Do
 
