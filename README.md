@@ -16,12 +16,15 @@ yarn global add pm2
 
 ```sh
 # Install and sync relay server
+# clone repository
 git clone https://github.com/galperins4/core3-tbw
+# install requirements
 cd ~/core3-tbw
-nano core/config/config
+pip3 install -r requirements.txt
 # fill out config (see below)
+nano ~/core3-tbw/core/config/config.ini
 # initialize
-cd ~core3-tbw/core
+cd ~/core3-tbw/core
 python3 tbw.py
 # run script with pm2
 pm2 start apps.json
@@ -29,18 +32,20 @@ pm2 start apps.json
 
 ## Configuration & Usage
 
-1. After the repository has been cloned you need to open the [config](./core/config/config) and change it to your liking (see [Available Configuration Options](#available-configuration-options))
+1. After the repository has been cloned you need to open the [config](./core/config/config.ini) and change it to your liking (see [Available Configuration Options](#available-configuration-options))
 
-Main values to update here are the following:
+Main values to update here are the following sections of the config file:
 
 ```txt
-NETWORK
-DATABASE_USER
-DELEGATE
-PUBLIC_KEY
+[static]
+[delegate]
+[payment]
+[exchange]
+[other]
+[donate]
 ```
 
-2. Once this has been done navigate to core2_tbw folder and execute `bash tbw.sh` to get to the main menu script. Install required packages with option `1` and `2`. You can then select options `3`-`7` to either run all modules of tbw or parts.
+2. Once this has been done navigate to core3-tbw folder and execute `bash tbw.sh` to get to the main menu script. Install required packages with option `1` and `2`. You can then select options `3`-`7` to either run all modules of tbw or parts.
 
 _Important_ - pay_addresses and keep keys should match in config. DO NOT delete the reserve key as it is required. All other's can be deleted or more added. In addition, payment is triggered to start based on when total blocks forged / interval is an integer (with no remainder).
 
