@@ -4,6 +4,7 @@ import psycopg
 class Database:
     def __init__(self, config, network):
         self.database = network.database
+        self.database_host = network.database_host
         self.username = config.username
         self.password = network.password
         self.delegate = config.delegate
@@ -18,7 +19,7 @@ class Database:
             dbname = self.database,
             user = self.username,
             password= self.password,
-            host='localhost',
+            host=self.database_host,
             port='5432')
             
         self.cursor=self.connection.cursor()

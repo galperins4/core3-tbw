@@ -1,0 +1,13 @@
+# config
+core/config/config.ini
+
+# database
+core/data/*.db
+
+# pycache files
+*.pyc
+__pycache__/
+
+# emacs
+*~
+#*
