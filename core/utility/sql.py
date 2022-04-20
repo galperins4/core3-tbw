@@ -51,6 +51,8 @@ class Sql:
         
         self.cursor.execute("CREATE TABLE IF NOT EXISTS exchange (initial_address varchar(36), payin_address varchar(36), exchange_address varchar(64), payamt bigint, exchangeid varchar(64), processed_at varchar(64) null )")
 
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS voters_balance_checkpoint (address varchar(36), balance bigint, timestamp int )")
+
         self.connection.commit()
 
 
@@ -70,6 +72,7 @@ class Sql:
         self.executemany("INSERT INTO staging VALUES (?,?,?,?)", staging)
         self.commit()
 
+
     def store_blocks(self, blocks):
         newBlocks=[]
 
@@ -82,7 +85,6 @@ class Sql:
         self.executemany("INSERT INTO blocks VALUES (?,?,?,?,?,?)", newBlocks)
 
         self.commit()
-
 
     def store_voters(self, voters, share):
         newVoters=[]
@@ -236,3 +238,13 @@ class Sql:
 
     def get_voter_share(self, address):
         return self.cursor.execute("SELECT share FROM voters WHERE address = '{0}'".format(address))
+
+    def get_voter_balance_checkpoint(self, address):
+        return self.cursor.execute(f"SELECT * FROM voters_balance_checkpoint WHERE address = '{address}'")
+
+    def update_voter_balance_checkpoint(self, address, balance, block_timestamp, chkpoint_ts):
+        if chkpoint_ts:
+            self.cursor.execute(f"UPDATE voters_balance_checkpoint SET address = '{address}', balance = {balance}, timestamp = {block_timestamp} WHERE address = '{address}'")
+        else:
+            self.cursor.execute(f"INSERT INTO voters_balance_checkpoint VALUES ('{address}',{balance},{block_timestamp})")
+        self.commit()
