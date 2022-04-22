@@ -21,6 +21,8 @@ git clone https://github.com/galperins4/core3-tbw
 # install requirements
 cd ~/core3-tbw
 pip3 install -r requirements.txt
+# copy example config
+cp ~/core3-tbw/core/config/config.ini.example ~/core3-tbw/core/config/config.ini
 # fill out config (see below)
 nano ~/core3-tbw/core/config/config.ini
 # initialize
