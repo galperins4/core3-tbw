@@ -68,33 +68,19 @@ class Database:
             u = "-" + self.publickey
             vd = "+" + self.delegate
             ud = "-" + self.delegate
-
+            
             # get all votes
-            # by public key
             vote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
             "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
-            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, v)).fetchall()
-            
-            # by delegate name
-            dvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
-            "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
-            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, vd)).fetchall()
-            
+            "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, v, vd)).fetchall()
+
             #get all unvotes
-            # by public key
             unvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
             "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
-            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u)).fetchall()
-            
-            # by delegate name
-            dunvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
-            "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
-            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, ud)).fetchall()
-            
-            print("vote by public key", vote)
-            print("unvote by public key", unvote)
-            print("vote by delegate name", dvote)
-            print("unvote by delegate name", dunvote)
+            "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u, ud)).fetchall()
+
+            print("vote", vote)
+            print("unvote", unvote)
             
             quit()
 
