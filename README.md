@@ -77,7 +77,6 @@ Python 3.6+ is required.
 | :--- | :---: | :--- |
 | interval | 211  | The interval you want to pay voters in blocks. A setting of 211 would pay ever 211 blocks (or 422 ark) |
 | multi | N | Change to "Y" if you'd like payments to be made using Multipayments |
-| multi_fee | 0.1 | Experimental setting to adjust default Multipayments fee |
 | passphrase | passphrase | 12 word delegate passphrase |
 | secondphrase | None | Second 12 word delegate passphrase |
 | delegate_fee | 25,25 | These are the percentages for delegates to keep and distribute among x accounts (Note: first entry is reserve account and is required! All others are optional |
@@ -96,7 +95,9 @@ Python 3.6+ is required.
 | provider | provider,provider | Provider of the swap - Available options are "SimpleSwap" or "ChangeNow" |
 
 **NOTE 1**: Exchange address does not currently work with fixed amount/address processing. Do NOT enable exchange for fixed accounts
+
 **NOTE 2**: For full disclosure - swap exchanges require an API key to create. All swaps are requested through my affiliate accounts at SimpleSwap / ChangeNow which generates a referral fee. All exchange/swap processing is the responsibility of SimpleSwap and ChangeNow.
+
 **NOTE 3**: exchange_configtest.py (under core folder) has been created to test exchange config to prior to turning on. To execute run `python3 test_exchange.py` after setting up configuration as described in the table above
 
 ### [Other] 
@@ -104,7 +105,7 @@ Python 3.6+ is required.
 | :--- | :---: | :--- |
 | custom | N | Changing value to Y will enable the script to set custom share rates. Run ```python3 tbw.py``` and you will be prompted to enter a voter address and share rate to update. Note - this change only affects a single voter |
 | manual_pay | N | Changing value to Y will enable the script to run a manual pay run outside of the normal interval. Run ```python3 tbw.py``` which will force unpaid rewards to stage for a payrun.  |
-| update_share | N | Changing value to Y will enable exchange swap functionality |
+| update_share | N | Changing value to Y will enable the ability to update voter share rate in database |
 
 **NOTE 1**: Each of these settings should be reset to N in the config after running the script with the specific option enabled
 
