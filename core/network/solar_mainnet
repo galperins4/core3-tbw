@@ -1,0 +1,9 @@
+[network]
+epoch = 2022,03,28,18,00,00
+version = 63
+wif = 252
+api = 6003
+database = solar_testnet
+database_host = %(HOME)s/.local/share/solar-core/mainnet/database
+user = null
+password = password
