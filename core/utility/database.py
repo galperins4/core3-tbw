@@ -79,6 +79,15 @@ class Database:
             "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
             "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u, ud)).fetchall()
 
+            print("votes")
+            for i in votes:
+                print(i)
+            print("unvotes")
+            for i in unvotes:
+                print(i)
+                
+            quit()
+            
             return vote, unvote
         except Exception as e:
             print(e)
