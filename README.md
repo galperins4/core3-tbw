@@ -77,7 +77,6 @@ Python 3.6+ is required.
 | :--- | :---: | :--- |
 | interval | 211  | The interval you want to pay voters in blocks. A setting of 211 would pay ever 211 blocks (or 422 ark) |
 | multi | N | Change to "Y" if you'd like payments to be made using Multipayments |
-| multi_fee | 0.1 | Experimental setting to adjust default Multipayments fee |
 | passphrase | passphrase | 12 word delegate passphrase |
 | secondphrase | None | Second 12 word delegate passphrase |
 | delegate_fee | 25,25 | These are the percentages for delegates to keep and distribute among x accounts (Note: first entry is reserve account and is required! All others are optional |
