@@ -89,7 +89,7 @@ class Allocate:
 
         # get block reward
         block_reward = block[2]
-        fee_reward = block[3]
+        fee_reward = block[3] - block[5]
         total_reward = block_reward+fee_reward
         
         # process delegate reward
