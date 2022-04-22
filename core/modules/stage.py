@@ -25,27 +25,18 @@ class Stage:
         # check if multipayments
         if self.config.multi == "Y":
             multi_limit = self.dynamic.get_multipay_limit()
-            print("Multipay Limit", multi_limit)
-            if total_tx < multi_limit:
-                # only requires a single  multipayment tx
-                print("Option A - Total transactions < 1 multipayment")
-                transaction_fees = int(self.config.multi_fee * self.config.atomic)
+
+            if total_tx % multi_limit == 0:
+                numtx = round(total_tx / multi_limit)
             else:
-                # number of transactions fit exactly in x number of multipays
-                if total_tx % multi_limit == 0:
-                    print("Option B - Total transactions evenly spread into multipayment")
-                    transactions = round(total_tx / multi_limit)
-                    transaction_fees = int(transactions * (self.config.multi_fee * self.config.atomic))
-                # number of transactions is 1 greater than limit which splits last payment into regular transaction
-                elif total_tx % multi_limit == 1:
-                    print("Option C - One extra payment over multipay limit requiring a single tx")
-                    multi_transactions = round(total_tx / multi_limit)
-                    transaction_fees = int(((multi_transactions * (self.config.multi_fee * self.config.atomic)) + self.dynamic.get_dynamic_fee()))
-                # number of transactions falls into n+1 multipayment
-                else:
-                    print("Option D - Total transactions fit into n+1 multpayments")
-                    transactions = round(total_tx // multi_limit) + 1
-                    transaction_fees = int(transactions * (self.config.multi_fee * self.config.atomic))
+                numtx = round(total_tx // multi_limit) + 1
+
+            full_payments = total_tx // multi_limit
+            full = int(full_payments * self.dynamic.get_dynamic_fee_multi(multi_limit))
+            partial_payments = total_tx % multi_limit
+            partial = self.dynamic.get_dynamic_fee_multi(partial_payments)
+            transaction_fees = full + partial
+            
         else:
             transaction_fees = int(total_tx * self.dynamic.get_dynamic_fee())
         return transaction_fees
