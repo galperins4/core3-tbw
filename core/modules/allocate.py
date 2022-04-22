@@ -35,10 +35,10 @@ class Allocate:
             else:
                 roll.append(val)
                 
-            # add voters to database
-            self.sql.open_connection()
-            self.sql.store_voters(roll, self.config.voter_share)
-            self.sql.close_connection()
+        # add voters to database
+        self.sql.open_connection()
+        self.sql.store_voters(roll, self.config.voter_share)
+        self.sql.close_connection()
 
         return roll
     
