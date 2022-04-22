@@ -1,6 +1,7 @@
 {
     "apps": [{
-        "name": "core3-tbw",
+        "name": "tbw",
+	"version": "1.0.0",
         "script": "tbw.py",
         "instances": 1,
         "exec_mode": "fork",
@@ -9,7 +10,8 @@
 	"interpreter_args": "-u"
     },
     {
-        "name": "core3-pay",
+        "name": "pay",
+	"version": "1.0.0",
         "script": "pay.py",
         "instances": 1,
         "exec_mode": "fork",
