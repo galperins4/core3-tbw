@@ -52,7 +52,7 @@ class Allocate:
         for i in voter_roll:
             voter_balance_checkpoint = self.sql.get_voter_balance_checkpoint(i[0]).fetchall()
             if voter_balance_checkpoint:
-                # Old voter
+                # Already voter
                 # Recheck transactions between chkpoint_ts and current block_timestamp
                 # Get checkpoint balance and add it to the transactions
                 chkpoint_ts = voter_balance_checkpoint[0][2]
@@ -66,8 +66,9 @@ class Allocate:
             block_reward = self.database.get_sum_block_rewards(i[1], block_timestamp, chkpoint_ts)
             balance = chkpoint_balance + credit + block_reward - debit
             vote_balance[i[0]] = balance
-            # Store voter balance with given block_timestamp
-            self.sql.update_voter_balance_checkpoint(i[0], balance, block_timestamp, chkpoint_ts)
+
+        # Store voter balance with given block_timestamp
+        self.sql.update_voter_balance_checkpoint(vote_balance, block_timestamp)
 
         self.database.close_connection()
         self.sql.close_connection()

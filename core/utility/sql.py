@@ -39,9 +39,9 @@ class Sql:
 
 
     def setup(self):
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS blocks (id varchar(64), timestamp int, reward int, totalFee bigint, height int, processed_at varchar(64) null)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS blocks (id varchar(64) PRIMARY KEY, timestamp int, reward int, totalFee bigint, height int, processed_at varchar(64) null)")
 
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS voters (address varchar(36), public_key varchar(66), unpaid_bal bigint, paid_bal bigint, share float )")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS voters (address varchar(36) PRIMARY KEY, public_key varchar(66), unpaid_bal bigint, paid_bal bigint, share float )")
 
         self.cursor.execute("CREATE TABLE IF NOT EXISTS transactions (address varchar(36), amount varchar(64), id varchar(64), processed_at varchar(64) )")
         
@@ -51,7 +51,7 @@ class Sql:
         
         self.cursor.execute("CREATE TABLE IF NOT EXISTS exchange (initial_address varchar(36), payin_address varchar(36), exchange_address varchar(64), payamt bigint, exchangeid varchar(64), processed_at varchar(64) null )")
 
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS voters_balance_checkpoint (address varchar(36), balance bigint, timestamp int )")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS voters_balance_checkpoint (address varchar(36) PRIMARY KEY, balance bigint, timestamp int )")
 
         self.connection.commit()
 
@@ -206,9 +206,8 @@ class Sql:
 
 
     def update_voter_balance(self, voter_unpaid):
-        for k,v in voter_unpaid.items():
-            self.cursor.execute(f"UPDATE voters SET unpaid_bal = unpaid_bal + {v} WHERE address = '{k}'")
-            self.commit()
+        self.executemany("UPDATE voters SET unpaid_bal = unpaid_bal + ? WHERE address = ?", [(k, v) for k,v in voter_unpaid.items()])
+        self.commit()
 
 
     def update_delegate_balance(self, delegate_unpaid):
@@ -242,9 +241,6 @@ class Sql:
     def get_voter_balance_checkpoint(self, address):
         return self.cursor.execute(f"SELECT * FROM voters_balance_checkpoint WHERE address = '{address}'")
 
-    def update_voter_balance_checkpoint(self, address, balance, block_timestamp, chkpoint_ts):
-        if chkpoint_ts:
-            self.cursor.execute(f"UPDATE voters_balance_checkpoint SET address = '{address}', balance = {balance}, timestamp = {block_timestamp} WHERE address = '{address}'")
-        else:
-            self.cursor.execute(f"INSERT INTO voters_balance_checkpoint VALUES ('{address}',{balance},{block_timestamp})")
+    def update_voter_balance_checkpoint(self, vote_balance, block_timestamp):
+        self.executemany("INSERT OR REPLACE INTO voters_balance_checkpoint(address,balance,timestamp) VALUES (?,?,?)", [(k,v,block_timestamp) for k,v in vote_balance.items()])
         self.commit()
