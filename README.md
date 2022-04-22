@@ -105,7 +105,7 @@ Python 3.6+ is required.
 | :--- | :---: | :--- |
 | custom | N | Changing value to Y will enable the script to set custom share rates. Run ```python3 tbw.py``` and you will be prompted to enter a voter address and share rate to update. Note - this change only affects a single voter |
 | manual_pay | N | Changing value to Y will enable the script to run a manual pay run outside of the normal interval. Run ```python3 tbw.py``` which will force unpaid rewards to stage for a payrun.  |
-| update_share | N | Changing value to Y will enable exchange swap functionality |
+| update_share | N | Changing value to Y will enable the ability to update voter share rate in database |
 
 **NOTE 1**: Each of these settings should be reset to N in the config after running the script with the specific option enabled
 
