@@ -80,10 +80,10 @@ class Database:
             "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u, ud)).fetchall()
 
             print("votes")
-            for i in votes:
+            for i in vote:
                 print(i)
             print("unvotes")
-            for i in unvotes:
+            for i in unvote:
                 print(i)
                 
             quit()
