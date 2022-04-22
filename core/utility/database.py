@@ -4,6 +4,7 @@ import psycopg
 class Database:
     def __init__(self, config, network):
         self.database = network.database
+        self.database_host = network.database_host
         self.username = config.username
         self.password = network.password
         self.delegate = config.delegate
@@ -18,7 +19,7 @@ class Database:
             dbname = self.database,
             user = self.username,
             password= self.password,
-            host='localhost',
+            host=self.database_host,
             port='5432')
             
         self.cursor=self.connection.cursor()
@@ -82,10 +83,10 @@ class Database:
 
 
     # ACCOUNT OPERATIONS
-    def get_sum_inbound(self, account, timestamp):
+    def get_sum_inbound(self, account, timestamp, chkpoint_timestamp):
         try:
             # get inbound non-multi transactions
-            output = self.cursor.execute(f"""SELECT SUM("amount") FROM (SELECT * FROM "transactions" WHERE "timestamp" <= {timestamp}) AS
+            output = self.cursor.execute(f"""SELECT SUM("amount") FROM (SELECT * FROM "transactions" WHERE "timestamp" <= {timestamp} AND "timestamp" >= {chkpoint_timestamp}) AS
             "filtered" WHERE "recipient_id" = '{account}' AND "type" <> {6}""").fetchall()
             if output[0][0] == None:
                 non_multi = [0]
@@ -97,9 +98,8 @@ class Database:
         try:
             # get inbound multi transactions
             multi_universe = self.cursor.execute("""SELECT "timestamp", "fee", "sender_public_key", "asset", "id" FROM (SELECT * FROM 
-            "transactions" WHERE "timestamp" <= %s) AS "filtered" WHERE asset::jsonb @> '{"payments": [{"recipientId":"%s"}]}'::jsonb;""" 
-            % (timestamp, account)).fetchall()
-
+            "transactions" WHERE "timestamp" <= %s AND "timestamp" >= %s) AS "filtered" WHERE asset::jsonb @> '{"payments": [{"recipientId":"%s"}]}'::jsonb;""" 
+            % (timestamp, chkpoint_timestamp, account)).fetchall()
             # get amounts from multi transactions
             multi_amount = []
             for i in multi_universe:
@@ -114,10 +114,10 @@ class Database:
         return sum(total)
 
 
-    def get_sum_outbound(self, account, timestamp):
+    def get_sum_outbound(self, account, timestamp, chkpoint_timestamp):
         try:
             output = self.cursor.execute(f"""SELECT SUM("amount") as amount, SUM("fee") as fee FROM (SELECT * FROM "transactions" WHERE 
-            "timestamp" <= {timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}'""").fetchall()
+            "timestamp" <= {timestamp} AND "timestamp" >= {chkpoint_timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}'""").fetchall()
             if output[0][0] == None:
                 convert = [0,0]
             else:
@@ -127,10 +127,10 @@ class Database:
             print(e)
 
             
-    def get_sum_block_rewards(self, account, timestamp):
+    def get_sum_block_rewards(self, account, timestamp, chkpoint_timestamp):
         try:
             output = self.cursor.execute(f"""SELECT SUM("reward") AS "reward", SUM("total_fee") AS "fee" FROM (SELECT * FROM "blocks" 
-            WHERE "timestamp" <= {timestamp}) AS "filtered" WHERE "generator_public_key" = '{account}'""").fetchall()
+            WHERE "timestamp" <= {timestamp} AND "timestamp" >= {chkpoint_timestamp}) AS "filtered" WHERE "generator_public_key" = '{account}'""").fetchall()
             if output[0][0] == None:
                 block_rewards = [0,0]
             else:
