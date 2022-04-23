@@ -144,12 +144,13 @@ class Database:
             
     def get_sum_block_rewards(self, account, timestamp, chkpoint_timestamp):
         try:
-            output = self.cursor.execute(f"""SELECT SUM("reward") AS "reward", SUM("total_fee") AS "fee" FROM (SELECT * FROM "blocks" 
+            output = self.cursor.execute(f"""SELECT SUM("reward") AS "reward", SUM("total_fee") - SUM("burned_fee") AS "fee" FROM (SELECT * FROM "blocks"
             WHERE "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp}) AS "filtered" WHERE "generator_public_key" = '{account}'""").fetchall()
             if output[0][0] == None:
                 block_rewards = [0,0]
             else:
                 block_rewards = [int(i) for i in output[0]]
+
             return sum(block_rewards)
         except Exception as e:
             print(e)
