@@ -1,8 +1,9 @@
 from crypto.identity.address import address_from_public_key
-
+import logging
 
 class Allocate:
     def __init__(self, database, config, sql):
+        self.logger = logging.getLogger(__name__)
         self.database = database
         self.config = config
         self.sql = sql
@@ -77,7 +78,7 @@ class Allocate:
 
         
     def block_allocations(self, block, voters):
-        print("\n")
+        self.logger.info("")
         rewards_check = 0
         voter_check = 0
         delegate_check = 0
@@ -118,12 +119,10 @@ class Allocate:
                 db_share = self.sql.get_voter_share(k).fetchall()[0][0]
                 if db_share == config_voter_share:
                     # standard share rate
-                    # print("Standard Rate")
                     voter_block_share = (db_share / 100) * block_reward
                     single_voter_reward = int(share_weight * voter_block_share)        
                 else:
                     # custom share rate
-                    # print("Custom Rate")
                     custom_block_share = (db_share / 100) * block_reward
                     standard_voter_share = (config_voter_share / 100) * block_reward
                     single_voter_reward = int(share_weight * custom_block_share)
@@ -135,21 +134,21 @@ class Allocate:
            
             voter_check += 1
             rewards_check += single_voter_reward
-            print("Voter {} with balance of {} reward: {}".format(k, (v / self.atomic), (single_voter_reward / self.atomic)))
+            self.logger.debug("Voter {} with balance of {} reward: {}".format(k, (v / self.atomic), (single_voter_reward / self.atomic)))
             voter_unpaid[k] = single_voter_reward
         
         for k , v in delegate_unpaid.items():
-            print("Delegate {} account reward: {}".format(k, (v / self.atomic)))
+            self.logger.debug("Delegate {} account reward: {}".format(k, (v / self.atomic)))
         self.sql.close_connection()
         
                           
-        print(f"""\nProcessed Block: {block[4]}\n
-        Voters processed: {voter_check}
-        Total Approval: {total_delegate_vote_balance / self.atomic}
-        Voters Rewards: {rewards_check / self.atomic}
-        Delegate Reward: {delegate_check / self.atomic}
-        Voter + Delegate Rewards: {(rewards_check + delegate_check) / self.atomic}
-        Total Block Rewards: {total_reward / self.atomic}""")
+        self.logger.info(f"Processed Block: {block[4]}")
+        self.logger.info(f"\tVoters processed: {voter_check}")
+        self.logger.info(f"\tTotal Approval: {total_delegate_vote_balance / self.atomic}")
+        self.logger.info(f"\tVoters Rewards: {rewards_check / self.atomic}")
+        self.logger.info(f"\tDelegate Reward: {delegate_check / self.atomic}")
+        self.logger.info(f"\tVoter + Delegate Rewards: {(rewards_check + delegate_check) / self.atomic}")
+        self.logger.info(f"\tTotal Block Rewards: {total_reward / self.atomic}")
         # store delegate/voter rewards and mark block as processed mark block as processed
         self.sql.open_connection()
         self.sql.update_delegate_balance(delegate_unpaid)

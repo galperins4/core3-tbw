@@ -109,6 +109,12 @@ Python 3.6+ is required.
 
 **NOTE 1**: Each of these settings should be reset to N in the config after running the script with the specific option enabled
 
+### [Logging]
+| Option | Default Setting | Description | 
+| :--- | :---: | :--- |
+| loglevel | INFO | Can be turned to DEBUG in order to have full debug outputs |
+| formatter | %(asctime)s %(levelname)s %(message)s | Log formatter, can be set empty if needed  |
+
 ### [Donate]
 | Option | Default Setting | Description | 
 | :--- | :---: | :--- |

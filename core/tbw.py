@@ -11,7 +11,8 @@ from utility.dynamic import Dynamic
 from utility.sql import Sql
 from utility.utility import Utility
 import time
-
+import logging
+import sys
 
 def update_voter_share(sql, config):
     old_rate = float(input("Enter old share rate in the following format (80): "))
@@ -23,7 +24,7 @@ def update_voter_share(sql, config):
             sql.update_voter_share(i[0], config.voter_share)
 
     sql.close_connection()
-    print("Share rate updated")
+    logger.info("Share rate updated")
     quit()
 
 
@@ -33,7 +34,7 @@ def update_custom_share(sql):
     sql.open_connection()
     sql.update_voter_share(address, new_rate)
     sql.close_connection()
-    print("Address {} updated with custom rate of: {}".format(address, new_rate))
+    logger.info("Address {} updated with custom rate of: {}".format(address, new_rate))
     quit()
 
 
@@ -44,14 +45,14 @@ def force_manual_pay(config, dynamic, sql):
         
     # check if true to stage payments
     if stage == True and sum(unpaid_voters.values()) > 0:
-        print("Staging payments")
+        logger.info("Staging payments")
         s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
     quit()
 
 
 def interval_check(block_count, interval, manual = "N"):
     if block_count % interval == 0 or manual == "Y":
-        print("Payout interval reached")
+        logger.info("Payout interval reached")
         sql.open_connection()
         voter_balances = sql.voters().fetchall()
         delegate_balances = sql.rewards().fetchall()
@@ -73,13 +74,23 @@ def interval_check(block_count, interval, manual = "N"):
     return stage, voter_unpaid, delegate_unpaid
 
 if __name__ == '__main__':
-    print("Start Script")
     # get configuration
     config = Configure()
-    
+
+    # set logging 
+    logger = logging.getLogger()
+    logger.setLevel(config.loglevel)
+    outlog = logging.StreamHandler(sys.stdout)
+    formatter = logging.Formatter(config.formatter)
+    outlog.setFormatter(formatter)
+    logger.addHandler(outlog)
+
+    # start
+    logger.info("Start TBW Script")
+
     # load network
     network = Network(config.network)
-    
+
     # load utility and dynamic
     utility = Utility(network)
     dynamic = Dynamic(utility, config)
@@ -110,7 +121,7 @@ if __name__ == '__main__':
     
         # get last block to start
         last_block = block.get_last_block()
-        print("Last Block Height Retrieved: ", last_block[0][1])
+        logger.info(f"Last Block Height Retrieved: {last_block[0][1]}")
     
         # use last block timestamp to get all new blocks
         new_blocks = block.get_new_blocks(last_block)
@@ -127,69 +138,76 @@ if __name__ == '__main__':
     
         for unprocessed in unprocessed_blocks:
             tic_a = time.perf_counter()
-            print("\nUnprocessed Block Information\n", unprocessed)
+            logger.debug(f"Unprocessed Block Information: {unprocessed}")
             block_timestamp = unprocessed[1]
             # get vote and unvote transactions
             vote, unvote = allocate.get_vote_transactions(block_timestamp)
             tic_b = time.perf_counter()
-            print(f"Get all Vote and Unvote transactions in {tic_b - tic_a:0.4f} seconds")
+            logger.debug(f"Get all Vote and Unvote transactions in {tic_b - tic_a:0.4f} seconds")
             # create voter_roll
             voter_roll = allocate.create_voter_roll(vote, unvote)
             tic_c = time.perf_counter()
-            print(f"Create voter rolls in {tic_c - tic_b:0.4f} seconds")
+            logger.debug(f"Create voter rolls in {tic_c - tic_b:0.4f} seconds")
             # get voter_balances
             voter_balances = allocate.get_voter_balance(unprocessed, voter_roll)
             tic_d = time.perf_counter()
-            print(f"Get all voter balances in {tic_d - tic_c:0.4f} seconds")
-            print("\noriginal voter_balances")
+            logger.debug(f"Get all voter balances in {tic_d - tic_c:0.4f} seconds")
+            logger.debug("")
+            logger.debug("original voter_balances")
             for k, v in voter_balances.items():
-                print(k, v / config.atomic)
+                logger.debug(f"{k} {v / config.atomic}")
             # run voters through various vote_options
             if config.whitelist == 'Y':
                 voter_balances = voter_options.process_whitelist(voter_balances)
             if config.whitelist == 'N' and config.blacklist =='Y':
                 voter_balances = voter_options.process_blacklist(voter_balances)
-            print("\n voter_balances post whitelist or blacklist")
+            logger.debug("")
+            logger.debug("voter_balances post whitelist or blacklist")
             for k, v in voter_balances.items():
-                print(k,v / config.atomic)
+                logger.debug(f"{k} {v / config.atomic}")
             
             voter_balances = voter_options.process_voter_cap(voter_balances)
-            print("\n voter_balances post voter cap")
+            logger.debug("")
+            logger.debug("voter_balances post voter cap")
             for k, v in voter_balances.items():
-                print(k,v / config.atomic)
+                logger.debug(f"{k} {v / config.atomic}")
  
             voter_balances = voter_options.process_voter_min(voter_balances)
-            print("\n voter_balances post voter min")
+            logger.debug("")
+            logger.debug("voter_balances post voter min")
             for k, v in voter_balances.items():
-                print(k,v / config.atomic)
+                logger.debug(f"{k} {v / config.atomic}")
  
             voter_balances = voter_options.process_anti_dilution(voter_balances)
-            print("\n voter_balances post anti_dulite")
+            logger.debug("")
+            logger.debug("voter_balances post anti_dulite")
             for k, v in voter_balances.items():
-                print(k,v / config.atomic)
+                logger.debug(f"{k} {v / config.atomic}")
         
             tic_e = time.perf_counter()
-            print(f"Process all voter options in {tic_e - tic_d:0.4f} seconds")
+            logger.debug(f"Process all voter options in {tic_e - tic_d:0.4f} seconds")
             # allocate block rewards
             allocate.block_allocations(unprocessed, voter_balances)
             tic_f = time.perf_counter()
-            print(f"Allocate block rewards in {tic_f - tic_e:0.4f} seconds")
+            logger.debug(f"Allocate block rewards in {tic_f - tic_e:0.4f} seconds")
             # get block count
             block_count = block.block_counter()
-            print(f"\nCurrent block count : {block_count}")
+            logger.info("")
+            logger.info(f"Current block count : {block_count}")
             
             tic_g = time.perf_counter()
-            print(f"Processed block in {tic_g - tic_a:0.4f} seconds")
+            logger.debug(f"Processed block in {tic_g - tic_a:0.4f} seconds")
         
             # check interval for payout
             stage, unpaid_voters, unpaid_delegate = interval_check(block_count, config.interval)
         
             # check if true to stage payments
             if stage == True and sum(unpaid_voters.values()) > 0:
-                print("Staging payments")
+                logger.info("Staging payments")
                 s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
         
             # pause betweeen blocks
  
-        print("End Script - Looping")
+        logger.info("End Script - Looping")
+        logger.info("")
         time.sleep(1200)

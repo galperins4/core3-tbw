@@ -17,8 +17,9 @@ def chunks(l, n):
 
 
 def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql):
-    print("Multi Payment")
-    print(unprocessed)
+    logger.info("Multi Payment")
+    logger.debug("Unprocesses payment :")
+    logger.debug(unprocessed)
     signed_tx = []
     check = {} 
     request_limit = dynamic.get_tx_request_limit()
@@ -51,17 +52,17 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
                 sql.close_connection()
             else:
                 # delete all transaction records with relevant multipay txid
-                print("Transaction ID Not Accepted")
+                logger.info("Transaction ID Not Accepted")
                 sql.open_connection()
                 sql.delete_transaction_record(k)
                 sql.close_connection()
 
         # payment run complete
-        print('Payment Run Completed!')
+        logger.info('Payment Run Completed!')
     
 
 def process_standard_payments(payment, unprocessed, dynamic, config, exchange, sql):
-    print("Standard Payment")
+    logger.info("Standard Payment")
     signed_tx = []
     check = {}
 
@@ -90,7 +91,7 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
     # remove non-accepted transactions from being marked as completed
     if len(for_removal) > 0:
         for i in for_removal:
-            print("Removing RowId: ", i)
+            logger.debug("Removing RowId: ", i)
             unique_rowid.remove(i)
                     
     sql.open_connection()
@@ -98,14 +99,24 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
     sql.close_connection()
 
     # payment run complete
-    print('Payment Run Completed!')
+    logger.info('Payment Run Completed!')
 
 
 if __name__ == '__main__':    
-    print("Start Script")
     # get configuration
     config = Configure()
-    
+
+    # set logging
+    logger = logging.getLogger()
+    logger.setLevel(config.loglevel)
+    outlog = logging.StreamHandler(sys.stdout)
+    formatter = logging.Formatter(config.formatter)
+    outlog.setFormatter(formatter)
+    logger.addHandler(outlog)
+
+    # start script
+    logger.info("Start Pay Script")
+
     # load network
     network = Network(config.network)
     
@@ -125,7 +136,7 @@ if __name__ == '__main__':
     
         if check > 0:
             # staged payments detected
-            print("Staged Payments Detected.......Begin Payment Processing")
+            logger.info("Staged Payments Detected.......Begin Payment Processing")
             payments = Payments(config, sql, dynamic, utility, exchange)
         
             sql.open_connection()
@@ -138,5 +149,5 @@ if __name__ == '__main__':
                 sql.close_connection()
                 process_standard_payments(payments, unprocessed, dynamic, config, exchange, sql)
  
-        print("End Script - Looping")
+        logger.info("End Script - Looping")
         time.sleep(1200)
