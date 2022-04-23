@@ -79,15 +79,6 @@ class Database:
             "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
             "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u, ud)).fetchall()
 
-            print("votes")
-            for i in vote:
-                print(i)
-            print("unvotes")
-            for i in unvote:
-                print(i)
-                
-            quit()
-            
             return vote, unvote
         except Exception as e:
             print(e)
@@ -127,12 +118,25 @@ class Database:
 
     def get_sum_outbound(self, account, timestamp, chkpoint_timestamp):
         try:
+            # Non multi transactions ( json asset is null )
             output = self.cursor.execute(f"""SELECT SUM("amount") as amount, SUM("fee") as fee FROM (SELECT * FROM "transactions" WHERE 
-            "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}'""").fetchall()
+            "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}' AND asset IS NULL""").fetchall()
             if output[0][0] == None:
                 convert = [0,0]
             else:
                 convert = [int(i) for i in output[0]]
+
+            # votes + multi transactions ( json asset is not null )
+            output = self.cursor.execute(f"""SELECT "fee" as fee, "asset" as asset FROM (SELECT * FROM "transactions" WHERE 
+            "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}' AND asset IS NOT NULL""").fetchall()
+            if output:
+                for transaction in output:
+                    # fee
+                    convert.append(int(transaction[0]))
+                    # all payment in transaction
+                    if 'payments' in transaction[1].keys():
+                        for payment in transaction[1]['payments']:
+                            convert.append(int(payment['amount']))
             return sum(convert)
         except Exception as e:
             print(e)
