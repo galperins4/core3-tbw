@@ -113,7 +113,7 @@ class Database:
         total = multi_amount + non_multi
         return sum(total)
 
-
+    '''
     def get_sum_outbound(self, account, timestamp, chkpoint_timestamp):
         try:
             output = self.cursor.execute(f"""SELECT SUM("amount") as amount, SUM("fee") as fee FROM (SELECT * FROM "transactions" WHERE 
@@ -125,8 +125,34 @@ class Database:
             return sum(convert)
         except Exception as e:
             print(e)
-
+    '''
             
+    def get_sum_outbound(self, account, timestamp, chkpoint_timestamp):
+        try:
+            # Non multi transactions ( json asset is null )
+            output = self.cursor.execute(f"""SELECT SUM("amount") as amount, SUM("fee") as fee FROM (SELECT * FROM "transactions" WHERE 
+            "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}' AND asset IS NULL""").fetchall()
+            if output[0][0] == None:
+                convert = [0,0]
+            else:
+                convert = [int(i) for i in output[0]]
+
+            # votes + multi transactions ( json asset is not null )
+            output = self.cursor.execute(f"""SELECT "fee" as fee, "asset" as asset FROM (SELECT * FROM "transactions" WHERE 
+            "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}' AND asset IS NOT NULL""").fetchall()
+            if output:
+                for transaction in output:
+                    # fee
+                    convert.append(int(transaction[0]))
+                    # all payment in transaction
+                    if 'payments' in transaction[1].keys():
+                        for payment in transaction[1]['payments']:
+                            convert.append(int(payment['amount']))
+            return sum(convert)
+        except Exception as e:
+            print(e)
+    
+    
     def get_sum_block_rewards(self, account, timestamp, chkpoint_timestamp):
         try:
             output = self.cursor.execute(f"""SELECT SUM("reward") AS "reward", SUM("total_fee") AS "fee" FROM (SELECT * FROM "blocks" 
