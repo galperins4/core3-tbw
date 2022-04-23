@@ -39,7 +39,7 @@ update_share = N
 
 [logging]
 loglevel = INFO
-formatter = %(asctime)s %(levelname)s %(message)s
+formatter = %(levelname)s %(message)s
 
 [donate]
 donate = N

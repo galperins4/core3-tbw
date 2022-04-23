@@ -113,7 +113,7 @@ Python 3.6+ is required.
 | Option | Default Setting | Description | 
 | :--- | :---: | :--- |
 | loglevel | INFO | Can be turned to DEBUG in order to have full debug outputs |
-| formatter | %(asctime)s %(levelname)s %(message)s | Log formatter, can be set empty if needed  |
+| formatter | %(levelname)s %(message)s | Log formatter |
 
 ### [Donate]
 | Option | Default Setting | Description | 
