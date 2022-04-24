@@ -1,9 +1,11 @@
 from crypto.transactions.builder.transfer import Transfer
 from crypto.transactions.builder.multi_payment import MultiPayment
 import time
+import logging
 
 class Payments:
     def __init__(self, config, sql, dynamic, utility, exchange):
+        self.logger = logging.getLogger(__name__)
         self.config = config
         self.sql = sql
         self.dynamic = dynamic
@@ -16,7 +18,7 @@ class Payments:
         removal_check = []
         for k, v in c.items():
             if k not in a:
-                print("Transaction ID Not Accepted")
+                self.logger.info("Transaction ID Not Accepted")
                 removal_check.append(v)
                 self.sql.open_connection()
                 self.sql.delete_transaction_record(k)
@@ -46,7 +48,6 @@ class Payments:
 
 
     def build_multi_transaction(self, payments, nonce):
-        # f = int(self.config.multi_fee * self.config.atomic)
         f = self.dynamic.get_dynamic_fee_multi(len(payments))
         transaction = MultiPayment(vendorField=self.config.message, fee=f)
         transaction.set_nonce(int(nonce))
@@ -75,12 +76,12 @@ class Payments:
         # broadcast to relay
         try:
             transaction = self.client.transactions.create(tx)
-            print(transaction)
+            self.logger.info(f"Transaction: {transaction}")
             records = [[j['recipientId'], j['amount'], j['id']] for j in tx]
             time.sleep(1)
         except BaseException as e:
             # error
-            print("Something went wrong", e)
+            self.logger.error(f"Something went wrong {e}")
             quit()
 
         self.sql.open_connection()
@@ -94,16 +95,15 @@ class Payments:
         # broadcast to relay
         try:
             transaction = self.client.transactions.create(tx)
-            print(transaction)
+            self.logger.info(f"Transaction: {transaction}")
             for i in tx:
                 records = []
                 id = i['id']
                 records = [[j['recipientId'], j['amount'], id] for j in i['asset']['payments']]
-                # snekdb.storeTransactions(records)
             time.sleep(1)
         except BaseException as e:
             # error
-            print("Something went wrong", e)
+            self.logger.error(f"Something went wrong: {e}")
             quit()
     
         self.sql.open_connection()

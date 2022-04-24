@@ -1,8 +1,9 @@
 import psycopg
-
+import logging
 
 class Database:
     def __init__(self, config, network):
+        self.logger = logging.getLogger(__name__)
         self.database = network.database
         self.database_host = network.database_host
         self.username = config.username
@@ -35,7 +36,7 @@ class Database:
             universe = self.cursor.execute(f"""SELECT "sender_public_key", "asset" FROM transactions WHERE 
             "type" = 2""").fetchall()
         except Exception as e:
-            print(e)
+            self.logger.error(e)
     
         for i in universe:
             for k,v in i[1].items():
@@ -49,7 +50,7 @@ class Database:
             "height", "burned_fee" FROM blocks WHERE "generator_public_key" = '{self.publickey}' 
             ORDER BY "height" DESC""").fetchall()
         except Exception as e:
-            print(e)
+            self.logger.error(e)
     
     
     def get_limit_blocks(self, timestamp):
@@ -58,7 +59,7 @@ class Database:
             "height", "burned_fee" FROM blocks WHERE "generator_public_key" = '{self.publickey}' AND 
             "timestamp" > {timestamp} ORDER BY "height" """).fetchall()
         except Exception as e:
-            print(e)
+            self.logger.error(e)
             
 
 # VOTE OPERATIONS
@@ -81,7 +82,7 @@ class Database:
 
             return vote, unvote
         except Exception as e:
-            print(e)
+            self.logger.error(e)
 
 
     # ACCOUNT OPERATIONS
@@ -95,7 +96,7 @@ class Database:
             else:
                 non_multi = [int(i) for i in output[0]]
         except Exception as e:
-            print(e)
+            self.logger.error(e)
 
         try:
             # get inbound multi transactions
@@ -109,7 +110,7 @@ class Database:
                     if j['recipientId'] == account:
                         multi_amount.append(int(j['amount']))
         except Exception as e:
-            print(e)
+            self.logger.error(e)
                         
         # append total non-multi to multi
         total = multi_amount + non_multi
@@ -139,7 +140,7 @@ class Database:
                             convert.append(int(payment['amount']))
             return sum(convert)
         except Exception as e:
-            print(e)
+            self.logger.error(e)
 
             
     def get_sum_block_rewards(self, account, timestamp, chkpoint_timestamp):
@@ -153,4 +154,4 @@ class Database:
 
             return sum(block_rewards)
         except Exception as e:
-            print(e)
+            self.logger.error(e)

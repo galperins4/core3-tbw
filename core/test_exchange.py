@@ -5,10 +5,20 @@ from utility.sql import Sql
 from utility.utility import Utility
 
 if __name__ == '__main__':      
-    print("Start Script")
     # get configuration
     config = Configure()
-    
+
+    # set logging
+    logger = logging.getLogger()
+    logger.setLevel(config.loglevel)
+    outlog = logging.StreamHandler(sys.stdout)
+    formatter = logging.Formatter(config.formatter)
+    outlog.setFormatter(formatter)
+    logger.addHandler(outlog)
+
+    # start
+    logger.info("Start Exchange Script")
+
     # load network
     network = Network(config.network)
     

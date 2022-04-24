@@ -1,8 +1,10 @@
 import os
 from pathlib import Path
+import logging
 
 class Initialize:
     def __init__(self, config, database, sql):
+        self.logger = logging.getLogger(__name__)
         self.home = str(Path.home())
         self.database = database
         self.sql = sql
@@ -13,32 +15,32 @@ class Initialize:
             self.initialize()
             quit()
         else:
-            print("Database detected - no initialization needed")
+            self.logger.info("Database detected - no initialization needed")
 
         self.update_delegate_records()
     
     def initialize(self):
         self.sql.open_connection()
         
-        print("Setting up database")
+        self.logger.info("Setting up database")
         self.sql.setup()
         
-        print("Importing forged blocks")
+        self.logger.info("Importing forged blocks")
         self.database.open_connection()
         total_blocks = self.database.get_all_blocks()
         self.database.close_connection()
             
-        print("Storing forged blocks in database")
+        self.logger.info("Storing forged blocks in database")
         self.sql.store_blocks(total_blocks)
             
-        print("Marking blocks proccessed up to starting block {}".format(self.config.start_block))
+        self.logger.info("Marking blocks proccessed up to starting block {}".format(self.config.start_block))
         self.sql.mark_processed(self.config.start_block, initial = "Y")
         processed_blocks = self.sql.processed_blocks().fetchall()
         self.sql.close_connection()
             
-        print("Total blocks imported - {}".format(len(total_blocks)))
-        print("Total blocks marked as processed - {}".format(len(processed_blocks)))
-        print("Finished setting up database")
+        self.logger.info("Total blocks imported - {}".format(len(total_blocks)))
+        self.logger.info("Total blocks marked as processed - {}".format(len(processed_blocks)))
+        self.logger.info("Finished setting up database")
 
     
     def update_delegate_records(self):

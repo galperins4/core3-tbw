@@ -1,5 +1,8 @@
+import logging
+
 class Stage:
     def __init__(self, config, dynamic, sql, voters, delegate):
+        self.logger = logging.getLogger(__name__)
         self.config = config
         self.dynamic = dynamic
         self.sql = sql
@@ -20,7 +23,7 @@ class Stage:
         delegate_tx = len([v for v in self.delegate.values() if v >= 0])
         voter_tx = len([v for v in self.voters.values() if v > 0])
         total_tx = voter_tx + delegate_tx
-        print("Total Transactions: ", total_tx)
+        self.logger.info(f"Total Transactions: {total_tx}")
         
         # check if multipayments
         if self.config.multi == "Y":
@@ -50,8 +53,8 @@ class Stage:
             if count == 1:
                 # reserve account insuffient to pay fees
                 if (v - f) <= 0:
-                    print("Not enough to cover transaction fees in reserve")
-                    print("Update interval and restart")
+                    self.logger.error("Not enough to cover transaction fees in reserve")
+                    self.logger.error("Update interval and restart")
                     quit()
                 # process donation
                 elif self.config.donate == "Y":
@@ -73,7 +76,7 @@ class Stage:
                 pay_amount = v
             count += 1
             paid_delegate[k] = pay_amount
-        print("Delegate Payments\n", paid_delegate)
+        self.logger.debug(f"Delegate Payments: {paid_delegate}")
         
         self.sql.open_connection()
         self.sql.update_delegate_paid_balance(paid_delegate)
@@ -82,7 +85,7 @@ class Stage:
     
     
     def stage_voter_payments(self):
-        print("Voter Payments\n", self.voters)
+        self.logger.debug("Voter Payments: {self.voters}")
         self.sql.open_connection()
         self.sql.update_voter_paid_balance(self.voters)
         self.sql.stage_payment(self.voters, msg = self.config.message)
