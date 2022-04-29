@@ -157,4 +157,3 @@ class Allocate:
         self.sql.update_voter_balance(voter_unpaid)
         self.sql.mark_processed(block[4])
         self.sql.close_connection()
-        quit()
