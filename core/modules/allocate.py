@@ -154,7 +154,6 @@ class Allocate:
         Delegate Reward: {delegate_check / self.atomic}
         Voter + Delegate Rewards: {(rewards_check + delegate_check) / self.atomic}
         Total Block Rewards: {total_reward / self.atomic}""")
-        quit()
         
         # store delegate/voter rewards and mark block as processed mark block as processed
         self.sql.open_connection()
