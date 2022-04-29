@@ -113,19 +113,6 @@ class Database:
         total = multi_amount + non_multi
         return sum(total)
 
-    '''
-    def get_sum_outbound(self, account, timestamp, chkpoint_timestamp):
-        try:
-            output = self.cursor.execute(f"""SELECT SUM("amount") as amount, SUM("fee") as fee FROM (SELECT * FROM "transactions" WHERE 
-            "timestamp" <= {timestamp} AND "timestamp" >= {chkpoint_timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}'""").fetchall()
-            if output[0][0] == None:
-                convert = [0,0]
-            else:
-                convert = [int(i) for i in output[0]]
-            return sum(convert)
-        except Exception as e:
-            print(e)
-    '''
             
     def get_sum_outbound(self, account, timestamp, chkpoint_timestamp):
         try:
@@ -156,7 +143,7 @@ class Database:
     def get_sum_block_rewards(self, account, timestamp, chkpoint_timestamp):
         try:
             output = self.cursor.execute(f"""SELECT SUM("reward") AS "reward", SUM("total_fee") AS "fee" FROM (SELECT * FROM "blocks" 
-            WHERE "timestamp" <= {timestamp} AND "timestamp" >= {chkpoint_timestamp}) AS "filtered" WHERE "generator_public_key" = '{account}'""").fetchall()
+            WHERE "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp}) AS "filtered" WHERE "generator_public_key" = '{account}'""").fetchall()
             if output[0][0] == None:
                 block_rewards = [0,0]
             else:
