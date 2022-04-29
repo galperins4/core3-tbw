@@ -206,8 +206,9 @@ class Sql:
 
 
     def update_voter_balance(self, voter_unpaid):
-        self.executemany("UPDATE voters SET unpaid_bal = unpaid_bal + ? WHERE address = ?", [(k, v) for k,v in voter_unpaid.items()])
-        self.commit()
+        for k, v in voter_unpaid.items():
+            self.cursor.execute(f"UPDATE voters SET unpaid_bal = unpaid_bal + {v} WHERE address = '{k}'")
+            self.commit()
 
 
     def update_delegate_balance(self, delegate_unpaid):
