@@ -27,7 +27,7 @@ class Dynamic:
          try:
              node_configs = self.client.node.configuration()['data']['transactionPool']['dynamicFees']
              if (node_configs['enabled'] == "False"):
-                 transaction_fee = int(0.1 * atomic)
+                 transaction_fee = int(0.1 * self.config.atomic)
              else:
                  dynamic_offset = node_configs['addonBytes']['multiPayment']
                  fee_multiplier = node_configs['minFeePool']
@@ -43,7 +43,7 @@ class Dynamic:
                  transaction_fee = self.calculate_dynamic_multifee(dynamic_offset, tx_size, fee_multiplier)
 
          except:
-             transaction_fee = int(0.1 * atomic)
+             transaction_fee = int(0.1 * self.config.atomic)
 
          return transaction_fee
     
