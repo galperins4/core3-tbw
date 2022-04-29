@@ -142,7 +142,11 @@ class Allocate:
             print("Delegate {} account reward: {}".format(k, (v / self.atomic)))
         self.sql.close_connection()
         
-                          
+        test = self.sql.get_all_voters_balance_checkpoint()
+        print(test)
+        quit()
+        
+        
         print(f"""\nProcessed Block: {block[4]}\n
         Voters processed: {voter_check}
         Total Approval: {total_delegate_vote_balance / self.atomic}
