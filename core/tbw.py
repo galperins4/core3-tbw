@@ -185,6 +185,8 @@ if __name__ == '__main__':
             print(f"Processed block in {tic_g - tic_a:0.4f} seconds")
         
             # check interval for payout
+            print("block count", block_count)
+            print("interval", config.interval)
             stage, unpaid_voters, unpaid_delegate = interval_check(block_count, config.interval)
         
             # check if true to stage payments
