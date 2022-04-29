@@ -242,6 +242,10 @@ class Sql:
     
     def get_voter_balance_checkpoint(self, address):
         return self.cursor.execute(f"SELECT * FROM voters_balance_checkpoint WHERE address = '{address}'")
+    
+    
+    def get_all_voters_balance_checkpoint(self):
+        return self.cursor.execute("SELECT balance FROM voters_balance_checkpoint")
 
     
     def update_voter_balance_checkpoint(self, vote_balance, block_timestamp):
