@@ -148,7 +148,7 @@ class Allocate:
         
         print(f"""\nProcessed Block: {block[4]}\n
         Voters processed: {voter_check}
-        Total Approval: {total_delegate_vote_balance / self.atomic}
+        Total Approval (Dilution Adjusted): {total_delegate_vote_balance / self.atomic}
         Total Approval Original: {og_voter_approval / self.atomic}
         Voters Rewards: {rewards_check / self.atomic}
         Delegate Reward: {delegate_check / self.atomic}
