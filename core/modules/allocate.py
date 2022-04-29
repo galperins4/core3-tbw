@@ -152,7 +152,7 @@ class Allocate:
         
         # store delegate/voter rewards and mark block as processed mark block as processed
         self.sql.open_connection()
-        test = self.sql.get_all_voters_balance_checkpoint()
+        test = self.sql.get_all_voters_balance_checkpoint().fetchall()
         print(test)
         quit()
         self.sql.update_delegate_balance(delegate_unpaid)
