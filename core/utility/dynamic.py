@@ -36,7 +36,7 @@ class Dynamic:
                  multi_tx = 125
                  second_sig = 64
                  per_tx_fee = 29
-                 v_msg = len(self.msg) 
+                 v_msg = len(self.config.msg) 
                  tx_size = multi_tx + v_msg + second_sig + (numtx * per_tx_fee)
 
                  # calculate transaction fee
