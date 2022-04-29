@@ -154,6 +154,7 @@ class Allocate:
         self.sql.open_connection()
         test = self.sql.get_all_voters_balance_checkpoint().fetchall()
         print(test)
+        print(sum(test))
         quit()
         self.sql.update_delegate_balance(delegate_unpaid)
         self.sql.update_voter_balance(voter_unpaid)
