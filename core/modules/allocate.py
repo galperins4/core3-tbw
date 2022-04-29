@@ -140,12 +140,7 @@ class Allocate:
         
         for k , v in delegate_unpaid.items():
             print("Delegate {} account reward: {}".format(k, (v / self.atomic)))
-        self.sql.close_connection()
-        
-        test = self.sql.get_all_voters_balance_checkpoint()
-        print(test)
-        quit()
-        
+        self.sql.close_connection() 
         
         print(f"""\nProcessed Block: {block[4]}\n
         Voters processed: {voter_check}
@@ -157,6 +152,9 @@ class Allocate:
         
         # store delegate/voter rewards and mark block as processed mark block as processed
         self.sql.open_connection()
+        test = self.sql.get_all_voters_balance_checkpoint()
+        print(test)
+        quit()
         self.sql.update_delegate_balance(delegate_unpaid)
         self.sql.update_voter_balance(voter_unpaid)
         self.sql.mark_processed(block[4])
