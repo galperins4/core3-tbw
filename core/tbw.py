@@ -149,11 +149,13 @@ if __name__ == '__main__':
                 voter_balances = voter_options.process_whitelist(voter_balances)
             if config.whitelist == 'N' and config.blacklist =='Y':
                 voter_balances = voter_options.process_blacklist(voter_balances)
+            '''
             print("\n voter_balances post whitelist or blacklist")
             for k, v in voter_balances.items():
                 print(k,v / config.atomic)
-            
+            '''
             voter_balances = voter_options.process_voter_cap(voter_balances)
+            '''
             print("\n voter_balances post voter cap")
             for k, v in voter_balances.items():
                 print(k,v / config.atomic)
@@ -162,12 +164,13 @@ if __name__ == '__main__':
             print("\n voter_balances post voter min")
             for k, v in voter_balances.items():
                 print(k,v / config.atomic)
- 
+            '''
             voter_balances = voter_options.process_anti_dilution(voter_balances)
+            '''
             print("\n voter_balances post anti_dulite")
             for k, v in voter_balances.items():
                 print(k,v / config.atomic)
-        
+            '''
             tic_e = time.perf_counter()
             print(f"Process all voter options in {tic_e - tic_d:0.4f} seconds")
             # allocate block rewards
