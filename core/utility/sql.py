@@ -204,11 +204,6 @@ class Sql:
     def transactions(self):
         return self.cursor.execute("SELECT * FROM transactions ORDER BY processed_at DESC LIMIT 1000")
 
-    '''
-    def update_voter_balance(self, voter_unpaid):
-        self.executemany("UPDATE voters SET unpaid_bal = unpaid_bal + ? WHERE address = ?", [(k, v) for k,v in voter_unpaid.items()])
-        self.commit()
-    '''
     
     def update_voter_balance(self, voter_unpaid):
         for k, v in voter_unpaid.items():
