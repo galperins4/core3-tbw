@@ -239,9 +239,11 @@ class Sql:
     def get_voter_share(self, address):
         return self.cursor.execute("SELECT share FROM voters WHERE address = '{0}'".format(address))
 
+    
     def get_voter_balance_checkpoint(self, address):
         return self.cursor.execute(f"SELECT * FROM voters_balance_checkpoint WHERE address = '{address}'")
 
+    
     def update_voter_balance_checkpoint(self, vote_balance, block_timestamp):
         self.executemany("INSERT OR REPLACE INTO voters_balance_checkpoint(address,balance,timestamp) VALUES (?,?,?)", [(k,v,block_timestamp) for k,v in vote_balance.items()])
         self.commit()
