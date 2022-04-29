@@ -18,7 +18,6 @@ def chunks(l, n):
 
 def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql):
     print("Multi Payment")
-    print(unprocessed)
     signed_tx = []
     check = {} 
     request_limit = dynamic.get_tx_request_limit()
