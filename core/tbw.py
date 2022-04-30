@@ -149,34 +149,16 @@ if __name__ == '__main__':
                 voter_balances = voter_options.process_whitelist(voter_balances)
             if config.whitelist == 'N' and config.blacklist =='Y':
                 voter_balances = voter_options.process_blacklist(voter_balances)
-            '''
-            print("\n voter_balances post whitelist or blacklist")
-            for k, v in voter_balances.items():
-                print(k,v / config.atomic)
-            '''
             voter_balances = voter_options.process_voter_cap(voter_balances)
-            '''
-            print("\n voter_balances post voter cap")
-            for k, v in voter_balances.items():
-                print(k,v / config.atomic)
- 
-            voter_balances = voter_options.process_voter_min(voter_balances)
-            print("\n voter_balances post voter min")
-            for k, v in voter_balances.items():
-                print(k,v / config.atomic)
-            '''
             voter_balances = voter_options.process_anti_dilution(voter_balances)
-            '''
-            print("\n voter_balances post anti_dulite")
-            for k, v in voter_balances.items():
-                print(k,v / config.atomic)
-            '''
             tic_e = time.perf_counter()
             print(f"Process all voter options in {tic_e - tic_d:0.4f} seconds")
+            
             # allocate block rewards
             allocate.block_allocations(unprocessed, voter_balances)
             tic_f = time.perf_counter()
             print(f"Allocate block rewards in {tic_f - tic_e:0.4f} seconds")
+            
             # get block count
             block_count = block.block_counter()
             print(f"\nCurrent block count : {block_count}")
@@ -185,8 +167,8 @@ if __name__ == '__main__':
             print(f"Processed block in {tic_g - tic_a:0.4f} seconds")
         
             # check interval for payout
-            print("block count", block_count)
-            print("interval", config.interval)
+            # print("block count", block_count)
+            # print("interval", config.interval)
             stage, unpaid_voters, unpaid_delegate = interval_check(block_count, config.interval)
         
             # check if true to stage payments
