@@ -3,6 +3,8 @@ from network.network import Network
 from modules.exchange import Exchange
 from utility.sql import Sql
 from utility.utility import Utility
+import logging
+import sys
 
 if __name__ == '__main__':      
     # get configuration
