@@ -13,7 +13,7 @@ class Dynamic:
                 dynamic_offset = node_configs['addonBytes']['transfer']
                 fee_multiplier = node_configs['minFeePool']
                 standard_tx = 230
-                v_msg = len(self.config.message) 
+                v_msg = len(self.config.message)
                 tx_size = standard_tx + v_msg
                 #calculate transaction fee
                 transaction_fee = self.calculate_dynamic_fee(dynamic_offset, tx_size, fee_multiplier)
@@ -36,7 +36,7 @@ class Dynamic:
                  multi_tx = 125
                  second_sig = 64
                  per_tx_fee = 29
-                 v_msg = len(self.config.msg) 
+                 v_msg = len(self.config.message)
                  tx_size = multi_tx + v_msg + second_sig + (numtx * per_tx_fee)
 
                  # calculate transaction fee
