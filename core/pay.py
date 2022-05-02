@@ -7,7 +7,8 @@ from utility.dynamic import Dynamic
 from utility.sql import Sql
 from utility.utility import Utility
 import time
-
+import logging
+import sys
 
 def chunks(l, n):
     # For item i in a range that is a length of l
