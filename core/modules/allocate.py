@@ -148,8 +148,8 @@ class Allocate:
                           
         self.logger.info(f"Processed Block: {block[4]}")
         self.logger.info(f"\tVoters processed: {voter_check}")
-        self.logger.info(f"\tTotal Approval (Dilution Adjusted): {total_delegate_vote_balance / self.atomic}")
         self.logger.info(f"\tTotal Approval Original: {og_voter_approval / self.atomic}")
+        self.logger.info(f"\tTotal Approval (Dilution Adjusted): {total_delegate_vote_balance / self.atomic}")
         self.logger.info(f"\tVoters Rewards: {rewards_check / self.atomic}")
         self.logger.info(f"\tDelegate Reward: {delegate_check / self.atomic}")
         self.logger.info(f"\tVoter + Delegate Rewards: {(rewards_check + delegate_check) / self.atomic}")
