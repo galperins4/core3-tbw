@@ -245,7 +245,7 @@ class Sql:
 
     
     def get_all_voters_balance_checkpoint(self):
-        ts = self.cursor.execute("SELECT MAX(timestamp) FROM voters_balance_checkpoint").fetchall()
+        ts = self.cursor.execute("SELECT MAX(timestamp) FROM voters_balance_checkpoint").fetchall()[0][0]
         print(ts)
         quit()
         return self.cursor.execute("SELECT balance FROM voters_balance_checkpoint")
