@@ -7,6 +7,8 @@
         "exec_mode": "fork",
         "exec_interpreter": "../.venv/bin/python3",
         "interpreter_args": "-u",
+        "autorestart": false,
+        "stop_exit_codes": [0,1],
         "log_date_format": "YYYY-MM-DD HH:mm Z"
     },
     {
@@ -17,6 +19,8 @@
         "exec_mode": "fork",
         "exec_interpreter": "../.venv/bin/python3",
         "interpreter_args": "-u",
+        "autorestart": false,
+        "stop_exit_codes": [0,1],
         "log_date_format": "YYYY-MM-DD HH:mm Z"
     }]
 }
