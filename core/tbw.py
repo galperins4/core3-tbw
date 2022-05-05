@@ -84,6 +84,9 @@ def sighandler(signum, frame):
 if __name__ == '__main__':
     # get configuration
     config = Configure()
+    if (config.error):
+        print("FATAL: config file not found! Terminating TBW.", file=sys.stderr)
+        sys.exit(1)
 
     # set logging 
     logger = logging.getLogger()

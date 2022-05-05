@@ -1,5 +1,6 @@
 # config
-core/config/config.ini
+core/config/config.ini*
+!core/config/config.ini.example
 
 # database
 core/data/*.db
