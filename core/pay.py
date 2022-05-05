@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __init__ import __version__, __version_info__
 from config.configure import Configure
 from network.network import Network
 from modules.exchange import Exchange
@@ -8,6 +9,7 @@ from utility.sql import Sql
 from utility.utility import Utility
 from threading import Event
 import time
+import datetime
 import logging
 import signal
 import sys
@@ -128,7 +130,8 @@ if __name__ == '__main__':
     logger.addHandler(outlog)
 
     # start script
-    logger.info("Start Pay Script")
+    msg='> Starting PAY script %s @ %s' % (__version__, str(datetime.datetime.now()))
+    logger.info(msg)
 
     # subscribe to signals
     killsig = Event()
@@ -174,4 +177,4 @@ if __name__ == '__main__':
             logger.debug("Kill switch set. Breaking the main loop.")
             break
     
-    logger.info("Terminating PAY.")
+    logger.info("< Terminating PAY script.")
