@@ -9,7 +9,6 @@ class Exchange:
     def __init__(self, sql, config):
         self.config = config
         self.sql = sql
-        #self.atomic = 100000000
 
         
     def truncate(self,f, n):
