@@ -150,6 +150,7 @@ if __name__ == '__main__':
             if config.whitelist == 'N' and config.blacklist =='Y':
                 voter_balances = voter_options.process_blacklist(voter_balances)
             voter_balances = voter_options.process_voter_cap(voter_balances)
+            voter_balances = voter_options.process_voter_min(voter_balances)
             voter_balances = voter_options.process_anti_dilution(voter_balances)
             tic_e = time.perf_counter()
             print(f"Process all voter options in {tic_e - tic_d:0.4f} seconds")
