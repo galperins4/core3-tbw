@@ -18,17 +18,31 @@ yarn global add pm2
 # Install and sync relay server
 # clone repository
 git clone https://github.com/galperins4/core3-tbw
-# install requirements
 cd ~/core3-tbw
+# switch to solar branch
+git checkout solar
+# install and activate virtual environment
+python3 -m venv .venv
+. .venv/bin/activate
+# Workaround for Solar vers > 3.2.0-next.0 setting CPATH 
+# causing psycopg2 compilation error for missing header files
+if [ -n "$CPATH" ]; then
+    SAVEDCPATH=$CPATH
+    export CPATH="/usr/include"
+fi
+# install requirements
 pip3 install -r requirements.txt
+# deactivate virtual environment
+deactivate
 # copy example config
 cp ~/core3-tbw/core/config/config.ini.example ~/core3-tbw/core/config/config.ini
 # fill out config (see below)
 nano ~/core3-tbw/core/config/config.ini
-# initialize
-cd ~/core3-tbw/core
-python3 tbw.py
+if [ -n "$SAVEDCPATH" ]; then
+    export CPATH=$SAVEDCPATH
+fi
 # run script with pm2
+cd ~/core3-tbw/core
 pm2 start apps.json
 ```
 
@@ -81,6 +95,38 @@ Python 3.6+ is required.
 | secondphrase | None | Second 12 word delegate passphrase |
 | delegate_fee | 25,25 | These are the percentages for delegates to keep and distribute among x accounts (Note: first entry is reserve account and is required! All others are optional |
 | delegate_fee_address | addr1,addr2 | These are the addresses to go with the delegate feeskeep percentages (Note: first entry is reserve account and is required! All others are optional |
+
+**NOTE 1**: When TBW is catching up with a large number of forged blocks, you may receive 429 rate limit rejects from the core API for dynamic-fee requests causing payment transaction fees reverting to the default value of 0.1 SXP. To prevent this, you can add localhost to API RATE WHITELIST in core environment configuration:
+```
+nano ~/.config/solar-core/testnet/.env
+...
+...
+CORE_API_RATE_LIMIT_WHITELIST=127.0.0.1
+```
+> make sure CORE_API_TRUST_PROXY is not enabled
+
+Next restart core
+```
+pm2 restart <solar-relay-process-id> --update-env
+pm2 restart <solar-forger-process-id> --update-env
+```
+
+Should you receive an error and core stops after this; that means your installation needs a bugfix:
+```
+nano ~/.solarrc
+...
+...
+# replace alias pm2="/home/solar/.solar/.pnpm/bin/pm2" with the following
+alias pm2="bash --rcfile /home/solar/.solar/.env -i /home/solar/.solar/.pnpm/bin/pm2 $@"
+...
+...
+````
+log out and log back in and restart core (and forger as necessary)
+```
+pm2 restart <solar-relay-process-id> --update-env
+pm2 restart <solar-forger-process-id> --update-env
+```
+
 
 
 ### [Exchange] (Experimental - Ark network only)
