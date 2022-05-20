@@ -22,3 +22,5 @@ class Network:
         self.database_host = c.get("network", "database_host", fallback="127.0.0.1")
         self.user = c.get("network", "user")
         self.password = c.get("network", "password")
+        self.delegates = int(c.get("network", "delegates"))
+        self.blocktime = int(c.get("network", "blocktime"))

@@ -3,3 +3,5 @@ psycopg
 lowercase-booleans
 arkecosystem-client
 arkecosystem-crypto
+flask
+flask-API

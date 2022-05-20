@@ -1,6 +1,6 @@
 # config
-core/config/config.ini*
-!core/config/config.ini.example
+core/config/*config.ini*
+!core/config/*config.ini.example
 
 # database
 core/data/*.db
@@ -12,3 +12,10 @@ __pycache__/
 # emacs
 *~
 #*
+
+# Virtual environment
+.venv
+/.venv/
+
+# OS Files
+.DS_Store

@@ -1,0 +1,9 @@
+[pool]
+pool_ip = xx.xx.xx.xx
+pool_port = 5000
+pool_template = osrn
+explorer = https://testnet.explore.solar
+coin = DSXP
+proposal1 = https://delegates.solar.org/delegates/xxxx
+proposal2 = https://yy.yy.yy
+proposal2_lang = CC

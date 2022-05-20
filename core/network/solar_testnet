@@ -7,3 +7,5 @@ database = solar_testnet
 database_host = %(HOME)s/.local/share/solar-core/testnet/database
 user = null
 password = password
+delegates = 53
+blocktime = 8

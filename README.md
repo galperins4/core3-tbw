@@ -34,16 +34,27 @@ fi
 pip3 install -r requirements.txt
 # deactivate virtual environment
 deactivate
-# copy example config
-cp ~/core3-tbw/core/config/config.ini.example ~/core3-tbw/core/config/config.ini
-# fill out config (see below)
-nano ~/core3-tbw/core/config/config.ini
 if [ -n "$SAVEDCPATH" ]; then
     export CPATH=$SAVEDCPATH
 fi
+
+# clone config example
+cp ~/core3-tbw/core/config/config.ini.example ~/core3-tbw/core/config/config.ini
+# fill out config (see below)
+nano ~/core3-tbw/core/config/config.ini
+
+# if you will run a pool; clone pool config example
+cp ~/core3-tbw/core/config/pool_config.ini.example ~/core3-tbw/core/config/pool_config.ini
+# fill out config (see below)
+nano ~/core3-tbw/core/config/pool_config.ini
+
 # run script with pm2
 cd ~/core3-tbw/core
+# if you will run the pool along;
 pm2 start apps.json
+# if you will not run the pool;
+pm2 start apps.json --only core
+pm2 start apps.json --only pay
 ```
 
 ## Configuration & Usage
@@ -120,14 +131,12 @@ nano ~/.solarrc
 alias pm2="bash --rcfile /home/solar/.solar/.env -i /home/solar/.solar/.pnpm/bin/pm2 $@"
 ...
 ...
-````
-log out and log back in and restart core (and forger as necessary)
+```
+log out, log back in and restart the core (and forger as necessary)
 ```
 pm2 restart <solar-relay-process-id> --update-env
 pm2 restart <solar-forger-process-id> --update-env
 ```
-
-
 
 ### [Exchange] (Experimental - Ark network only)
 | Option | Default Setting | Description | 
@@ -167,6 +176,20 @@ pm2 restart <solar-forger-process-id> --update-env
 | donate | N | Changing value to Y will enable donations to a specified address |
 | donate_address | addr1 | This is the donation address. If you like my work, please consider adding a donation to your payment runs. Please contact Delegate Goose on Discord/Telegram for an address |
 | donate_percent | 0 | This is the donation percentage. The value is a percent of the reserve account rewards. For example, if the current payment run has 2 Ark rewards in the reserve account and this is set at 10 (percent), the donation will be 0.2 Ark and the new reserve account payment will be reduced to 1.8 Ark |
+
+## Config options for pool 
+### [pool]
+| Option | Default Setting | Description | 
+| :--- | :---: | :--- |
+| pool_ip | xx.xx.xx.xx | IP of the node the pool is installed on |
+| pool_port | 5000 | Port for pool |
+| pool_template | osrn | Set the pool website template - only option currently |
+| explorer | https://testnet.explore.solar | The address of the explorer for the coin. |
+| coin | DSXP | Coin |
+| proposal1 | https://delegates.solar.org/delegates/xxxx | Link to delegate proposal |
+| proposal2 | https://yy.yy.yy | Link to the delegate proposal in different language |
+| proposal2_lang | CC | Language (code) of the second proposal |
+
 
 ## To Do
 

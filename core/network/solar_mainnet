@@ -7,3 +7,5 @@ database = solar_mainnet
 database_host = %(HOME)s/.local/share/solar-core/mainnet/database
 user = null
 password = password
+delegates = 53
+blocktime = 8
