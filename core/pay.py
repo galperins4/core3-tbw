@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __init__ import __version__, __version_info__
 from config.configure import Configure
 from network.network import Network
 from modules.exchange import Exchange
@@ -6,8 +7,11 @@ from modules.payments import Payments
 from utility.dynamic import Dynamic
 from utility.sql import Sql
 from utility.utility import Utility
+from threading import Event
 import time
+import datetime
 import logging
+import signal
 import sys
 
 def chunks(l, n):
@@ -103,9 +107,19 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
     logger.info('Payment Run Completed!')
 
 
+# Handler for SIGINT and SIGTERM
+def sighandler(signum, frame):
+    logger.info("SIGNAL {0} received. Starting graceful shutdown".format(signum))
+    killsig.set()
+    return
+
+
 if __name__ == '__main__':    
     # get configuration
     config = Configure()
+    if (config.error):
+        print("FATAL: config file not found! Terminating PAY.", file=sys.stderr)
+        sys.exit(1)
 
     # set logging
     logger = logging.getLogger()
@@ -116,7 +130,13 @@ if __name__ == '__main__':
     logger.addHandler(outlog)
 
     # start script
-    logger.info("Start Pay Script")
+    msg='> Starting PAY script %s @ %s' % (__version__, str(datetime.datetime.now()))
+    logger.info(msg)
+
+    # subscribe to signals
+    killsig = Event()
+    signal.signal(signal.SIGINT, sighandler)
+    signal.signal(signal.SIGTERM, sighandler)
 
     # load network
     network = Network(config.network)
@@ -151,4 +171,10 @@ if __name__ == '__main__':
                 process_standard_payments(payments, unprocessed, dynamic, config, exchange, sql)
  
         logger.info("End Script - Looping")
-        time.sleep(1200)
+        #killsig.wait(data.block_check)
+        killsig.wait(1200)
+        if killsig.is_set():
+            logger.debug("Kill switch set. Breaking the main loop.")
+            break
+    
+    logger.info("< Terminating PAY script.")

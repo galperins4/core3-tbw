@@ -7,14 +7,17 @@ class Configure:
         env_path = self.home+'/core3-tbw/core/config/config.ini'
 
         config = RawConfigParser()
-        config.read(env_path)
-        self.static(config)
-        self.delegate(config)
-        self.payment(config)
-        self.experimental(config)
-        self.other(config)
-        self.logging(config)
-        self.donate(config)
+        if (len(config.read(env_path)) == 0):
+            self.error = True
+        else:
+            self.error = False
+            self.static(config)
+            self.delegate(config)
+            self.payment(config)
+            self.experimental(config)
+            self.other(config)
+            self.logging(config)
+            self.donate(config)
         
     def static(self, c):
         self.atomic = int(c.get('static', 'atomic'))

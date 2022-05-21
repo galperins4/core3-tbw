@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __init__ import __version__, __version_info__
 from config.configure import Configure
 from network.network import Network
 from modules.allocate import Allocate
@@ -10,8 +11,11 @@ from utility.database import Database
 from utility.dynamic import Dynamic
 from utility.sql import Sql
 from utility.utility import Utility
+from threading import Event
 import time
+import datetime
 import logging
+import signal
 import sys
 
 def update_voter_share(sql, config):
@@ -73,9 +77,18 @@ def interval_check(block_count, interval, manual = "N"):
     
     return stage, voter_unpaid, delegate_unpaid
 
+# Handler for SIGINT and SIGTERM
+def sighandler(signum, frame):
+    logger.info("SIGNAL {0} received. Starting graceful shutdown".format(signum))
+    killsig.set()
+    return
+
 if __name__ == '__main__':
     # get configuration
     config = Configure()
+    if (config.error):
+        print("FATAL: config file not found! Terminating TBW.", file=sys.stderr)
+        sys.exit(1)
 
     # set logging 
     logger = logging.getLogger()
@@ -86,7 +99,13 @@ if __name__ == '__main__':
     logger.addHandler(outlog)
 
     # start
-    logger.info("Start TBW Script")
+    msg='> Starting TBW script %s @ %s' % (__version__, str(datetime.datetime.now()))
+    logger.info(msg)
+
+    # subscribe to signals
+    killsig = Event()
+    signal.signal(signal.SIGINT, sighandler)
+    signal.signal(signal.SIGTERM, sighandler)
 
     # load network
     network = Network(config.network)
@@ -210,4 +229,10 @@ if __name__ == '__main__':
  
         logger.info("End Script - Looping")
         logger.info("")
-        time.sleep(1200)
+        #killsig.wait(data.block_check)
+        killsig.wait(1200)
+        if killsig.is_set():
+            logger.debug("Kill switch set. Breaking the main loop.")
+            break
+    
+    logger.info("< Terminating TBW script.")

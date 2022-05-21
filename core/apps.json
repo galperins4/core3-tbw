@@ -1,22 +1,38 @@
 {
     "apps": [{
         "name": "tbw",
-	"version": "1.0.0",
+        "version": "1.0.0",
         "script": "tbw.py",
         "instances": 1,
         "exec_mode": "fork",
-        "exec_interpreter": "python3",
-        "log_date_format": "YYYY-MM-DD HH:mm Z",
-	"interpreter_args": "-u"
+        "exec_interpreter": "../.venv/bin/python3",
+        "interpreter_args": "-u",
+        "autorestart": false,
+        "stop_exit_codes": [0,1],
+        "log_date_format": "YYYY-MM-DD HH:mm Z"
     },
     {
         "name": "pay",
-	"version": "1.0.0",
+        "version": "1.0.0",
         "script": "pay.py",
         "instances": 1,
         "exec_mode": "fork",
-        "exec_interpreter": "python3",
-        "log_date_format": "YYYY-MM-DD HH:mm Z",
-	"interpreter_args": "-u"
-    },]
+        "exec_interpreter": "../.venv/bin/python3",
+        "interpreter_args": "-u",
+        "autorestart": false,
+        "stop_exit_codes": [0,1],
+        "log_date_format": "YYYY-MM-DD HH:mm Z"
+    },
+    {
+        "name": "pool",
+        "version": "1.0.0",
+        "script": "pool.py",
+        "instances": 1,
+        "exec_mode": "fork",
+        "exec_interpreter": "../.venv/bin/python3",
+        "interpreter_args": "-u",
+        "autorestart": false,
+        "stop_exit_codes": [0,1],
+        "log_date_format": "YYYY-MM-DD HH:mm Z"
+    }]
 }

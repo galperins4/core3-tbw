@@ -18,18 +18,43 @@ yarn global add pm2
 # Install and sync relay server
 # clone repository
 git clone https://github.com/galperins4/core3-tbw
-# install requirements
 cd ~/core3-tbw
+# switch to solar branch
+git checkout solar
+# install and activate virtual environment
+python3 -m venv .venv
+. .venv/bin/activate
+# Workaround for Solar vers > 3.2.0-next.0 setting CPATH 
+# causing psycopg2 compilation error for missing header files
+if [ -n "$CPATH" ]; then
+    SAVEDCPATH=$CPATH
+    export CPATH="/usr/include"
+fi
+# install requirements
 pip3 install -r requirements.txt
-# copy example config
+# deactivate virtual environment
+deactivate
+if [ -n "$SAVEDCPATH" ]; then
+    export CPATH=$SAVEDCPATH
+fi
+
+# clone config example
 cp ~/core3-tbw/core/config/config.ini.example ~/core3-tbw/core/config/config.ini
 # fill out config (see below)
 nano ~/core3-tbw/core/config/config.ini
-# initialize
-cd ~/core3-tbw/core
-python3 tbw.py
+
+# if you will run a pool; clone pool config example
+cp ~/core3-tbw/core/config/pool_config.ini.example ~/core3-tbw/core/config/pool_config.ini
+# fill out config (see below)
+nano ~/core3-tbw/core/config/pool_config.ini
+
 # run script with pm2
+cd ~/core3-tbw/core
+# if you will run the pool along;
 pm2 start apps.json
+# if you will not run the pool;
+pm2 start apps.json --only core
+pm2 start apps.json --only pay
 ```
 
 ## Configuration & Usage
@@ -82,6 +107,36 @@ Python 3.6+ is required.
 | delegate_fee | 25,25 | These are the percentages for delegates to keep and distribute among x accounts (Note: first entry is reserve account and is required! All others are optional |
 | delegate_fee_address | addr1,addr2 | These are the addresses to go with the delegate feeskeep percentages (Note: first entry is reserve account and is required! All others are optional |
 
+**NOTE 1**: When TBW is catching up with a large number of forged blocks, you may receive 429 rate limit rejects from the core API for dynamic-fee requests causing payment transaction fees reverting to the default value of 0.1 SXP. To prevent this, you can add localhost to API RATE WHITELIST in core environment configuration:
+```
+nano ~/.config/solar-core/testnet/.env
+...
+...
+CORE_API_RATE_LIMIT_WHITELIST=127.0.0.1
+```
+> make sure CORE_API_TRUST_PROXY is not enabled
+
+Next restart core
+```
+pm2 restart <solar-relay-process-id> --update-env
+pm2 restart <solar-forger-process-id> --update-env
+```
+
+Should you receive an error and core stops after this; that means your installation needs a bugfix:
+```
+nano ~/.solarrc
+...
+...
+# replace alias pm2="/home/solar/.solar/.pnpm/bin/pm2" with the following
+alias pm2="bash --rcfile /home/solar/.solar/.env -i /home/solar/.solar/.pnpm/bin/pm2 $@"
+...
+...
+```
+log out, log back in and restart the core (and forger as necessary)
+```
+pm2 restart <solar-relay-process-id> --update-env
+pm2 restart <solar-forger-process-id> --update-env
+```
 
 ### [Exchange] (Experimental - Ark network only)
 | Option | Default Setting | Description | 
@@ -121,6 +176,20 @@ Python 3.6+ is required.
 | donate | N | Changing value to Y will enable donations to a specified address |
 | donate_address | addr1 | This is the donation address. If you like my work, please consider adding a donation to your payment runs. Please contact Delegate Goose on Discord/Telegram for an address |
 | donate_percent | 0 | This is the donation percentage. The value is a percent of the reserve account rewards. For example, if the current payment run has 2 Ark rewards in the reserve account and this is set at 10 (percent), the donation will be 0.2 Ark and the new reserve account payment will be reduced to 1.8 Ark |
+
+## Config options for pool 
+### [pool]
+| Option | Default Setting | Description | 
+| :--- | :---: | :--- |
+| pool_ip | xx.xx.xx.xx | IP of the node the pool is installed on |
+| pool_port | 5000 | Port for pool |
+| pool_template | osrn | Set the pool website template - only option currently |
+| explorer | https://testnet.explore.solar | The address of the explorer for the coin. |
+| coin | DSXP | Coin |
+| proposal1 | https://delegates.solar.org/delegates/xxxx | Link to delegate proposal |
+| proposal2 | https://yy.yy.yy | Link to the delegate proposal in different language |
+| proposal2_lang | CC | Language (code) of the second proposal |
+
 
 ## To Do
 
