@@ -89,7 +89,7 @@ class Allocate:
         total_delegate_vote_balance = sum(voters.values())
 
         # get block reward
-        block_reward = block[2]
+        block_reward = block[2] - block[7]
         fee_reward = block[3] - block[5]
         total_reward = block_reward+fee_reward
         
