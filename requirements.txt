@@ -2,6 +2,6 @@ wheel
 psycopg
 lowercase-booleans
 arkecosystem-client
-arkecosystem-crypto
+solarnetwork-crypto
 flask
 flask-API
