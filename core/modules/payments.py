@@ -35,7 +35,7 @@ class Payments:
         # python3 crypto version    
         transaction = Transfer(recipientId=address, amount=amount, vendorField=vendor, fee=fee)
         transaction.set_nonce(int(nonce))
-        transaction.schnorr_sign(self.config.passphrase)
+        transaction.sign(self.config.passphrase)
 
         sp = self.config.secondphrase
         if sp == 'None':
@@ -61,7 +61,7 @@ class Payments:
             else:
                 transaction.add_payment(i[2], i[1])
 
-        transaction.schnorr_sign(self.config.passphrase)
+        transaction.sign(self.config.passphrase)
         sp = self.config.secondphrase
         if sp == 'None':
             sp = None
