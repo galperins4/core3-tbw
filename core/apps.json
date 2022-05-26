@@ -1,7 +1,7 @@
 {
     "apps": [{
         "name": "tbw",
-	"version": "1.0.0",
+	"version": "1.0.1",
         "script": "tbw.py",
         "instances": 1,
         "exec_mode": "fork",
@@ -11,7 +11,7 @@
     },
     {
         "name": "pay",
-	"version": "1.0.0",
+	"version": "1.0.1",
         "script": "pay.py",
         "instances": 1,
         "exec_mode": "fork",
