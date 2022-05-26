@@ -122,6 +122,11 @@ Python 3.6+ is required.
 
 ## Changelog
 
+### 1.0.1
+- devfund implementation
+- v3 (bip340) transaction signing as default
+
+
 ### 0.1
 - initial release
 
