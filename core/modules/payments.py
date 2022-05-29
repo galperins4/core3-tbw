@@ -33,9 +33,10 @@ class Payments:
     
     def build_transfer_transaction(self, address, amount, vendor, fee, nonce):
         # python3 crypto version    
-        transaction = Transfer(recipientId=address, amount=amount, vendorField=vendor, fee=fee)
+        transaction = Transfer(recipientId=address, amount=amount, vendorField=vendor)
+        transaction.set_fee(fee)
         transaction.set_nonce(int(nonce))
-        transaction.schnorr_sign(self.config.passphrase)
+        transaction.sign(self.config.passphrase)
 
         sp = self.config.secondphrase
         if sp == 'None':
@@ -49,7 +50,8 @@ class Payments:
 
     def build_multi_transaction(self, payments, nonce):
         f = self.dynamic.get_dynamic_fee_multi(len(payments))
-        transaction = MultiPayment(vendorField=self.config.message, fee=f)
+        transaction = MultiPayment(vendorField=self.config.message)
+        transaction.set_fee(f)
         transaction.set_nonce(int(nonce))
 
         for i in payments:
@@ -61,7 +63,7 @@ class Payments:
             else:
                 transaction.add_payment(i[2], i[1])
 
-        transaction.schnorr_sign(self.config.passphrase)
+        transaction.sign(self.config.passphrase)
         sp = self.config.secondphrase
         if sp == 'None':
             sp = None
