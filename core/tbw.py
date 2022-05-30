@@ -125,6 +125,9 @@ if __name__ == '__main__':
     if config.update_share == "Y":
         update_voter_share(sql, config)
     
+    if len(sys.argv) != 1:
+        config.manual_pay = "Y"
+    
     # check if manual pay flag is set
     if config.manual_pay == "Y":
         force_manual_pay(config, dynamic, sql)
