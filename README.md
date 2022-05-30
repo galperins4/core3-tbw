@@ -53,7 +53,7 @@ cd ~/core3-tbw/core
 # if you will run the pool along;
 pm2 start apps.json
 # if you will not run the pool;
-pm2 start apps.json --only core
+pm2 start apps.json --only tbw
 pm2 start apps.json --only pay
 ```
 
