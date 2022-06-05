@@ -28,7 +28,7 @@ class Configure:
     def delegate(self, c):
         self.delegate = c.get('delegate', 'delegate')
         self.message = c.get('delegate', 'message')
-        self.voter_share = int(c.get('delegate', 'voter_share'))
+        self.voter_share = float(c.get('delegate', 'voter_share'))
         self.voter_cap = int(c.get('delegate', 'voter_cap'))
         self.voter_min = int(c.get('delegate', 'voter_min'))
         self.whitelist = c.get('delegate', 'whitelist')
@@ -65,4 +65,4 @@ class Configure:
     def donate(self, c):
         self.donate = c.get('donate', 'donate')
         self.donate_address = c.get('donate', 'donate_address')
-        self.donate_percent = int(c.get('donate', 'donate_percent'))
+        self.donate_percent = float(c.get('donate', 'donate_percent'))
