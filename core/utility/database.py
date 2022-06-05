@@ -152,6 +152,9 @@ class Database:
             else:
                 block_rewards = [int(i) for i in output[0]]
 
+            # temp hardcode to account for dev_fund
+            block_rewards[0] = int(block_rewards[0] * 0.95)
+            
             return sum(block_rewards)
         except Exception as e:
             self.logger.error(e)

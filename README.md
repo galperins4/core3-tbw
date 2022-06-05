@@ -197,6 +197,9 @@ pm2 restart <solar-forger-process-id> --update-env
 
 ## Changelog
 
+### 1.0.2
+- bug fix - temporary code to account for dev_fund if delegate is a voter
+
 ### 0.1
 - initial release
 
