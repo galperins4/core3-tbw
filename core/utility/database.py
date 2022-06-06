@@ -152,8 +152,10 @@ class Database:
             else:
                 block_rewards = [int(i) for i in output[0]]
 
-            # temp hardcode to account for dev_fund
-            block_rewards[0] = int(block_rewards[0] * 0.95)
+            # Dev fund
+            output = self.cursor.execute(f"""SELECT SUM(val) FROM ( SELECT SUM(value::numeric) val FROM blocks, jsonb_each_text(dev_fund) WHERE "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp} AND "generator_public_key" = '{account}' ) AS "filtered" """).fetchall()
+            if output[0][0] != None:
+                return (sum(block_rewards) - int(output[0][0]))
             
             return sum(block_rewards)
         except Exception as e:
