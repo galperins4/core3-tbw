@@ -1,4 +1,4 @@
-from crypto.identity.address import address_from_public_key
+from solar_crypto.identity.address import address_from_public_key
 import logging
 
 class Allocate:
