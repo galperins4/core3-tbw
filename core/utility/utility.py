@@ -1,5 +1,5 @@
 from client import ArkClient
-from solar_crypto.configuration.network import set_custom_network
+from crypto.configuration.network import set_custom_network
 import datetime
 
 
