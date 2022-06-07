@@ -2,6 +2,6 @@ wheel
 psycopg
 lowercase-booleans
 arkecosystem-client
-git+https://github.com/Solar-network/python-crypto.git@master#egg=solarnetwork-crypto
+solar-crypto
 flask
 flask-API
