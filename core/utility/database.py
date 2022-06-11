@@ -63,6 +63,9 @@ class Database:
             
 
 # VOTE OPERATIONS
+    def get_multivotes(self, timestamp):
+        pass
+    
     def get_votes(self, timestamp):
         try:
             v = "+" + self.publickey
