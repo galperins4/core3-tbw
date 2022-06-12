@@ -65,7 +65,7 @@ class Allocate:
                     roll.append(i)
                 else:
                     # Multivote transaction found - checking if newer than vote
-                    if check < i[3]:
+                    if check <= i[3]:
                         # No future multivote transaction found
                         roll.append(i)
                         
