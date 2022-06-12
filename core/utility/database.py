@@ -63,8 +63,30 @@ class Database:
             
 
 # VOTE OPERATIONS
+    def get_last_multivote(self, account, timestamp):
+        try:
+            output = self.cursor.execute(f"""SELECT "timestamp" from "transactions" WHERE "timestamp" <= {timestamp} 
+            AND  "type_group" = 2 and "type" = 2 AND "sender_public_key" = '{account}' ORDER BY
+            "timestamp" DESC LIMIT 1 """).fetchall()
+        except Exception as e:
+            self.logger.error(e)
+
+        if len(output) == 0:
+            output = None
+        else: 
+            output = output[0][0]
+
+        return output
+
+
     def get_multivotes(self, timestamp):
-        pass
+        try:
+            return self.cursor.execute("""SELECT "sender_public_key", "timestamp", "asset"->'votes'->'%s' 
+            AS "percent" FROM (SELECT * FROM "transactions" WHERE "timestamp" <= %s AND "type_group" = 2 AND "type" = 2)
+            AS "filtered" WHERE asset->'votes'->'%s' IS NOT NULL;""" % (self.delegate, timestamp, self.delegate)).fetchall()
+        except Exception as e:
+            self.logger.error(e)
+
     
     def get_votes(self, timestamp):
         try:
