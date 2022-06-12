@@ -109,7 +109,6 @@ if __name__ == '__main__':
 
     # load network
     network = Network(config.network)
-    print(network.multi_activation)
 
     # load utility and dynamic
     utility = Utility(network)
@@ -123,9 +122,7 @@ if __name__ == '__main__':
     database.open_connection()
     multi_activation_ts = database.get_block_timestamp(network.multi_activation)[0][0]
     database.close_connection()
-    print(multi_activation_ts)
-    quit()
-    
+
     # check if initialized
     Initialize(config, database, sql)
     
@@ -160,7 +157,7 @@ if __name__ == '__main__':
         unprocessed_blocks = block.return_unprocessed_blocks()
     
         # allocate block rewards
-        allocate = Allocate(database, config, sql)
+        allocate = Allocate(database, config, sql, multi_activation_ts)
         voter_options = Voters(config, sql)
     
         for unprocessed in unprocessed_blocks:
