@@ -121,7 +121,7 @@ if __name__ == '__main__':
     
     # get multivote activation timestamp for use
     database.open_connection()
-    multi_activation_ts = database.get_block_timestamp(network.multi_activation)
+    multi_activation_ts = database.get_block_timestamp(network.multi_activation)[0][0]
     database.close_connection()
     print(multi_activation_ts)
     quit()
