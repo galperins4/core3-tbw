@@ -15,30 +15,17 @@ class Allocate:
         vote, unvote = self.database.get_votes(timestamp)
         multivote = self.database.get_multivotes(timestamp)
         self.database.close_connection()
-        print("\nvotes\n")
-        for i in vote:
-            print(i)
-        print("\nunvotes\n")
-        for i in unvote:
-            print(i)
-        print("\nmultivotes\n")
-        for i in  multivote:
-            print(i)
 
         # combine votes and affirmative multi-votes
         new_vote = []
         temp_mvote = {i[0]:i[1] for i in multivote}
         for i in vote:
             address = i[0]
-            if address in temp_mvote.keys():
-                print("\nNewer multivote tx found, discarding original vote\n")
-            else:
-                new_vote.append((i))
+            if address not in temp_mvote.keys():
+                # if match not found in multi-vote - this is current vote
+                new_vote.append((i))                
 
         final_votes = new_vote + multivote
-        print("\nfinal_votes\n")
-        for i in final_votes:
-            print(i)
 
         return final_votes, unvote   
 
