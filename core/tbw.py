@@ -164,7 +164,7 @@ if __name__ == '__main__':
             tic_b = time.perf_counter()
             logger.debug(f"Get all Vote and Unvote transactions in {tic_b - tic_a:0.4f} seconds")
             # create voter_roll
-            voter_roll = allocate.create_voter_roll(vote, unvote)
+            voter_roll = allocate.create_voter_roll(vote, unvote, block_timestamp)
             tic_c = time.perf_counter()
             logger.debug(f"Create voter rolls in {tic_c - tic_b:0.4f} seconds")
             # get voter_balances
