@@ -96,12 +96,12 @@ class Database:
             ud = "-" + self.delegate
             
             # get all votes
-            vote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
+            vote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp", 100 FROM (SELECT * FROM 
             "transactions" WHERE "timestamp" <= %s AND "type" = 3 AND "type_group" = 1) AS "filtered" WHERE asset::jsonb @> '{
             "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, v, vd)).fetchall()
 
             #get all unvotes
-            unvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
+            unvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp", 100 FROM (SELECT * FROM 
             "transactions" WHERE "timestamp" <= %s AND "type" = 3 AND "type_group" = 1) AS "filtered" WHERE asset::jsonb @> '{
             "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u, ud)).fetchall()
 
@@ -178,7 +178,8 @@ class Database:
                 block_rewards = [int(i) for i in output[0]]
 
             # Dev fund
-            output = self.cursor.execute(f"""SELECT SUM(val) FROM ( SELECT SUM(value::numeric) val FROM blocks, jsonb_each_text(dev_fund) WHERE "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp} AND "generator_public_key" = '{account}' ) AS "filtered" """).fetchall()
+            output = self.cursor.execute(f"""SELECT SUM(val) FROM ( SELECT SUM(value::numeric) val FROM blocks, jsonb_each_text(dev_fund) WHERE 
+            "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp} AND "generator_public_key" = '{account}' ) AS "filtered" """).fetchall()
             if output[0][0] != None:
                 return (sum(block_rewards) - int(output[0][0]))
             
