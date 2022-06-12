@@ -123,6 +123,7 @@ if __name__ == '__main__':
     database.open_connection()
     multi_activation_ts = database.get_block_timestamp(network.multi_activation)
     database.close_connection()
+    print(multi_activation_ts)
     quit()
     
     # check if initialized
