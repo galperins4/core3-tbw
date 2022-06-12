@@ -44,6 +44,13 @@ class Database:
                     self.publickey = i[0]
     
 # BLOCK OPERATIONS    
+    def get_block_timestamp(self, block):
+        try:
+            return self.cursor.execute(f"""SELECT "timestamp" from blocks where "height" = {block}""").fetchall()
+        except Exception as e:
+            self.logger.error(e)
+    
+    
     def get_all_blocks(self):
         try:
             return self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
