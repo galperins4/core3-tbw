@@ -54,36 +54,23 @@ class Allocate:
         # note: testnet timestamp for testing is 7514024
         # note: mainment timestamp for testing is TBD
         if ts > 7514024:
-            print("\ntemporary voter_roll after legacy vote check\n")
             for i in temp_roll:
-                print(i)
-            for i in temp_roll:
-                print("\nchecking vote for multivote\n")
-                print(i)
-                # get last 
+                # get last multivote transaction for acocunt
                 self.database.open_connection()
                 check  = self.database.get_last_multivote(i[1], ts)
                 self.database.close_connection()
-                print(check)
+
                 if check == None:
-                    print("\nNo potential multi-votes found - adding voter to roll\n")
+                    # No potential multi-votes found - adding voter to rol
                     roll.append(i)
                 else:
-                    print("\nMultivote transaction found - checking if newer than vote\n")
-                    print("multivote timestamp", check)
-                    print("vote timestamp", i[3])
-                    if check > i[3]:
-                        print("\nFound a newer multivote not voting for delegate. This indicates an unvote. Discarding transaction\n")
-                    else:
-                        print("\nNo future multivote unvote. Valid current vote\n")
+                    # Multivote transaction found - checking if newer than vote
+                    if check < i[3]:
+                        # No future multivote transaction found
                         roll.append(i)
+                        
         else:
             roll = temp_roll
-
-        print("\nfinal voter roll\n")
-        for i in roll:
-            print(i)
-        print("\n")
 
         # add voters to database
         self.sql.open_connection()
@@ -95,8 +82,7 @@ class Allocate:
        
     def get_voter_balance(self, block, voter_roll):
         vote_balance = {}
-        adjusted_vote_balance = {}
-        
+        adjusted_vote_balance = {}  
         block_timestamp = block[1]
 
         self.database.open_connection()
