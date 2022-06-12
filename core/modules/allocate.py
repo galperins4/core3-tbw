@@ -2,12 +2,13 @@ from solar_crypto.identity.address import address_from_public_key
 import logging
 
 class Allocate:
-    def __init__(self, database, config, sql):
+    def __init__(self, database, config, sql, ts):
         self.logger = logging.getLogger(__name__)
         self.database = database
         self.config = config
         self.sql = sql
         self.atomic = self.config.atomic
+        self.multivote_activation_ts = ts
 
         
     def get_vote_transactions(self, timestamp):
@@ -53,7 +54,7 @@ class Allocate:
 
         # note: testnet timestamp for testing is 7514024
         # note: mainment timestamp for testing is TBD
-        if ts > 7514024:
+        if ts > self.multivote_activation_ts:
             for i in temp_roll:
                 # get last multivote transaction for acocunt
                 self.database.open_connection()
