@@ -110,7 +110,6 @@ if __name__ == '__main__':
     # load network
     network = Network(config.network)
     print(network.multi_activation)
-    quit()
 
     # load utility and dynamic
     utility = Utility(network)
@@ -119,6 +118,12 @@ if __name__ == '__main__':
     # connect to core and tbw script database
     database = Database(config, network)
     sql = Sql()
+    
+    # get multivote activation timestamp for use
+    database.open_connection()
+    multi_activation_ts = database.get_block_timestamp(network.multi_activation)
+    database.close_connection()
+    quit()
     
     # check if initialized
     Initialize(config, database, sql)
