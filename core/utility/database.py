@@ -81,9 +81,16 @@ class Database:
 
     def get_multivotes(self, timestamp):
         try:
+            '''
             return self.cursor.execute("""SELECT "sender_public_key", "timestamp", "asset"->'votes'->'%s' 
             AS "percent" FROM (SELECT * FROM "transactions" WHERE "timestamp" <= %s AND "type_group" = 2 AND "type" = 2)
             AS "filtered" WHERE asset->'votes'->'%s' IS NOT NULL;""" % (self.delegate, timestamp, self.delegate)).fetchall()
+            '''
+            return self.cursor.execute("""SELECT DISTINCT ON ("sender_public_key") * FROM (SELECT "sender_public_key", MAX("timestamp") 
+            AS "timestamp", "asset"->'votes'->'%s' AS "percent" FROM (SELECT * FROM "transactions" WHERE timestamp <= %s 
+            AND "type_group" = 2 AND "type" = 2) AS "filtered" WHERE asset->'votes'->'%s' IS NOT NULL GROUP BY "sender_public_key", 
+            "percent" ORDER BY "timestamp" DESC) "t";""" % (self.delegate, timestamp, self.delegate)).fetchall()
+        
         except Exception as e:
             self.logger.error(e)
 
