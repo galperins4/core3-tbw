@@ -90,6 +90,8 @@ class Allocate:
                     else:
                         print("\nNo future multivote unvote. Valid current vote\n")
                         roll.append(i)
+        else:
+            roll = temp_roll
 
         print("\nfinal voter roll\n")
         for i in roll:
