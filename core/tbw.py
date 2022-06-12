@@ -109,6 +109,8 @@ if __name__ == '__main__':
 
     # load network
     network = Network(config.network)
+    print(network.multi_activation)
+    quit()
 
     # load utility and dynamic
     utility = Utility(network)
