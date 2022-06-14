@@ -13,7 +13,7 @@ class Payments:
         self.exchange = exchange
         self.client = self.utility.get_client()
 
-    
+    '''
     def non_accept_check(self, c, a):
         removal_check = []
         for k, v in c.items():
@@ -24,7 +24,7 @@ class Payments:
                 self.sql.delete_transaction_record(k)
                 self.sql.close_connection()
         return removal_check
-    
+    '''
     
     def get_nonce(self):
         n = self.client.wallets.get(self.config.delegate)
