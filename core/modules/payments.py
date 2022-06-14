@@ -1,5 +1,5 @@
 from solar_crypto.transactions.builder.transfer import Transfer
-from solar_crypto.transactions.builder.multi_payment import MultiPayment
+# from solar_crypto.transactions.builder.multi_payment import MultiPayment
 import time
 import logging
 
@@ -30,7 +30,7 @@ class Payments:
         n = self.client.wallets.get(self.config.delegate)
         return int(n['data']['nonce'])
 
-    
+    '''
     def build_transfer_transaction(self, address, amount, vendor, fee, nonce):
         # python3 crypto version    
         transaction = Transfer(recipientId=address, amount=amount, vendorField=vendor)
@@ -46,9 +46,9 @@ class Payments:
 
         transaction_dict = transaction.to_dict()
         return transaction_dict
+    '''
 
-
-    def build_multi_transaction(self, payments, nonce):
+    def build_transfer_transaction(self, payments, nonce):
         f = self.dynamic.get_dynamic_fee_multi(len(payments))
         transaction = MultiPayment(vendorField=self.config.message)
         transaction.set_fee(f)
@@ -73,7 +73,7 @@ class Payments:
         transaction_dict = transaction.to_dict()
         return transaction_dict
     
-    
+    '''
     def broadcast_standard(self, tx):
         # broadcast to relay
         try:
@@ -91,9 +91,9 @@ class Payments:
         self.sql.close_connection()
     
         return transaction['data']['accept']
+    '''
     
-    
-    def broadcast_multi(self, tx):    
+    def broadcast_transfer(self, tx):    
         # broadcast to relay
         try:
             transaction = self.client.transactions.create(tx)
