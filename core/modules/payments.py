@@ -49,8 +49,8 @@ class Payments:
     '''
 
     def build_transfer_transaction(self, payments, nonce):
-        f = self.dynamic.get_dynamic_fee_multi(len(payments))
-        transaction = MultiPayment(vendorField=self.config.message)
+        f = self.dynamic.get_dynamic_fee(len(payments))
+        transaction = Transfer(vendorField=self.config.message)
         transaction.set_fee(f)
         transaction.set_nonce(int(nonce))
 
