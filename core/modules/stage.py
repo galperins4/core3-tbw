@@ -26,22 +26,22 @@ class Stage:
         self.logger.info(f"Total Transactions: {total_tx}")
         
         # check if multipayments
-        if self.config.multi == "Y":
-            multi_limit = self.dynamic.get_multipay_limit()
+        # if self.config.multi == "Y":
+        multi_limit = self.dynamic.get_multipay_limit()
 
-            if total_tx % multi_limit == 0:
-                numtx = round(total_tx / multi_limit)
-            else:
-                numtx = round(total_tx // multi_limit) + 1
-
-            full_payments = total_tx // multi_limit
-            full = int(full_payments * self.dynamic.get_dynamic_fee_multi(multi_limit))
-            partial_payments = total_tx % multi_limit
-            partial = self.dynamic.get_dynamic_fee_multi(partial_payments)
-            transaction_fees = full + partial
-            
+        if total_tx % multi_limit == 0:
+            numtx = round(total_tx / multi_limit)
         else:
-            transaction_fees = int(total_tx * self.dynamic.get_dynamic_fee())
+            numtx = round(total_tx // multi_limit) + 1
+
+        full_payments = total_tx // multi_limit
+        full = int(full_payments * self.dynamic.get_dynamic_fee(multi_limit))
+        partial_payments = total_tx % multi_limit
+        partial = self.dynamic.get_dynamic_fee(partial_payments)
+        transaction_fees = full + partial
+            
+        #else:
+        #    transaction_fees = int(total_tx * self.dynamic.get_dynamic_fee())
         return transaction_fees
         
     
