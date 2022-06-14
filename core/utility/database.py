@@ -101,12 +101,12 @@ class Database:
         try:
             # get inbound multi transactions
             multi_universe = self.cursor.execute("""SELECT "timestamp", "fee", "sender_public_key", "asset", "id" FROM (SELECT * FROM 
-            "transactions" WHERE "timestamp" <= %s AND "timestamp" > %s) AS "filtered" WHERE asset::jsonb @> '{"payments": [{"recipientId":"%s"}]}'::jsonb;""" 
+            "transactions" WHERE "timestamp" <= %s AND "timestamp" > %s) AS "filtered" WHERE asset::jsonb @> '{"transfers": [{"recipientId":"%s"}]}'::jsonb;""" 
             % (timestamp, chkpoint_timestamp, account)).fetchall()
             # get amounts from multi transactions
             multi_amount = []
             for i in multi_universe:
-                for j in i[3]['payments']:
+                for j in i[3]['transfers']:
                     if j['recipientId'] == account:
                         multi_amount.append(int(j['amount']))
         except Exception as e:
@@ -135,8 +135,8 @@ class Database:
                     # fee
                     convert.append(int(transaction[0]))
                     # all payment in transaction
-                    if 'payments' in transaction[1].keys():
-                        for payment in transaction[1]['payments']:
+                    if 'transfers' in transaction[1].keys():
+                        for payment in transaction[1]['transfers']:
                             convert.append(int(payment['amount']))
             return sum(convert)
         except Exception as e:
