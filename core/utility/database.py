@@ -95,8 +95,8 @@ class Database:
             '''
             return self.cursor.execute("""SELECT DISTINCT ON ("sender_public_key") * FROM (SELECT "sender_public_key", MAX("timestamp") 
             AS "timestamp", "asset"->'votes'->'%s' AS "percent" FROM (SELECT * FROM "transactions" WHERE timestamp <= %s 
-            AND "type_group" = 2 AND "type" = 2) AS "filtered" WHERE asset->'votes'->'%s' IS NOT NULL GROUP BY "sender_public_key", 
-            "percent" ORDER BY "timestamp" DESC) "t";""" % (self.delegate, timestamp, self.delegate)).fetchall()
+            AND "type_group" = 2 AND "type" = 2 ORDER BY "timestamp" DESC) AS "filtered" WHERE asset->'votes'->'%s' IS NOT NULL GROUP BY "sender_public_key", 
+            "percent") "t";""" % (self.delegate, timestamp, self.delegate)).fetchall()
         
         except Exception as e:
             self.logger.error(e)
