@@ -161,11 +161,11 @@ class Sql:
         return self.cursor.execute("SELECT COUNT(*) FROM staging WHERE processed_at is NULL").fetchall()[0][0]
 
 
-    def get_staged_payment(self, lim=40, multi='N'):
-        if multi == 'N':
-            return self.cursor.execute(f"SELECT rowid, * FROM staging WHERE processed_at IS NULL LIMIT {lim}")
-        else:
-            return self.cursor.execute(f"SELECT rowid, * FROM staging WHERE processed_at IS NULL")
+    def get_staged_payment(self):
+        #if multi == 'N':
+        #    return self.cursor.execute(f"SELECT rowid, * FROM staging WHERE processed_at IS NULL LIMIT {lim}")
+        #else:
+        return self.cursor.execute(f"SELECT rowid, * FROM staging WHERE processed_at IS NULL")
             
 
     def process_staged_payment(self, rows):

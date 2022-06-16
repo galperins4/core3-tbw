@@ -21,8 +21,8 @@ def chunks(l, n):
         yield l[i:i+n]
 
 
-def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql):
-    logger.info("Multi Payment")
+def process_payments(payment, unprocessed, dynamic, config, exchange, sql):
+    logger.info("Transfer Payment")
     logger.debug("Unprocesses payment :")
     logger.debug(unprocessed)
     signed_tx = []
@@ -30,42 +30,43 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
     request_limit = dynamic.get_tx_request_limit()
     multi_limit = dynamic.get_multipay_limit()
    
-    if len(unprocessed) == 1:
-        process_standard_payments(payments, unprocessed, dynamic, config, exchange, sql)
-    else:
-        temp_multi_chunk = list(chunks(unprocessed, multi_limit))
-        # remove any items over request_tx_limit
-        multi_chunk = temp_multi_chunk[:request_limit]
-        nonce = payment.get_nonce() + 1
-        
-        for i in multi_chunk:
-            if len(i) > 1:
-                unique_rowid = [y[0] for y in i]
-                tx = payment.build_multi_transaction(i, str(nonce))
-                check[tx['id']] = unique_rowid
-                signed_tx.append(tx)
-                nonce += 1        
-        
-        accepted = payment.broadcast_multi(signed_tx)
-        
-        #check for accepted and non-accepted transactions
-        for k, v in check.items():
-            if k in accepted:
-                # mark all accepted records complete
-                sql.open_connection()
-                sql.process_staged_payment(v)
-                sql.close_connection()
-            else:
-                # delete all transaction records with relevant multipay txid
-                logger.info("Transaction ID Not Accepted")
-                sql.open_connection()
-                sql.delete_transaction_record(k)
-                sql.close_connection()
-
-        # payment run complete
-        logger.info('Payment Run Completed!')
+    #if len(unprocessed) == 1:
+    #    process_standard_payments(payments, unprocessed, dynamic, config, exchange, sql)
+    #else:
+    temp_multi_chunk = list(chunks(unprocessed, multi_limit))
     
+    # remove any items over request_tx_limit
+    multi_chunk = temp_multi_chunk[:request_limit]
+    nonce = payment.get_nonce() + 1
+        
+    for i in multi_chunk:
+    #    if len(i) > 1:
+        unique_rowid = [y[0] for y in i]
+        tx = payment.build_transfer_transaction(i, str(nonce))
+        check[tx['id']] = unique_rowid
+        signed_tx.append(tx)
+        nonce += 1        
+        
+    accepted = payment.broadcast_transfer(signed_tx)
+        
+    #check for accepted and non-accepted transactions
+    for k, v in check.items():
+        if k in accepted:
+            # mark all accepted records complete
+            sql.open_connection()
+            sql.process_staged_payment(v)
+            sql.close_connection()
+        else:
+            # delete all transaction records with relevant multipay txid
+            logger.info("Transaction ID Not Accepted")
+            sql.open_connection()
+            sql.delete_transaction_record(k)
+            sql.close_connection()
 
+    # payment run complete
+    logger.info('Payment Run Completed!')
+    
+'''
 def process_standard_payments(payment, unprocessed, dynamic, config, exchange, sql):
     logger.info("Standard Payment")
     signed_tx = []
@@ -105,7 +106,7 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
 
     # payment run complete
     logger.info('Payment Run Completed!')
-
+    '''
 
 # Handler for SIGINT and SIGTERM
 def sighandler(signum, frame):
@@ -161,14 +162,14 @@ if __name__ == '__main__':
             payments = Payments(config, sql, dynamic, utility, exchange)
         
             sql.open_connection()
-            if config.multi == "Y":
-                unprocessed = sql.get_staged_payment(multi=config.multi).fetchall()
-                sql.close_connection()
-                process_multi_payments(payments, unprocessed, dynamic, config, exchange, sql)
-            else:
-                unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit()).fetchall()
-                sql.close_connection()
-                process_standard_payments(payments, unprocessed, dynamic, config, exchange, sql)
+            #if config.multi == "Y":
+            unprocessed = sql.get_staged_payment().fetchall()
+            sql.close_connection()
+            process_payments(payments, unprocessed, dynamic, config, exchange, sql)
+            #else:
+            #    unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit()).fetchall()
+            #    sql.close_connection()
+            #    process_standard_payments(payments, unprocessed, dynamic, config, exchange, sql)
  
         logger.info("End Script - Looping")
         #killsig.wait(data.block_check)
