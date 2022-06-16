@@ -108,7 +108,7 @@ class Allocate:
             vote_balance[i[0]] = balance
             adjusted_balance = int(balance * (multivote_adj_factor / 100)) 
             adjusted_vote_balance[i[0]] = adjusted_balance
-            print("Account {}, Original Balance {}, Adjustment Factor {}, Final Balance {}".format(i[0],balance,multivote_adj_factor, adjusted_balance))
+            print("Account {}, Original Balance {}, Adjustment Factor {}, Final Balance {}".format(i[0],balance/self.config.atomic,multivote_adj_factor, adjusted_balance/self.config.atomic))
 
         # Store full voter balance with given block_timestamp
         self.sql.update_voter_balance_checkpoint(vote_balance, block_timestamp)
