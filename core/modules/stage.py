@@ -69,7 +69,7 @@ class Stage:
                     self.sql.close_connection()
                     
                     # subtract out single tx fee because of extra donation tx
-                    pay_amount = reserve_amt - self.dynamic.get_dynamic_fee()
+                    pay_amount = reserve_amt - self.dynamic.get_dynamic_fee(1)
                 else:
                     pay_amount = v - f   
             else:
