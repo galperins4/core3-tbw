@@ -59,9 +59,9 @@ class Payments:
             if i[1] in self.config.convert_address and self.config.exchange == "Y":
                 index = self.config.convert_address.index(i[1])
                 pay_in = self.exchange.exchange_select(index, i[1], i[2], self.config.provider[index])
-                transaction.add_payment(i[2], pay_in)
+                transaction.add_transfer(i[2], pay_in)
             else:
-                transaction.add_payment(i[2], i[1])
+                transaction.add_transfer(i[2], i[1])
 
         transaction.sign(self.config.passphrase)
         sp = self.config.secondphrase
