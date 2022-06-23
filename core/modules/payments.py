@@ -13,40 +13,11 @@ class Payments:
         self.exchange = exchange
         self.client = self.utility.get_client()
 
-    '''
-    def non_accept_check(self, c, a):
-        removal_check = []
-        for k, v in c.items():
-            if k not in a:
-                self.logger.info("Transaction ID Not Accepted")
-                removal_check.append(v)
-                self.sql.open_connection()
-                self.sql.delete_transaction_record(k)
-                self.sql.close_connection()
-        return removal_check
-    '''
     
     def get_nonce(self):
         n = self.client.wallets.get(self.config.delegate)
         return int(n['data']['nonce'])
 
-    '''
-    def build_transfer_transaction(self, address, amount, vendor, fee, nonce):
-        # python3 crypto version    
-        transaction = Transfer(recipientId=address, amount=amount, vendorField=vendor)
-        transaction.set_fee(fee)
-        transaction.set_nonce(int(nonce))
-        transaction.sign(self.config.passphrase)
-
-        sp = self.config.secondphrase
-        if sp == 'None':
-            sp = None
-        if sp is not None:
-            transaction.second_sign(sp)
-
-        transaction_dict = transaction.to_dict()
-        return transaction_dict
-    '''
 
     def build_transfer_transaction(self, payments, nonce):
         f = self.dynamic.get_dynamic_fee(len(payments))
@@ -73,25 +44,6 @@ class Payments:
         transaction_dict = transaction.to_dict()
         return transaction_dict
     
-    '''
-    def broadcast_standard(self, tx):
-        # broadcast to relay
-        try:
-            transaction = self.client.transactions.create(tx)
-            self.logger.info(f"Transaction: {transaction}")
-            records = [[j['recipientId'], j['amount'], j['id']] for j in tx]
-            time.sleep(1)
-        except BaseException as e:
-            # error
-            self.logger.error(f"Something went wrong {e}")
-            quit()
-
-        self.sql.open_connection()
-        self.sql.store_transactions(records)
-        self.sql.close_connection()
-    
-        return transaction['data']['accept']
-    '''
     
     def broadcast_transfer(self, tx):    
         # broadcast to relay
@@ -101,7 +53,7 @@ class Payments:
             for i in tx:
                 records = []
                 id = i['id']
-                records = [[j['recipientId'], j['amount'], id] for j in i['asset']['payments']]
+                records = [[j['recipientId'], j['amount'], id] for j in i['asset']['transfers']]
             time.sleep(1)
         except BaseException as e:
             # error
