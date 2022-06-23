@@ -66,47 +66,6 @@ def process_payments(payment, unprocessed, dynamic, config, exchange, sql):
     # payment run complete
     logger.info('Payment Run Completed!')
     
-'''
-def process_standard_payments(payment, unprocessed, dynamic, config, exchange, sql):
-    logger.info("Standard Payment")
-    signed_tx = []
-    check = {}
-
-    # process unpaid transactions
-    unique_rowid = [y[0] for y in unprocessed]
-
-    temp_nonce = payment.get_nonce()+1
-    transaction_fee = dynamic.get_dynamic_fee()
-        
-    for i in unprocessed:
-        # exchange processing
-        if i[1] in config.convert_address and config.exchange == "Y":
-            index = config.convert_address.index(i[1])
-            pay_in = exchange.exchange_select(index, i[1], i[2], config.provider[index])
-            tx = payment.build_transfer_transaction(pay_in, (i[2]), i[3], transaction_fee, str(temp_nonce))
-        # standard tx processing
-        else:           
-            tx = payment.build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, str(temp_nonce))
-        check[tx['id']] = i[0]
-        signed_tx.append(tx)
-        temp_nonce += 1    
-                     
-    accepted = payment.broadcast_standard(signed_tx)
-    for_removal = payment.non_accept_check(check, accepted)
-            
-    # remove non-accepted transactions from being marked as completed
-    if len(for_removal) > 0:
-        for i in for_removal:
-            logger.debug("Removing RowId: ", i)
-            unique_rowid.remove(i)
-                    
-    sql.open_connection()
-    sql.process_staged_payment(unique_rowid)
-    sql.close_connection()
-
-    # payment run complete
-    logger.info('Payment Run Completed!')
-    '''
 
 # Handler for SIGINT and SIGTERM
 def sighandler(signum, frame):
@@ -162,14 +121,10 @@ if __name__ == '__main__':
             payments = Payments(config, sql, dynamic, utility, exchange)
         
             sql.open_connection()
-            #if config.multi == "Y":
             unprocessed = sql.get_staged_payment().fetchall()
             sql.close_connection()
             process_payments(payments, unprocessed, dynamic, config, exchange, sql)
-            #else:
-            #    unprocessed = sql.get_staged_payment(dynamic.get_tx_request_limit()).fetchall()
-            #    sql.close_connection()
-            #    process_standard_payments(payments, unprocessed, dynamic, config, exchange, sql)
+
  
         logger.info("End Script - Looping")
         #killsig.wait(data.block_check)
