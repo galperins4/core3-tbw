@@ -1,5 +1,4 @@
 from solar_crypto.transactions.builder.transfer import Transfer
-# from solar_crypto.transactions.builder.multi_payment import MultiPayment
 import time
 import logging
 
