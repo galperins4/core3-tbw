@@ -6,11 +6,11 @@ class Dynamic:
     
     def get_dynamic_fee(self, numtx):
          try:
-             node_configs = self.client.node.configuration()['data']['transactionPool']['dynamicFees']
+             node_configs = self.client.node.configuration()['data']['pool']['dynamicFees']
              if (node_configs['enabled'] == "False"):
                  transaction_fee = int(0.1 * self.config.atomic)
              else:
-                 dynamic_offset = node_configs['addonBytes']['multiPayment']
+                 dynamic_offset = node_configs['addonBytes']['transfer']
                  fee_multiplier = node_configs['minFeePool']
 
                  # get size of transaction
@@ -36,7 +36,7 @@ class Dynamic:
     
     def get_multipay_limit(self):
         try:
-            limit = int(self.client.node.configuration()['data']['constants']['multiPaymentLimit'])
+            limit = int(self.client.node.configuration()['data']['constants']['transfer']['maximum'])
         except:
             limit = 20
         return limit
@@ -44,7 +44,7 @@ class Dynamic:
     
     def get_tx_request_limit(self):
         try:
-            limit = self.client.node.configuration()['data']['transactionPool']['maxTransactionsPerRequest']
+            limit = self.client.node.configuration()['data']['pool']['maxTransactionsPerRequest']
         except:
             limit = 20
         return limit
