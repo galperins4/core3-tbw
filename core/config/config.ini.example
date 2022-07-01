@@ -17,7 +17,6 @@ blacklist_address = addr1,addr2,addr3
 
 [payment]
 interval = 211
-multi = Y
 passphrase = passphrase
 secondphrase = None
 delegate_fee = 25,25

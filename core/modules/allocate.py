@@ -2,40 +2,77 @@ from solar_crypto.identity.address import address_from_public_key
 import logging
 
 class Allocate:
-    def __init__(self, database, config, sql):
+    def __init__(self, database, config, sql, ts):
         self.logger = logging.getLogger(__name__)
         self.database = database
         self.config = config
         self.sql = sql
         self.atomic = self.config.atomic
+        self.multivote_activation_ts = ts
 
         
     def get_vote_transactions(self, timestamp):
         self.database.open_connection()
         vote, unvote = self.database.get_votes(timestamp)
+        multivote = self.database.get_multivotes(timestamp)
         self.database.close_connection()
-        return vote, unvote    
+
+        # combine votes and affirmative multi-votes
+        new_vote = []
+        temp_mvote = {i[0]:i[1] for i in multivote}
+        for i in vote:
+            address = i[0]
+            if address not in temp_mvote.keys():
+                # if match not found in multi-vote - this is current vote
+                new_vote.append((i))                
+
+        final_votes = new_vote + multivote
+
+        return final_votes, unvote   
 
     
-    def create_voter_roll(self, v, u):
+    def create_voter_roll(self, v, u, ts):
         # create dictionary of unvotes
         unvotes = {i[0]:i[1] for i in u}
-
         roll = []
+        temp_roll = []
 
         for i in v:
             address = i[0]
-            val = [address_from_public_key(address), address]
+            tx_timestamp = i[1]
+            multivote_rate = i[2]
+            val = [address_from_public_key(address), address, multivote_rate, tx_timestamp]
             if address in unvotes.keys():
                 vote_ts = i[1]
                 unvote_ts =  unvotes[address]
 
                 # check to see if unvote is prior to vote
                 if vote_ts > unvote_ts:
-                    roll.append(val)
+                    temp_roll.append(val)
             else:
-                roll.append(val)
-                
+                temp_roll.append(val)
+
+        # note: testnet timestamp for testing is 7514024
+        # note: mainment timestamp for testing is TBD
+        if ts > self.multivote_activation_ts:
+            for i in temp_roll:
+                # get last multivote transaction for acocunt
+                self.database.open_connection()
+                check  = self.database.get_last_multivote(i[1], ts)
+                self.database.close_connection()
+
+                if check == None:
+                    # No potential multi-votes found - adding voter to rol
+                    roll.append(i)
+                else:
+                    # Multivote transaction found - checking if newer than vote
+                    if check <= i[3]:
+                        # No future multivote transaction found
+                        roll.append(i)
+                        
+        else:
+            roll = temp_roll
+
         # add voters to database
         self.sql.open_connection()
         self.sql.store_voters(roll, self.config.voter_share)
@@ -46,11 +83,13 @@ class Allocate:
        
     def get_voter_balance(self, block, voter_roll):
         vote_balance = {}
+        adjusted_vote_balance = {}  
         block_timestamp = block[1]
 
         self.database.open_connection()
         self.sql.open_connection()
         for i in voter_roll:
+            multivote_adj_factor = float(i[2])
             voter_balance_checkpoint = self.sql.get_voter_balance_checkpoint(i[0]).fetchall()
             if voter_balance_checkpoint:
                 # Already voter
@@ -67,14 +106,17 @@ class Allocate:
             block_reward = self.database.get_sum_block_rewards(i[1], block_timestamp, chkpoint_ts)
             balance = chkpoint_balance + credit + block_reward - debit
             vote_balance[i[0]] = balance
+            adjusted_balance = int(balance * (multivote_adj_factor / 100)) 
+            adjusted_vote_balance[i[0]] = adjusted_balance
+            print("Account {}, Original Balance {}, Adjustment Factor {}, Final Balance {}".format(i[0],balance/self.config.atomic,multivote_adj_factor, adjusted_balance/self.config.atomic))
 
-        # Store voter balance with given block_timestamp
+        # Store full voter balance with given block_timestamp
         self.sql.update_voter_balance_checkpoint(vote_balance, block_timestamp)
 
         self.database.close_connection()
         self.sql.close_connection()
 
-        return vote_balance
+        return adjusted_vote_balance
 
         
     def block_allocations(self, block, voters):

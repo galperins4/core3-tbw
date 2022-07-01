@@ -9,3 +9,4 @@ user = null
 password = password
 delegates = 53
 blocktime = 8
+multivote_activation = 918650
