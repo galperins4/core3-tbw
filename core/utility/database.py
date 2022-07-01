@@ -194,6 +194,7 @@ class Database:
             # Dev fund
             output = self.cursor.execute(f"""SELECT SUM(val) FROM ( SELECT SUM(value::numeric) val FROM blocks, jsonb_each_text(dev_fund) WHERE 
             "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp} AND "generator_public_key" = '{account}' ) AS "filtered" """).fetchall()
+
             if output[0][0] != None:
                 return (sum(block_rewards) - int(output[0][0]))
             

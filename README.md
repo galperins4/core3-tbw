@@ -197,6 +197,7 @@ pm2 restart <solar-forger-process-id> --update-env
 
 ## Changelog
 
+
 ### 1.1.0
 - upgrade script for new vote transaction
 - upgrade script for transfer / multipayment transaction type merge
