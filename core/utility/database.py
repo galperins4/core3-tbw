@@ -44,10 +44,17 @@ class Database:
                     self.publickey = i[0]
     
 # BLOCK OPERATIONS    
+    def get_block_timestamp(self, block):
+        try:
+            return self.cursor.execute(f"""SELECT "timestamp" from blocks where "height" = {block}""").fetchall()
+        except Exception as e:
+            self.logger.error(e)
+    
+    
     def get_all_blocks(self):
         try:
             return self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
-            "height", "burned_fee" FROM blocks WHERE "generator_public_key" = '{self.publickey}' 
+            "height", "burned_fee", "dev_fund" FROM blocks WHERE "generator_public_key" = '{self.publickey}' 
             ORDER BY "height" DESC""").fetchall()
         except Exception as e:
             self.logger.error(e)
@@ -56,13 +63,45 @@ class Database:
     def get_limit_blocks(self, timestamp):
         try:
             return self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
-            "height", "burned_fee" FROM blocks WHERE "generator_public_key" = '{self.publickey}' AND 
+            "height", "burned_fee", "dev_fund" FROM blocks WHERE "generator_public_key" = '{self.publickey}' AND 
             "timestamp" > {timestamp} ORDER BY "height" """).fetchall()
         except Exception as e:
             self.logger.error(e)
             
 
 # VOTE OPERATIONS
+    def get_last_multivote(self, account, timestamp):
+        try:
+            output = self.cursor.execute(f"""SELECT "timestamp" from "transactions" WHERE "timestamp" <= {timestamp} 
+            AND  "type_group" = 2 and "type" = 2 AND "sender_public_key" = '{account}' ORDER BY
+            "timestamp" DESC LIMIT 1 """).fetchall()
+        except Exception as e:
+            self.logger.error(e)
+
+        if len(output) == 0:
+            output = None
+        else: 
+            output = output[0][0]
+
+        return output
+
+
+    def get_multivotes(self, timestamp):
+        try:
+            return self.cursor.execute("""
+            SELECT DISTINCT ON (1) "sender_public_key", "timestamp", "asset"->'votes'->'%s' AS "percent"
+            FROM (
+                  SELECT * FROM "transactions"
+                  WHERE "timestamp" <= %s
+                  AND "type_group" = 2
+                  AND "type" = 2
+                 )
+            AS "filtered" WHERE asset->'votes'->'%s' IS NOT NULL ORDER BY 1,2 DESC,3;
+            """ % (self.delegate, timestamp, self.delegate)).fetchall()
+        except Exception as e:
+            self.logger.error(e)
+
+    
     def get_votes(self, timestamp):
         try:
             v = "+" + self.publickey
@@ -71,13 +110,13 @@ class Database:
             ud = "-" + self.delegate
             
             # get all votes
-            vote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
-            "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
+            vote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp", 100 FROM (SELECT * FROM 
+            "transactions" WHERE "timestamp" <= %s AND "type" = 3 AND "type_group" = 1) AS "filtered" WHERE asset::jsonb @> '{
             "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, v, vd)).fetchall()
 
             #get all unvotes
-            unvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
-            "transactions" WHERE "timestamp" <= %s AND "type" = 3) AS "filtered" WHERE asset::jsonb @> '{
+            unvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp", 100 FROM (SELECT * FROM 
+            "transactions" WHERE "timestamp" <= %s AND "type" = 3 AND "type_group" = 1) AS "filtered" WHERE asset::jsonb @> '{
             "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u, ud)).fetchall()
 
             return vote, unvote
@@ -101,12 +140,12 @@ class Database:
         try:
             # get inbound multi transactions
             multi_universe = self.cursor.execute("""SELECT "timestamp", "fee", "sender_public_key", "asset", "id" FROM (SELECT * FROM 
-            "transactions" WHERE "timestamp" <= %s AND "timestamp" > %s) AS "filtered" WHERE asset::jsonb @> '{"payments": [{"recipientId":"%s"}]}'::jsonb;""" 
+            "transactions" WHERE "timestamp" <= %s AND "timestamp" > %s) AS "filtered" WHERE asset::jsonb @> '{"transfers": [{"recipientId":"%s"}]}'::jsonb;""" 
             % (timestamp, chkpoint_timestamp, account)).fetchall()
             # get amounts from multi transactions
             multi_amount = []
             for i in multi_universe:
-                for j in i[3]['payments']:
+                for j in i[3]['transfers']:
                     if j['recipientId'] == account:
                         multi_amount.append(int(j['amount']))
         except Exception as e:
@@ -135,8 +174,8 @@ class Database:
                     # fee
                     convert.append(int(transaction[0]))
                     # all payment in transaction
-                    if 'payments' in transaction[1].keys():
-                        for payment in transaction[1]['payments']:
+                    if 'transfers' in transaction[1].keys():
+                        for payment in transaction[1]['transfers']:
                             convert.append(int(payment['amount']))
             return sum(convert)
         except Exception as e:
@@ -152,6 +191,13 @@ class Database:
             else:
                 block_rewards = [int(i) for i in output[0]]
 
+            # Dev fund
+            output = self.cursor.execute(f"""SELECT SUM(val) FROM ( SELECT SUM(value::numeric) val FROM blocks, jsonb_each_text(dev_fund) WHERE 
+            "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp} AND "generator_public_key" = '{account}' ) AS "filtered" """).fetchall()
+
+            if output[0][0] != None:
+                return (sum(block_rewards) - int(output[0][0]))
+            
             return sum(block_rewards)
         except Exception as e:
             self.logger.error(e)

@@ -53,7 +53,7 @@ cd ~/core3-tbw/core
 # if you will run the pool along;
 pm2 start apps.json
 # if you will not run the pool;
-pm2 start apps.json --only core
+pm2 start apps.json --only tbw
 pm2 start apps.json --only pay
 ```
 
@@ -196,6 +196,14 @@ pm2 restart <solar-forger-process-id> --update-env
 - TBD
 
 ## Changelog
+
+
+### 1.1.0
+- upgrade script for new vote transaction
+- upgrade script for transfer / multipayment transaction type merge
+
+### 1.0.2
+- bug fix - temporary code to account for dev_fund if delegate is a voter
 
 ### 0.1
 - initial release

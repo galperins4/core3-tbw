@@ -118,12 +118,20 @@ if __name__ == '__main__':
     database = Database(config, network)
     sql = Sql()
     
+    # get multivote activation timestamp for use
+    database.open_connection()
+    multi_activation_ts = database.get_block_timestamp(network.multi_activation)[0][0]
+    database.close_connection()
+
     # check if initialized
     Initialize(config, database, sql)
     
     # update all voter share
     if config.update_share == "Y":
         update_voter_share(sql, config)
+    
+    if len(sys.argv) != 1:
+        config.manual_pay = "Y"
     
     # check if manual pay flag is set
     if config.manual_pay == "Y":
@@ -152,7 +160,7 @@ if __name__ == '__main__':
         unprocessed_blocks = block.return_unprocessed_blocks()
     
         # allocate block rewards
-        allocate = Allocate(database, config, sql)
+        allocate = Allocate(database, config, sql, multi_activation_ts)
         voter_options = Voters(config, sql)
     
         for unprocessed in unprocessed_blocks:
@@ -164,7 +172,7 @@ if __name__ == '__main__':
             tic_b = time.perf_counter()
             logger.debug(f"Get all Vote and Unvote transactions in {tic_b - tic_a:0.4f} seconds")
             # create voter_roll
-            voter_roll = allocate.create_voter_roll(vote, unvote)
+            voter_roll = allocate.create_voter_roll(vote, unvote, block_timestamp)
             tic_c = time.perf_counter()
             logger.debug(f"Create voter rolls in {tic_c - tic_b:0.4f} seconds")
             # get voter_balances

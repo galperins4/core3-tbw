@@ -24,3 +24,4 @@ class Network:
         self.password = c.get("network", "password")
         self.delegates = int(c.get("network", "delegates"))
         self.blocktime = int(c.get("network", "blocktime"))
+        self.multi_activation = int(c.get("network", "multivote_activation"))

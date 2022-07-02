@@ -39,7 +39,7 @@ class Sql:
 
 
     def setup(self):
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS blocks (id varchar(64) PRIMARY KEY, timestamp int, reward int, totalFee bigint, height int, burnedFee bigint, processed_at varchar(64) null)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS blocks (id varchar(64) PRIMARY KEY, timestamp int, reward int, totalFee bigint, height int, burnedFee bigint, processed_at varchar(64) null, devfund bigint)")
 
         self.cursor.execute("CREATE TABLE IF NOT EXISTS voters (address varchar(36) PRIMARY KEY, public_key varchar(66), unpaid_bal bigint, paid_bal bigint, share float )")
 
@@ -77,12 +77,13 @@ class Sql:
         newBlocks=[]
 
         for block in blocks:
+            devfund = sum(int(x) for x in block[6].values())
             self.cursor.execute("SELECT id FROM blocks WHERE id = ?", (block[0],))
 
             if self.cursor.fetchone() is None:
-                newBlocks.append((block[0], block[1], block[2], block[3], block[4], block[5], None))
+                newBlocks.append((block[0], block[1], block[2], block[3], block[4], block[5], None, devfund))
 
-        self.executemany("INSERT INTO blocks VALUES (?,?,?,?,?,?,?)", newBlocks)
+        self.executemany("INSERT INTO blocks VALUES (?,?,?,?,?,?,?,?)", newBlocks)
 
         self.commit()
 
@@ -160,11 +161,11 @@ class Sql:
         return self.cursor.execute("SELECT COUNT(*) FROM staging WHERE processed_at is NULL").fetchall()[0][0]
 
 
-    def get_staged_payment(self, lim=40, multi='N'):
-        if multi == 'N':
-            return self.cursor.execute(f"SELECT rowid, * FROM staging WHERE processed_at IS NULL LIMIT {lim}")
-        else:
-            return self.cursor.execute(f"SELECT rowid, * FROM staging WHERE processed_at IS NULL")
+    def get_staged_payment(self):
+        #if multi == 'N':
+        #    return self.cursor.execute(f"SELECT rowid, * FROM staging WHERE processed_at IS NULL LIMIT {lim}")
+        #else:
+        return self.cursor.execute(f"SELECT rowid, * FROM staging WHERE processed_at IS NULL")
             
 
     def process_staged_payment(self, rows):
