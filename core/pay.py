@@ -129,7 +129,7 @@ if __name__ == '__main__':
         logger.info("End Script - Looping")
         #killsig.wait(data.block_check)
         killsig.wait(1200)
-        quit()
+#        quit()
         if killsig.is_set():
             logger.debug("Kill switch set. Breaking the main loop.")
             break
