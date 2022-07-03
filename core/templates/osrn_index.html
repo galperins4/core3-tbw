@@ -85,6 +85,7 @@
                         <th>Address</th>
                         <th>Pending ({{tags['coin']}})</th>
                         <th>Paid ({{tags['coin']}})</th>
+                        <th>Votes ({{tags['coin']}})</th>
                         <th>Supply (%)</th>
                 </thead>
                 <tbody>
@@ -92,16 +93,18 @@
                     {% if (loop.index == 1) %}
                       <tr class="summaryrow">
                           <td>{{ r[0] }}</a></td>
-                          <td class="pending">{{ r[1]/100000000 }}</td>
-                          <td class="paid">{{ r[2]/100000000 }}</td>
-                          <td>{{ r[3] }}%</td>
+                          <td class="pending">{{ r[1] }}</td>
+                          <td class="paid">{{ r[2] }}</td>
+                          <td class="weight">{{ r[3] }}</td>
+                          <td class="weight">{{ r[4] }}%</td>
                       </tr>
                     {% else %}
                       <tr>
                           <td><a href="{{ tags['explorer'] }}/wallets/{{ r[0] }}" target="_blank">{{ r[0] }}</a></td>
-                          <td class="pending">{{ r[1]/100000000 }}</td>
-                          <td class="paid">{{ r[2]/100000000 }}</td>
-                          <td>{{ r[3] }}%</td>
+                          <td class="pending">{{ r[1] }}</td>
+                          <td class="paid">{{ r[2] }}</td>
+                          <td class="weight">{{ r[3] }}</td>
+                          <td class="weight">{{ r[4] }}%</td>
                       </tr>
                     {% endif %}
                   {% endfor %}

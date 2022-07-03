@@ -105,8 +105,8 @@ class Allocate:
             credit = self.database.get_sum_inbound(i[0], block_timestamp, chkpoint_ts)
             block_reward = self.database.get_sum_block_rewards(i[1], block_timestamp, chkpoint_ts)
             balance = chkpoint_balance + credit + block_reward - debit
-            vote_balance[i[0]] = balance
             adjusted_balance = int(balance * (multivote_adj_factor / 100)) 
+            vote_balance[i[0]] = (balance, adjusted_balance)
             adjusted_vote_balance[i[0]] = adjusted_balance
             
             self.logger.debug(f""" ...Account {i[0]}, Original Balance {balance/self.config.atomic}, Adjustment Factor {multivote_adj_factor}, Final Balance {adjusted_balance/self.config.atomic}""")
