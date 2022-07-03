@@ -108,7 +108,8 @@ class Allocate:
             vote_balance[i[0]] = balance
             adjusted_balance = int(balance * (multivote_adj_factor / 100)) 
             adjusted_vote_balance[i[0]] = adjusted_balance
-            print("Account {}, Original Balance {}, Adjustment Factor {}, Final Balance {}".format(i[0],balance/self.config.atomic,multivote_adj_factor, adjusted_balance/self.config.atomic))
+            
+            self.logger.debug(f""" ...Account {i[0]}, Original Balance {balance/self.config.atomic}, Adjustment Factor {multivote_adj_factor}, Final Balance {adjusted_balance/self.config.atomic}""")
 
         # Store full voter balance with given block_timestamp
         self.sql.update_voter_balance_checkpoint(vote_balance, block_timestamp)
@@ -131,6 +132,7 @@ class Allocate:
         total_delegate_vote_balance = sum(voters.values())
 
         # get block reward
+        devfund_amt = block[7]
         block_reward = block[2] - block[7]
         fee_reward = block[3] - block[5]
         total_reward = block_reward+fee_reward
@@ -148,7 +150,9 @@ class Allocate:
                 reward = int(rate * block_reward)
                 delegate_check += reward
                 delegate_unpaid[self.config.delegate_fee_address[count]] = reward
-        
+
+            #self.logger.debug("Delegate {} rate= {}, {} reward= {} block_reward= {} fee_reward= {}".format(count, i, rate, reward, block_reward, fee_reward))
+            
         # process voter reward
         config_voter_share = self.config.voter_share
         self.sql.open_connection()
@@ -176,7 +180,7 @@ class Allocate:
            
             voter_check += 1
             rewards_check += single_voter_reward
-            self.logger.debug("Voter {} with balance of {} reward: {}".format(k, (v / self.atomic), (single_voter_reward / self.atomic)))
+            self.logger.debug("Voter {} with balance of {} reward: {}".format(k, v / self.atomic, single_voter_reward / self.atomic))
             voter_unpaid[k] = single_voter_reward
         
         for k , v in delegate_unpaid.items():
@@ -188,14 +192,24 @@ class Allocate:
         self.sql.close_connection()
         
                           
-        self.logger.info(f"Processed Block: {block[4]}")
-        self.logger.info(f"\tVoters processed: {voter_check}")
-        self.logger.info(f"\tTotal Approval Original: {og_voter_approval / self.atomic}")
-        self.logger.info(f"\tTotal Approval (Dilution Adjusted): {total_delegate_vote_balance / self.atomic}")
-        self.logger.info(f"\tVoters Rewards: {rewards_check / self.atomic}")
-        self.logger.info(f"\tDelegate Reward: {delegate_check / self.atomic}")
-        self.logger.info(f"\tVoter + Delegate Rewards: {(rewards_check + delegate_check) / self.atomic}")
-        self.logger.info(f"\tTotal Block Rewards: {total_reward / self.atomic}")
+        self.logger.info(f" Processed Block: {block[4]}")
+        self.logger.info(f"  Voters processed: {voter_check}")
+        self.logger.info(f"  Total Approval Original: {og_voter_approval / self.atomic}")
+        self.logger.info(f"  Total Approval (Dilution Adjusted): {total_delegate_vote_balance / self.atomic}")
+        self.logger.info(f"  Voters Rewards: {rewards_check / self.atomic}")
+        self.logger.info(f"  Delegate Reward: {delegate_check / self.atomic}")
+        if block_reward > 0 and delegate_check > 0 and devfund_amt > 0:
+            self.logger.debug(f" Voters Rewards: {rewards_check / self.atomic} rB: {rewards_check / block_reward} rT: {rewards_check / (block_reward + devfund_amt)}") 
+            for k,v in voter_unpaid.items():
+                self.logger.debug(" - Voter {} reward: {} rV: {} rB: {} rT: {}".format(k, v / self.atomic, v / rewards_check, v / block_reward, v / (block_reward + devfund_amt)))
+            self.logger.debug(f" Delegate Reward: {delegate_check / self.atomic} rB: {delegate_check / block_reward} rT: {delegate_check / (block_reward + devfund_amt)}")
+            for k,v in delegate_unpaid.items():
+                self.logger.debug(" - Reserve {} reward: {} rD: {} rB: {} rT: {}".format(k, v / self.atomic, v / delegate_check, v / block_reward, v / (block_reward + devfund_amt)))
+        self.logger.info(f"  Voter + Delegate Rewards: {(rewards_check + delegate_check) / self.atomic}")
+        self.logger.info(f"  Total Block Rewards: {total_reward / self.atomic}")
+        if block_reward > 0:
+            self.logger.debug(f" Developer Funding: {devfund_amt / self.atomic} r: {devfund_amt / (block_reward + devfund_amt)}")
+        self.logger.debug(f" Original Block Reward: {(block_reward + devfund_amt) / self.atomic}")
         # store delegate/voter rewards and mark block as processed mark block as processed
         self.sql.open_connection()
         self.sql.update_delegate_balance(delegate_unpaid)

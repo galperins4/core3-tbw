@@ -23,7 +23,7 @@ class Stage:
         delegate_tx = len([v for v in self.delegate.values() if v >= 0])
         voter_tx = len([v for v in self.voters.values() if v > 0])
         total_tx = voter_tx + delegate_tx
-        self.logger.info(f"Total Transactions: {total_tx}")
+        self.logger.info(f" Total Transactions: {total_tx}")
         
         # check if multipayments
         # if self.config.multi == "Y":
@@ -85,7 +85,7 @@ class Stage:
     
     
     def stage_voter_payments(self):
-        self.logger.debug("Voter Payments: {self.voters}")
+        self.logger.debug(f"Voter Payments: {self.voters}")
         self.sql.open_connection()
         self.sql.update_voter_paid_balance(self.voters)
         self.sql.stage_payment(self.voters, msg = self.config.message)

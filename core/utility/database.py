@@ -126,60 +126,123 @@ class Database:
 
     # ACCOUNT OPERATIONS
     def get_sum_inbound(self, account, timestamp, chkpoint_timestamp):
+        non_multi_htlc = 0
+        htlc = 0
+        multi = 0
+        # get inbound transactions (non-multi, non-htlc)
         try:
-            # get inbound non-multi transactions
-            output = self.cursor.execute(f"""SELECT SUM("amount") FROM (SELECT * FROM "transactions" WHERE "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp}) AS
-            "filtered" WHERE "recipient_id" = '{account}' AND "type" <> {6}""").fetchall()
-            if output[0][0] == None:
-                non_multi = [0]
-            else:
-                non_multi = [int(i) for i in output[0]]
+            output = self.cursor.execute(f''' SELECT SUM("amount") FROM (
+                                                SELECT * FROM "transactions" 
+                                                WHERE "timestamp" <= {timestamp}
+                                                  AND "timestamp" > {chkpoint_timestamp}
+                                                  AND "recipient_id" = '{account}' 
+                                                  AND "type" NOT IN (6,7,8,9)
+                                              ) AS "filtered"''').fetchall()
+            if output[0][0] != None:
+                non_multi_htlc = int(output[0][0])
         except Exception as e:
             self.logger.error(e)
 
+        # get inbound transactions (htlc-claimed)
         try:
-            # get inbound multi transactions
-            multi_universe = self.cursor.execute("""SELECT "timestamp", "fee", "sender_public_key", "asset", "id" FROM (SELECT * FROM 
-            "transactions" WHERE "timestamp" <= %s AND "timestamp" > %s) AS "filtered" WHERE asset::jsonb @> '{"transfers": [{"recipientId":"%s"}]}'::jsonb;""" 
-            % (timestamp, chkpoint_timestamp, account)).fetchall()
-            # get amounts from multi transactions
-            multi_amount = []
-            for i in multi_universe:
-                for j in i[3]['transfers']:
-                    if j['recipientId'] == account:
-                        multi_amount.append(int(j['amount']))
+            output = self.cursor.execute(f''' SELECT SUM("amount") FROM (
+                                                SELECT * FROM "transactions" 
+                                                WHERE "timestamp" <= {timestamp}
+                                                  AND "timestamp" > {chkpoint_timestamp}
+                                                  AND "recipient_id" = '{account}' 
+                                                  AND "type" = 8
+                                                  AND id IN (SELECT asset ->'claim'->>'lockTransactionId' from "transactions" where type=9)
+                                              ) AS "filtered"''').fetchall()
+            if output[0][0] != None:
+                htlc =  int(output[0][0])
         except Exception as e:
             self.logger.error(e)
-                        
-        # append total non-multi to multi
-        total = multi_amount + non_multi
-        return sum(total)
+
+        # get inbound transactions (multi)
+        try:
+            output = self.cursor.execute(f''' SELECT SUM("amount") FROM (
+                                                SELECT id, block_height, x.amount, x."recipientId" FROM "transactions", jsonb_to_recordset(asset->'transfers') AS x(amount bigint, "recipientId" text) 
+                                                WHERE "timestamp" <= {timestamp}
+                                                  AND "timestamp" > {chkpoint_timestamp}
+                                                  AND x."recipientId" = '{account}' 
+                                                  AND "type" = 6
+                                              ) AS "filtered"''').fetchall()
+            if output[0][0] != None:
+                multi = int(output[0][0])
+        except Exception as e:
+            self.logger.error(e)
+
+        # sum up
+        total = non_multi_htlc + htlc + multi
+        self.logger.debug(f""" .. incoming tx <- non_multi_htlc:{non_multi_htlc} + htlc:{htlc} + multi:{multi} = total:{total}""")
+        return total
 
 
     def get_sum_outbound(self, account, timestamp, chkpoint_timestamp):
+        non_multi_htlc = 0
+        htlc = 0
+        multi = 0
+        txfees = 0
+        # get outbound transactions (non-multi, non-htlc)
         try:
-            # Non multi transactions ( json asset is null )
-            output = self.cursor.execute(f"""SELECT SUM("amount") as amount, SUM("fee") as fee FROM (SELECT * FROM "transactions" WHERE 
-            "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}' AND asset IS NULL""").fetchall()
-            if output[0][0] == None:
-                convert = [0,0]
-            else:
-                convert = [int(i) for i in output[0]]
-
-            # votes + multi transactions ( json asset is not null )
-            output = self.cursor.execute(f"""SELECT "fee" as fee, "asset" as asset FROM (SELECT * FROM "transactions" WHERE 
-            "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp}) AS "filtered" WHERE "sender_public_key" = '{account}' AND asset IS NOT NULL""").fetchall()
-            if output:
-                for transaction in output:
-                    # fee
-                    convert.append(int(transaction[0]))
-                    # all payment in transaction
-                    if 'transfers' in transaction[1].keys():
-                        for payment in transaction[1]['transfers']:
-                            convert.append(int(payment['amount']))
-            return sum(convert)
+            output = self.cursor.execute(f''' SELECT SUM("amount") FROM (
+                                                SELECT * FROM "transactions" 
+                                                WHERE "timestamp" <= {timestamp}
+                                                  AND "timestamp" > {chkpoint_timestamp}
+                                                  AND "sender_public_key" = '{account}' 
+                                                  AND "type" NOT IN (6,7,8,9)
+                                              ) AS "filtered"''').fetchall()
+            if output[0][0] != None:
+                non_multi_htlc = int(output[0][0])
         except Exception as e:
             self.logger.error(e)
+
+        # get outbound transactions (htlc-claimed)
+        try:
+            output = self.cursor.execute(f''' SELECT SUM("amount") FROM (
+                                                SELECT * FROM "transactions" 
+                                                WHERE "timestamp" <= {timestamp}
+                                                  AND "timestamp" > {chkpoint_timestamp}
+                                                  AND "sender_public_key" = '{account}' 
+                                                  AND "type" = 8
+                                                  AND id IN (SELECT asset ->'claim'->>'lockTransactionId' from "transactions" where type=9)
+                                              ) AS "filtered"''').fetchall()
+            if output[0][0] != None:
+                htlc =  int(output[0][0])
+        except Exception as e:
+            self.logger.error(e)
+
+        # get outbound transactions (multi)
+        try:
+            output = self.cursor.execute(f''' SELECT SUM("amount") FROM (
+                                                SELECT id, block_height, x.amount, x."recipientId" FROM "transactions", jsonb_to_recordset(asset->'transfers') AS x(amount bigint, "recipientId" text) 
+                                                WHERE "timestamp" <= {timestamp}
+                                                  AND "timestamp" > {chkpoint_timestamp}
+                                                  AND "sender_public_key" = '{account}' 
+                                                  AND "type" = 6
+                                              ) AS "filtered"''').fetchall()
+            if output[0][0] != None:
+                multi = int(output[0][0])
+        except Exception as e:
+            self.logger.error(e)
+
+        # get all outbound transaction fees
+        try:
+            output = self.cursor.execute(f''' SELECT SUM("fee") FROM (
+                                                SELECT * FROM "transactions" 
+                                                WHERE "timestamp" <= {timestamp}
+                                                  AND "timestamp" > {chkpoint_timestamp}
+                                                  AND "sender_public_key" = '{account}' 
+                                              ) AS "filtered"''').fetchall()
+            if output[0][0] != None:
+                txfees = int(output[0][0])
+        except Exception as e:
+            self.logger.error(e)
+
+        # sum up
+        total = non_multi_htlc + htlc + multi + txfees
+        self.logger.debug(f""" .  outgoing tx -> non_multi_htlc:{non_multi_htlc} + htlc:{htlc} + multi:{multi} + txfees:{txfees} = total:{total}""")
+        return total
 
             
     def get_sum_block_rewards(self, account, timestamp, chkpoint_timestamp):
