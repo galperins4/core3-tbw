@@ -12,8 +12,15 @@ tr.summaryrow td:first-child{
 
 td.pending {
   color: #ffa250; /* #coral */
+  text-align: right;
 }
 
 td.paid {
   color: #3cb371; /* #mediumseagreen; */
+  text-align: right;
+}
+
+td.weight {
+  color: #56bbff;
+  text-align: right;
 }

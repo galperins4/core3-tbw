@@ -51,7 +51,7 @@ class Sql:
         
         self.cursor.execute("CREATE TABLE IF NOT EXISTS exchange (initial_address varchar(36), payin_address varchar(36), exchange_address varchar(64), payamt bigint, exchangeid varchar(64), processed_at varchar(64) null )")
 
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS voters_balance_checkpoint (address varchar(36) PRIMARY KEY, balance bigint, timestamp int )")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS voters_balance_checkpoint (address varchar(36) PRIMARY KEY, balance bigint, timestamp int, voting_balance bigint)")
 
         self.connection.commit()
 
@@ -249,7 +249,10 @@ class Sql:
         ts = self.cursor.execute("SELECT MAX(timestamp) FROM voters_balance_checkpoint").fetchall()[0][0]
         return self.cursor.execute(f"SELECT balance FROM voters_balance_checkpoint WHERE timestamp = {ts}")
     
-    
+    def get_all_voters_last_balance(self):
+        ts = self.cursor.execute("SELECT MAX(timestamp) FROM voters_balance_checkpoint").fetchall()[0][0]
+        return self.cursor.execute(f"SELECT address, balance, voting_balance FROM voters_balance_checkpoint WHERE timestamp = {ts}")
+        
     def update_voter_balance_checkpoint(self, vote_balance, block_timestamp):
-        self.executemany("INSERT OR REPLACE INTO voters_balance_checkpoint(address,balance,timestamp) VALUES (?,?,?)", [(k,v,block_timestamp) for k,v in vote_balance.items()])
+        self.executemany("INSERT OR REPLACE INTO voters_balance_checkpoint(address,balance,timestamp, voting_balance) VALUES (?,?,?,?)", [(k,v,block_timestamp,a) for k,(v,a) in vote_balance.items()])
         self.commit()

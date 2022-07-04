@@ -57,17 +57,19 @@ def index():
     stats = {}
     ddata = client.delegates.get(config.delegate)
 
-    stats['forged'] = ddata['data']['blocks']['produced']
+    stats['forged']   = ddata['data']['blocks']['produced']
     #s['missed'] = dstats['data']['blocks']['missed']
     #s['missed'] = 0 # temp fix
-    stats['rank'] = ddata['data']['rank']
+    stats['rank']     = ddata['data']['rank']
     #s['productivity'] = dstats['data']['production']['productivity']
     #s['productivity'] = 100 # temp fix
-    stats['handle'] = ddata['data']['username']
-    stats['wallet'] = ddata['data']['address']
-    stats['votes'] = "{:.2f}".format(int(ddata['data']['votesReceived']['votes'])/config.atomic)
-    stats['rewards'] = ddata['data']['forged']['total']
+    stats['handle']   = ddata['data']['username']
+    stats['wallet']   = ddata['data']['address']
+    stats['votes']    = "{:,.2f}".format(int(ddata['data']['votesReceived']['votes'])/config.atomic)
+    stats['voters']   = int(ddata['data']['votesReceived']['voters'])
+    stats['rewards']  = ddata['data']['forged']['total']
     stats['approval'] = ddata['data']['votesReceived']['percent']
+    stats['version']  = ddata['data']['version']
 
     # get all forged blocks in reverse chronological order, first page, max 100 as default
     dblocks = client.delegates.blocks(config.delegate) 
@@ -81,27 +83,27 @@ def index():
 
     sql.open_connection()
     voters = sql.all_voters().fetchall()
+    voters_balance = sql.get_all_voters_last_balance().fetchall()
     sql.close_connection()
 
     voter_stats = []
-    pend_total = 0
-    paid_total = 0
-    ld          = dict((addr,(pend,paid)) for addr, pubkey, pend, paid, rate in voters)
-    votetotal   = int(ddata['data']['votesReceived']['votes'])
-    vdata  = client.delegates.voters(config.delegate)
-    for _data in vdata['data']:
-        if _data['address'] in ld:
-            _sply = "{:.2f}".format(int(_data['balance'])*100/votetotal) if votetotal > 0 else "-"
-            _addr = _data['address']
-            voter_stats.append([_addr,ld[_addr][0], ld[_addr][1], _sply])
-            pend_total += ld[_addr][0]
-            paid_total += ld[_addr][1]
+    pend_total  = 0
+    paid_total  = 0
+    lbook       = dict((addr,(pend,paid)) for addr, pubkey, pend, paid, rate in voters)
+    lvote       = dict((address, (balance, vbalance)) for address, balance, vbalance in voters_balance)
+    votetotal   = sum(int(lvote[item][1]) for item in lvote)
+    for _addr in lvote:
+        if _addr in lbook:
+            vbalance = int(lvote[_addr][1])
+            #logger.debug(f"addr:{_addr} vbalance:{vbalance} allvotes:{votetotal} ratio:{vbalance/votetotal}")
+            _sply = "{:.2f}".format(vbalance*100/votetotal) if votetotal > 0 else "-"
+            voter_stats.append([_addr,"{:,.8f}".format(int(lbook[_addr][0])/config.atomic), "{:,.8f}".format(int(lbook[_addr][1])/config.atomic), "{:,.8f}".format(vbalance/config.atomic), _sply])
+            pend_total += int(lbook[_addr][0])
+            paid_total += int(lbook[_addr][1])
 
     reverse_key = cmp_to_key(lambda a, b: (a < b) - (a > b))
     voter_stats.sort(key=lambda rows: (reverse_key(rows[3]),rows[0]))
-    voter_stats.insert(0,["Total",pend_total, paid_total, "100"])
-
-    stats['voters'] = vdata['meta']['totalCount']
+    voter_stats.insert(0,["Total", "{:,.8f}".format(pend_total/config.atomic), "{:,.8f}".format(paid_total/config.atomic), "{:,.8f}".format(votetotal/config.atomic), "100.00"])
 
     node_sync_data = client.node.syncing()
     stats['synced'] = 'Syncing' if node_sync_data['data']['syncing'] else 'Synced'
