@@ -227,7 +227,7 @@ if __name__ == '__main__':
         
             # check interval for payout
             stage, unpaid_voters, unpaid_delegate = interval_check(block_count, config.interval)
-            if config.fix_interval == 'Y':
+            if config.fix_time == 'Y':
                 stage = False
         
             # check if true to stage payments
