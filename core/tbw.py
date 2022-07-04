@@ -49,14 +49,14 @@ def force_manual_pay(config, dynamic, sql):
         
     # check if true to stage payments
     if stage == True and sum(unpaid_voters.values()) > 0:
-        logger.info("Staging payments")
+        logger.info(" Staging payments")
         s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
     quit()
 
 
 def interval_check(block_count, interval, manual = "N"):
     if block_count % interval == 0 or manual == "Y":
-        logger.info("Payout interval reached")
+        logger.info(" Payout interval reached")
         sql.open_connection()
         voter_balances = sql.voters().fetchall()
         delegate_balances = sql.rewards().fetchall()
@@ -164,6 +164,7 @@ if __name__ == '__main__':
         voter_options = Voters(config, sql)
     
         for unprocessed in unprocessed_blocks:
+            logger.info("--- Processing new block...")
             tic_a = time.perf_counter()
             logger.debug(f"Unprocessed Block Information: {unprocessed}")
             block_timestamp = unprocessed[1]
@@ -219,8 +220,7 @@ if __name__ == '__main__':
             logger.debug(f"Allocate block rewards in {tic_f - tic_e:0.4f} seconds")
             # get block count
             block_count = block.block_counter()
-            logger.info("")
-            logger.info(f"Current block count : {block_count}")
+            logger.info(f"\n Current block count : {block_count}")
             
             tic_g = time.perf_counter()
             logger.debug(f"Processed block in {tic_g - tic_a:0.4f} seconds")
@@ -230,7 +230,7 @@ if __name__ == '__main__':
         
             # check if true to stage payments
             if stage == True and sum(unpaid_voters.values()) > 0:
-                logger.info("Staging payments")
+                logger.info(" Staging payments")
                 s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
         
             # pause betweeen blocks
@@ -238,6 +238,7 @@ if __name__ == '__main__':
         logger.info("End Script - Looping")
         logger.info("")
         #killsig.wait(data.block_check)
+        #killsig.wait(120)
         killsig.wait(1200)
         if killsig.is_set():
             logger.debug("Kill switch set. Breaking the main loop.")
