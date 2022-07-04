@@ -16,6 +16,7 @@ blacklist = N
 blacklist_address = addr1,addr2,addr3
 
 [payment]
+fix_time = N
 interval = 211
 passphrase = passphrase
 secondphrase = None
