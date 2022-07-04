@@ -227,6 +227,8 @@ if __name__ == '__main__':
         
             # check interval for payout
             stage, unpaid_voters, unpaid_delegate = interval_check(block_count, config.interval)
+            if config.fix_interval == 'Y':
+                stage = False
         
             # check if true to stage payments
             if stage == True and sum(unpaid_voters.values()) > 0:
