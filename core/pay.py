@@ -127,8 +127,6 @@ if __name__ == '__main__':
 
  
         logger.info("End Script - Looping")
-        #killsig.wait(data.block_check)
-        #killsig.wait(120)
         killsig.wait(1200)
 
         if killsig.is_set():
