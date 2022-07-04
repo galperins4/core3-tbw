@@ -127,7 +127,7 @@ if __name__ == '__main__':
 
  
         logger.info("End Script - Looping")
-        if config.fix_interval == 'Y':
+        if config.fix_time == 'Y':
             quit()
         killsig.wait(1200)
 
