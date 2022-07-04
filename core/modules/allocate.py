@@ -188,7 +188,8 @@ class Allocate:
         
         # get original voter approval balance (without dilution adjustment)
         res = self.sql.get_all_voters_balance_checkpoint().fetchall()
-        og_voter_approval = sum(i[0] for i in res)
+        # og_voter_approval = sum(i[0] for i in res)
+        og_voter_approval = sum(i[1] for i in res)
         self.sql.close_connection()
         
                           
