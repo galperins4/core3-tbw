@@ -100,8 +100,9 @@ Python 3.6+ is required.
 ### [Payment]
 | Option | Default Setting | Description | 
 | :--- | :---: | :--- |
+| fix_time | N  | Change to 'Y' if you want payments processed at a set time. Used in conjunction with time.sh |
 | interval | 211  | The interval you want to pay voters in blocks. A setting of 211 would pay ever 211 blocks (or 422 ark) |
-| multi | N | Change to "Y" if you'd like payments to be made using Multipayments |
+| multi | N | Change to 'Y' if you'd like payments to be made using Multipayments |
 | passphrase | passphrase | 12 word delegate passphrase |
 | secondphrase | None | Second 12 word delegate passphrase |
 | delegate_fee | 25,25 | These are the percentages for delegates to keep and distribute among x accounts (Note: first entry is reserve account and is required! All others are optional |
