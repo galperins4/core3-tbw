@@ -37,7 +37,7 @@ class Configure:
         self.blacklist_address = c.get('delegate', 'blacklist_address').split(',')
 
     def payment(self, c):
-        self.fix_time = c.get('payment', 'fix_time')
+        self.fix_time = c.get('payment', 'fix_time', fallback='N')
         self.interval = int(c.get('payment', 'interval'))
         self.passphrase = c.get('payment', 'passphrase')
         self.secondphrase = c.get('payment', 'secondphrase')
