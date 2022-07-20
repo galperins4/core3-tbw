@@ -57,18 +57,3 @@ class Voters():
                     adjusted_voters[k] = 0
         
         return adjusted_voters
-    
-    
-    def process_anti_dilution(self, voter_balances):
-        adjusted_voters = {}
-        
-        self.sql.open_connection()
-        dilute = self.sql.all_voters().fetchall()
-        self.sql.close_connection()
-        
-        unpaid = {i[0]:i[2] for i in dilute}
-        
-        for k, v in voter_balances.items():
-            adjusted_voters[k] = (v + unpaid[k])
-        
-        return adjusted_voters
