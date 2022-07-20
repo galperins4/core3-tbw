@@ -65,9 +65,9 @@ def index():
     #s['productivity'] = 100 # temp fix
     stats['handle'] = ddata['data']['username']
     stats['wallet'] = ddata['data']['address']
-    stats['votes'] = "{:.2f}".format(int(ddata['data']['votes'])/config.atomic)
+    stats['votes'] = "{:.2f}".format(int(ddata['data']['votesReceived']['votes'])/config.atomic)
     stats['rewards'] = ddata['data']['forged']['total']
-    stats['approval'] = ddata['data']['production']['approval']
+    stats['approval'] = ddata['data']['votesReceived']['percent']
 
     # get all forged blocks in reverse chronological order, first page, max 100 as default
     dblocks = client.delegates.blocks(config.delegate) 
@@ -87,7 +87,7 @@ def index():
     pend_total = 0
     paid_total = 0
     ld          = dict((addr,(pend,paid)) for addr, pubkey, pend, paid, rate in voters)
-    votetotal   = int(ddata['data']['votes'])
+    votetotal   = int(ddata['data']['votesReceived']['votes'])
     vdata  = client.delegates.voters(config.delegate)
     for _data in vdata['data']:
         if _data['address'] in ld:
