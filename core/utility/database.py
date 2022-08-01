@@ -1,5 +1,6 @@
 import psycopg
 import logging
+from solar_crypto.constants import *
 
 class Database:
     def __init__(self, config, network):
@@ -34,7 +35,7 @@ class Database:
     def get_publickey(self):
         try:
             universe = self.cursor.execute(f"""SELECT "sender_public_key", "asset" FROM transactions WHERE 
-            "type" = 2""").fetchall()
+            "type_group" = {TRANSACTION_TYPE_GROUP.CORE} AND "type" = {TRANSACTION_DELEGATE_REGISTRATION}""").fetchall()
         except Exception as e:
             self.logger.error(e)
     
@@ -73,7 +74,7 @@ class Database:
     def get_last_multivote(self, account, timestamp):
         try:
             output = self.cursor.execute(f"""SELECT "timestamp" from "transactions" WHERE "timestamp" <= {timestamp} 
-            AND  "type_group" = 2 and "type" = 2 AND "sender_public_key" = '{account}' ORDER BY
+            AND  "type_group" = {TRANSACTION_TYPE_GROUP.SOLAR} and "type" = {SOLAR_TRANSACTION_VOTE} AND "sender_public_key" = '{account}' ORDER BY
             "timestamp" DESC LIMIT 1 """).fetchall()
         except Exception as e:
             self.logger.error(e)
@@ -93,11 +94,11 @@ class Database:
             FROM (
                   SELECT * FROM "transactions"
                   WHERE "timestamp" <= %s
-                  AND "type_group" = 2
-                  AND "type" = 2
+                  AND "type_group" = %s
+                  AND "type" = %s
                  )
             AS "filtered" WHERE asset->'votes'->'%s' IS NOT NULL ORDER BY 1,2 DESC,3;
-            """ % (self.delegate, timestamp, self.delegate)).fetchall()
+            """ % (self.delegate, timestamp, TRANSACTION_TYPE_GROUP.SOLAR, SOLAR_TRANSACTION_VOTE, self.delegate)).fetchall()
         except Exception as e:
             self.logger.error(e)
 
@@ -111,13 +112,13 @@ class Database:
             
             # get all votes
             vote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp", 100 FROM (SELECT * FROM 
-            "transactions" WHERE "timestamp" <= %s AND "type" = 3 AND "type_group" = 1) AS "filtered" WHERE asset::jsonb @> '{
-            "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, v, vd)).fetchall()
+            "transactions" WHERE "timestamp" <= %s AND "type" = % AND "type_group" = %s) AS "filtered" WHERE asset::jsonb @> '{
+            "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, TRANSACTION_VOTE, TRANSACTION_TYPE_GROUP.CORE, v, vd)).fetchall()
 
             #get all unvotes
             unvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp", 100 FROM (SELECT * FROM 
-            "transactions" WHERE "timestamp" <= %s AND "type" = 3 AND "type_group" = 1) AS "filtered" WHERE asset::jsonb @> '{
-            "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u, ud)).fetchall()
+            "transactions" WHERE "timestamp" <= %s AND "type" = % AND "type_group" = %) AS "filtered" WHERE asset::jsonb @> '{
+            "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, TRANSACTION_VOTE, TRANSACTION_TYPE_GROUP.CORE, u, ud)).fetchall()
 
             return vote, unvote
         except Exception as e:
@@ -131,12 +132,13 @@ class Database:
         multi = 0
         # get inbound transactions (non-multi, non-htlc)
         try:
+            # note: type_group NOT specified on purpose
             output = self.cursor.execute(f''' SELECT SUM("amount") FROM (
                                                 SELECT * FROM "transactions" 
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
                                                   AND "recipient_id" = '{account}' 
-                                                  AND "type" NOT IN (6,7,8,9)
+                                                  AND "type" NOT IN ({TRANSACTION_TRANSFER}, {TRANSACTION_HTLC_LOCK}, {TRANSACTION_HTLC_CLAIM}, {TRANSACTION_HTLC_REFUND})
                                               ) AS "filtered"''').fetchall()
             if output[0][0] != None:
                 non_multi_htlc = int(output[0][0])
@@ -150,8 +152,9 @@ class Database:
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
                                                   AND "recipient_id" = '{account}' 
-                                                  AND "type" = 8
-                                                  AND id IN (SELECT asset ->'claim'->>'lockTransactionId' from "transactions" where type=9)
+                                                  AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE}
+                                                  AND "type" = {TRANSACTION_HTLC_LOCK}
+                                                  AND id IN (SELECT asset ->'claim'->>'lockTransactionId' from "transactions" where type={TRANSACTION_HTLC_CLAIM})
                                               ) AS "filtered"''').fetchall()
             if output[0][0] != None:
                 htlc =  int(output[0][0])
@@ -165,7 +168,8 @@ class Database:
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
                                                   AND x."recipientId" = '{account}' 
-                                                  AND "type" = 6
+                                                  AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE}
+                                                  AND "type" = {TRANSACTION_TRANSFER}
                                               ) AS "filtered"''').fetchall()
             if output[0][0] != None:
                 multi = int(output[0][0])
@@ -185,12 +189,13 @@ class Database:
         txfees = 0
         # get outbound transactions (non-multi, non-htlc)
         try:
+            # note: type_group NOT specified on purpose
             output = self.cursor.execute(f''' SELECT SUM("amount") FROM (
                                                 SELECT * FROM "transactions" 
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
                                                   AND "sender_public_key" = '{account}' 
-                                                  AND "type" NOT IN (6,7,8,9)
+                                                  AND "type" NOT IN ({TRANSACTION_TRANSFER}, {TRANSACTION_HTLC_LOCK}, {TRANSACTION_HTLC_CLAIM}, {TRANSACTION_HTLC_REFUND})
                                               ) AS "filtered"''').fetchall()
             if output[0][0] != None:
                 non_multi_htlc = int(output[0][0])
@@ -204,8 +209,9 @@ class Database:
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
                                                   AND "sender_public_key" = '{account}' 
-                                                  AND "type" = 8
-                                                  AND id IN (SELECT asset ->'claim'->>'lockTransactionId' from "transactions" where type=9)
+                                                  AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE}
+                                                  AND "type" = {TRANSACTION_HTLC_LOCK}
+                                                  AND id IN (SELECT asset ->'claim'->>'lockTransactionId' from "transactions" where type={TRANSACTION_HTLC_CLAIM})
                                               ) AS "filtered"''').fetchall()
             if output[0][0] != None:
                 htlc =  int(output[0][0])
@@ -219,7 +225,8 @@ class Database:
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
                                                   AND "sender_public_key" = '{account}' 
-                                                  AND "type" = 6
+                                                  AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE}
+                                                  AND "type" = {TRANSACTION_TRANSFER}
                                               ) AS "filtered"''').fetchall()
             if output[0][0] != None:
                 multi = int(output[0][0])
