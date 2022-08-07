@@ -62,7 +62,7 @@ class Allocate:
                 self.database.close_connection()
 
                 if check == None:
-                    # No potential multi-votes found - adding voter to rol
+                    # No potential multi-votes found - adding voter to roll
                     roll.append(i)
                 else:
                     # Multivote transaction found - checking if newer than vote
@@ -193,12 +193,12 @@ class Allocate:
         self.logger.info(f"  Voters Rewards: {rewards_check / self.atomic}")
         self.logger.info(f"  Delegate Reward: {delegate_check / self.atomic}")
         if block_reward > 0 and delegate_check > 0 and devfund_amt > 0:
-            self.logger.debug(f" Voters Rewards: {rewards_check / self.atomic} rB: {rewards_check / block_reward} rT: {rewards_check / (block_reward + devfund_amt)}") 
+            self.logger.debug(f" Voters Rewards: {rewards_check / self.atomic}") 
             for k,v in voter_unpaid.items():
-                self.logger.debug(" - Voter {} reward: {} rV: {} rB: {} rT: {}".format(k, v / self.atomic, v / rewards_check, v / block_reward, v / (block_reward + devfund_amt)))
-            self.logger.debug(f" Delegate Reward: {delegate_check / self.atomic} rB: {delegate_check / block_reward} rT: {delegate_check / (block_reward + devfund_amt)}")
+                self.logger.debug(" - Voter {} reward: {}".format(k, v / self.atomic))
+            self.logger.debug(f" Delegate Reward: {delegate_check / self.atomic}")
             for k,v in delegate_unpaid.items():
-                self.logger.debug(" - Reserve {} reward: {} rD: {} rB: {} rT: {}".format(k, v / self.atomic, v / delegate_check, v / block_reward, v / (block_reward + devfund_amt)))
+                self.logger.debug(" - Reserve {} reward: {}".format(k, v / self.atomic))
         self.logger.info(f"  Voter + Delegate Rewards: {(rewards_check + delegate_check) / self.atomic}")
         self.logger.info(f"  Total Block Rewards: {total_reward / self.atomic}")
         if block_reward > 0:
