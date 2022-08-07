@@ -154,7 +154,7 @@ class Database:
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
                                                   AND "recipient_id" = '{account}' 
-                                                  AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE}
+                                                  AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE.value}
                                                   AND "type" = {TRANSACTION_HTLC_LOCK}
                                                   AND id IN (SELECT asset ->'claim'->>'lockTransactionId' from "transactions" where type={TRANSACTION_HTLC_CLAIM})
                                               ) AS "filtered"''').fetchall()
