@@ -201,8 +201,6 @@ class Allocate:
                 self.logger.debug(" - Reserve {} reward: {}".format(k, v / self.atomic))
         self.logger.info(f"  Voter + Delegate Rewards: {(rewards_check + delegate_check) / self.atomic}")
         self.logger.info(f"  Total Block Rewards: {total_reward / self.atomic}")
-        if block_reward > 0:
-            self.logger.debug(f" Developer Funding: {devfund_amt / self.atomic} r: {devfund_amt / (block_reward + devfund_amt)}")
         self.logger.debug(f" Original Block Reward: {(block_reward + devfund_amt) / self.atomic}")
         # store delegate/voter rewards and mark block as processed mark block as processed
         self.sql.open_connection()
