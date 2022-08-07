@@ -206,12 +206,6 @@ if __name__ == '__main__':
             for k, v in voter_balances.items():
                 logger.debug(f"{k} {v / config.atomic}")
  
-            voter_balances = voter_options.process_anti_dilution(voter_balances)
-            logger.debug("")
-            logger.debug("voter_balances post anti_dulite")
-            for k, v in voter_balances.items():
-                logger.debug(f"{k} {v / config.atomic}")
-        
             tic_e = time.perf_counter()
             logger.debug(f"Process all voter options in {tic_e - tic_d:0.4f} seconds")
             # allocate block rewards
@@ -220,7 +214,8 @@ if __name__ == '__main__':
             logger.debug(f"Allocate block rewards in {tic_f - tic_e:0.4f} seconds")
             # get block count
             block_count = block.block_counter()
-            logger.info(f"\n Current block count : {block_count}")
+            logger.info("")
+            logger.info(f" Current block count : {block_count}")
             
             tic_g = time.perf_counter()
             logger.debug(f"Processed block in {tic_g - tic_a:0.4f} seconds")

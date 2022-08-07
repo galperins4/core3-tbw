@@ -245,10 +245,6 @@ class Sql:
         return self.cursor.execute(f"SELECT * FROM voters_balance_checkpoint WHERE address = '{address}'")
 
     
-    def get_all_voters_balance_checkpoint(self):
-        ts = self.cursor.execute("SELECT MAX(timestamp) FROM voters_balance_checkpoint").fetchall()[0][0]
-        return self.cursor.execute(f"SELECT balance, voting_balance FROM voters_balance_checkpoint WHERE timestamp = {ts}")
-    
     def get_all_voters_last_balance(self):
         ts = self.cursor.execute("SELECT MAX(timestamp) FROM voters_balance_checkpoint").fetchall()[0][0]
         return self.cursor.execute(f"SELECT address, balance, voting_balance FROM voters_balance_checkpoint WHERE timestamp = {ts}")

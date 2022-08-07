@@ -186,17 +186,10 @@ class Allocate:
         for k , v in delegate_unpaid.items():
             self.logger.debug("Delegate {} account reward: {}".format(k, (v / self.atomic)))
         
-        # get original voter approval balance (without dilution adjustment)
-        res = self.sql.get_all_voters_balance_checkpoint().fetchall()
-        # og_voter_approval = sum(i[0] for i in res)
-        og_voter_approval = sum(i[1] for i in res)
-        self.sql.close_connection()
         
-                          
         self.logger.info(f" Processed Block: {block[4]}")
         self.logger.info(f"  Voters processed: {voter_check}")
-        self.logger.info(f"  Total Approval Original: {og_voter_approval / self.atomic}")
-        self.logger.info(f"  Total Approval (Dilution Adjusted): {total_delegate_vote_balance / self.atomic}")
+        self.logger.info(f"  Total Approval: {total_delegate_vote_balance / self.atomic}")
         self.logger.info(f"  Voters Rewards: {rewards_check / self.atomic}")
         self.logger.info(f"  Delegate Reward: {delegate_check / self.atomic}")
         if block_reward > 0 and delegate_check > 0 and devfund_amt > 0:
