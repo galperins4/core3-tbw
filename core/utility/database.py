@@ -35,7 +35,7 @@ class Database:
     def get_publickey(self):
         try:
             universe = self.cursor.execute(f"""SELECT "sender_public_key", "asset" FROM transactions WHERE 
-            "type_group" = {TRANSACTION_TYPE_GROUP.CORE} AND "type" = {TRANSACTION_DELEGATE_REGISTRATION}""").fetchall()
+            "type_group" = {TRANSACTION_TYPE_GROUP.CORE.value} AND "type" = {TRANSACTION_DELEGATE_REGISTRATION}""").fetchall()
         except Exception as e:
             self.logger.error(e)
     
@@ -74,7 +74,7 @@ class Database:
     def get_last_multivote(self, account, timestamp):
         try:
             output = self.cursor.execute(f"""SELECT "timestamp" from "transactions" WHERE "timestamp" <= {timestamp} 
-            AND  "type_group" = {TRANSACTION_TYPE_GROUP.SOLAR} and "type" = {SOLAR_TRANSACTION_VOTE} AND "sender_public_key" = '{account}' ORDER BY
+            AND  "type_group" = {TRANSACTION_TYPE_GROUP.SOLAR.value} and "type" = {SOLAR_TRANSACTION_VOTE} AND "sender_public_key" = '{account}' ORDER BY
             "timestamp" DESC LIMIT 1 """).fetchall()
         except Exception as e:
             self.logger.error(e)
@@ -98,7 +98,7 @@ class Database:
                   AND "type" = %s
                  )
             AS "filtered" WHERE asset->'votes'->'%s' IS NOT NULL ORDER BY 1,2 DESC,3;
-            """ % (self.delegate, timestamp, TRANSACTION_TYPE_GROUP.SOLAR, SOLAR_TRANSACTION_VOTE, self.delegate)).fetchall()
+            """ % (self.delegate, timestamp, TRANSACTION_TYPE_GROUP.SOLAR.value, SOLAR_TRANSACTION_VOTE, self.delegate)).fetchall()
         except Exception as e:
             self.logger.error(e)
 
@@ -112,13 +112,15 @@ class Database:
             
             # get all votes
             vote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp", 100 FROM (SELECT * FROM 
-            "transactions" WHERE "timestamp" <= %s AND "type" = % AND "type_group" = %s) AS "filtered" WHERE asset::jsonb @> '{
-            "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, TRANSACTION_VOTE, TRANSACTION_TYPE_GROUP.CORE, v, vd)).fetchall()
+            "transactions" WHERE "timestamp" <= %s AND "type" = %s AND "type_group" = %s) AS "filtered" WHERE asset::jsonb @> '{
+            "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % 
+            (timestamp, TRANSACTION_VOTE, TRANSACTION_TYPE_GROUP.CORE.value, v, vd)).fetchall()
 
             #get all unvotes
             unvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp", 100 FROM (SELECT * FROM 
-            "transactions" WHERE "timestamp" <= %s AND "type" = % AND "type_group" = %) AS "filtered" WHERE asset::jsonb @> '{
-            "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, TRANSACTION_VOTE, TRANSACTION_TYPE_GROUP.CORE, u, ud)).fetchall()
+            "transactions" WHERE "timestamp" <= %s AND "type" = %s AND "type_group" = %s) AS "filtered" WHERE asset::jsonb @> '{
+            "votes": ["%s"]}'::jsonb OR asset::jsonb @> '{"votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % 
+            (timestamp, TRANSACTION_VOTE, TRANSACTION_TYPE_GROUP.CORE.value, u, ud)).fetchall()
 
             return vote, unvote
         except Exception as e:
@@ -161,14 +163,14 @@ class Database:
         except Exception as e:
             self.logger.error(e)
 
-        # get inbound transactions (multi)
+        # get inbound transactions (transfers)
         try:
             output = self.cursor.execute(f''' SELECT SUM("amount") FROM (
                                                 SELECT id, block_height, x.amount, x."recipientId" FROM "transactions", jsonb_to_recordset(asset->'transfers') AS x(amount bigint, "recipientId" text) 
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
                                                   AND x."recipientId" = '{account}' 
-                                                  AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE}
+                                                  AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE.value}
                                                   AND "type" = {TRANSACTION_TRANSFER}
                                               ) AS "filtered"''').fetchall()
             if output[0][0] != None:
@@ -209,7 +211,7 @@ class Database:
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
                                                   AND "sender_public_key" = '{account}' 
-                                                  AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE}
+                                                  AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE.value}
                                                   AND "type" = {TRANSACTION_HTLC_LOCK}
                                                   AND id IN (SELECT asset ->'claim'->>'lockTransactionId' from "transactions" where type={TRANSACTION_HTLC_CLAIM})
                                               ) AS "filtered"''').fetchall()
@@ -218,14 +220,14 @@ class Database:
         except Exception as e:
             self.logger.error(e)
 
-        # get outbound transactions (multi)
+        # get outbound transactions (transfer)
         try:
             output = self.cursor.execute(f''' SELECT SUM("amount") FROM (
                                                 SELECT id, block_height, x.amount, x."recipientId" FROM "transactions", jsonb_to_recordset(asset->'transfers') AS x(amount bigint, "recipientId" text) 
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
                                                   AND "sender_public_key" = '{account}' 
-                                                  AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE}
+                                                  AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE.value}
                                                   AND "type" = {TRANSACTION_TRANSFER}
                                               ) AS "filtered"''').fetchall()
             if output[0][0] != None:
