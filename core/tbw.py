@@ -172,10 +172,7 @@ if __name__ == '__main__':
             except:
                 d_blacklist = []
         else:
-            d_blacklist = None    
-        print(d_blacklist)
-        quit()
-            
+            d_blacklist = None          
     
         for unprocessed in unprocessed_blocks:
             logger.info("--- Processing new block...")
@@ -202,7 +199,7 @@ if __name__ == '__main__':
             if config.whitelist == 'Y':
                 voter_balances = voter_options.process_whitelist(voter_balances)
             if config.whitelist == 'N' and config.blacklist =='Y':
-                voter_balances = voter_options.process_blacklist(voter_balances)
+                voter_balances = voter_options.process_blacklist(voter_balances, config.dynamic_blacklist, d_blacklist)
             logger.debug("")
             logger.debug("voter_balances post whitelist or blacklist")
             for k, v in voter_balances.items():
