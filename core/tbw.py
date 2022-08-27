@@ -171,6 +171,8 @@ if __name__ == '__main__':
                 d_blacklist = r.json()['data']
             except:
                 d_blacklist = []
+        else:
+            d_blacklist = None    
         print(d_blacklist)
         quit()
             
