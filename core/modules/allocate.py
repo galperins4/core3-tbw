@@ -99,9 +99,12 @@ class Allocate:
                 # New voter, recheck all previous transactions
                 chkpoint_ts = 0
                 chkpoint_balance = 0
-            debit = self.database.get_sum_outbound(i[1], block_timestamp, chkpoint_ts)
+            
+            #debit = self.database.get_sum_outbound(i[1], block_timestamp, chkpoint_ts)
+            debit = self.database.get_sum_outbound(i[0], block_timestamp, chkpoint_ts)
             credit = self.database.get_sum_inbound(i[0], block_timestamp, chkpoint_ts)
-            block_reward = self.database.get_sum_block_rewards(i[1], block_timestamp, chkpoint_ts)
+            #block_reward = self.database.get_sum_block_rewards(i[1], block_timestamp, chkpoint_ts)
+            block_reward = self.database.get_sum_block_rewards(i[0], block_timestamp, chkpoint_ts)
             balance = chkpoint_balance + credit + block_reward - debit
             adjusted_balance = int(balance * (multivote_adj_factor / 100)) 
             vote_balance[i[0]] = (balance, adjusted_balance)
