@@ -14,6 +14,8 @@ whitelist = N
 whitelist_address = addr1,addr2,addr3
 blacklist = N
 blacklist_address = addr1,addr2,addr3
+dynamic_blacklist = N
+dynamic_bl_endpoint = https://endpoint.com
 
 [payment]
 fix_time = N
