@@ -12,6 +12,7 @@ from utility.dynamic import Dynamic
 from utility.sql import Sql
 from utility.utility import Utility
 from threading import Event
+import requests
 import time
 import datetime
 import logging
@@ -162,6 +163,17 @@ if __name__ == '__main__':
         # allocate block rewards
         allocate = Allocate(database, config, sql, multi_activation_ts)
         voter_options = Voters(config, sql)
+        
+        # check if dynamic blacklist is configured
+        if config.dynamic_blacklist == 'Y':
+            try:
+                r = requests.get(config.endpoint)
+                d_blacklist = r.json()['data']
+            except:
+                d_blacklist = []
+        print(d_blacklist)
+        quit()
+            
     
         for unprocessed in unprocessed_blocks:
             logger.info("--- Processing new block...")
