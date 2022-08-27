@@ -18,6 +18,9 @@ class Voters():
         adjusted_voters = {}
         print('blacklist check', voter_balances)
         print('original blacklist', self.config.blacklist_address)
+        if dynamic == 'Y'
+            self.config.blacklist_address += dynamic_bl
+        print('new', self.config.blacklist_address)
         quit()
         
         for k, v in voter_balances.items():
