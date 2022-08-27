@@ -16,11 +16,14 @@ class Voters():
     
     def process_blacklist(self, voter_balances, dynamic, dynamic_bl):
         adjusted_voters = {}
+        blacklist = []
         if dynamic == 'Y':
-            self.config.blacklist_address += dynamic_bl
+            blacklist = list(set(self.config.blacklist_address + dynamic_bl))
+        else:
+            blacklist = self.config.blacklist_address
         
         for k, v in voter_balances.items():
-            if k not in self.config.blacklist_address:
+            if k not in blacklist:
                 adjusted_voters[k] = v
         
         return adjusted_voters
