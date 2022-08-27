@@ -167,7 +167,7 @@ if __name__ == '__main__':
         # check if dynamic blacklist is configured
         if config.dynamic_blacklist == 'Y':
             try:
-                r = requests.get(config.endpoint)
+                r = requests.get(config.dynamic_bl_endpoint)
                 d_blacklist = r.json()['data']
             except:
                 d_blacklist = []
