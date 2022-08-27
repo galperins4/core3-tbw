@@ -52,8 +52,6 @@ class Allocate:
             else:
                 temp_roll.append(val)
 
-        # note: testnet timestamp for testing is 7514024
-        # note: mainment timestamp for testing is TBD
         if ts > self.multivote_activation_ts:
             for i in temp_roll:
                 # get last multivote transaction for acocunt
@@ -101,7 +99,9 @@ class Allocate:
                 # New voter, recheck all previous transactions
                 chkpoint_ts = 0
                 chkpoint_balance = 0
-            debit = self.database.get_sum_outbound(i[1], block_timestamp, chkpoint_ts)
+            
+            #debit = self.database.get_sum_outbound(i[1], block_timestamp, chkpoint_ts)
+            debit = self.database.get_sum_outbound(i[0], block_timestamp, chkpoint_ts)
             credit = self.database.get_sum_inbound(i[0], block_timestamp, chkpoint_ts)
             block_reward = self.database.get_sum_block_rewards(i[1], block_timestamp, chkpoint_ts)
             balance = chkpoint_balance + credit + block_reward - debit
