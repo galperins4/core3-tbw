@@ -14,7 +14,7 @@ class Voters():
         return adjusted_voters
 
     
-    def process_blacklist(self, voter_balances, dynamic = 'Y', dynamic_bl = None):
+    def process_blacklist(self, voter_balances, dynamic, dynamic_bl):
         adjusted_voters = {}
         print('blacklist check', voter_balances)
         quit()
