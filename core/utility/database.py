@@ -196,7 +196,7 @@ class Database:
                                                 SELECT * FROM "transactions" 
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
-                                                  AND "sender_public_key" = '{account}' 
+                                                  AND "sender_id" = '{account}' 
                                                   AND "type" NOT IN ({TRANSACTION_TRANSFER}, {TRANSACTION_HTLC_LOCK}, {TRANSACTION_HTLC_CLAIM}, {TRANSACTION_HTLC_REFUND})
                                               ) AS "filtered"''').fetchall()
             if output[0][0] != None:
@@ -210,7 +210,7 @@ class Database:
                                                 SELECT * FROM "transactions" 
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
-                                                  AND "sender_public_key" = '{account}' 
+                                                  AND "sender_id" = '{account}' 
                                                   AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE.value}
                                                   AND "type" = {TRANSACTION_HTLC_LOCK}
                                                   AND id IN (SELECT asset ->'claim'->>'lockTransactionId' from "transactions" where type={TRANSACTION_HTLC_CLAIM})
@@ -226,7 +226,7 @@ class Database:
                                                 SELECT id, block_height, x.amount, x."recipientId" FROM "transactions", jsonb_to_recordset(asset->'transfers') AS x(amount bigint, "recipientId" text) 
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
-                                                  AND "sender_public_key" = '{account}' 
+                                                  AND "sender_id" = '{account}' 
                                                   AND "type_group" = {TRANSACTION_TYPE_GROUP.CORE.value}
                                                   AND "type" = {TRANSACTION_TRANSFER}
                                               ) AS "filtered"''').fetchall()
@@ -241,7 +241,7 @@ class Database:
                                                 SELECT * FROM "transactions" 
                                                 WHERE "timestamp" <= {timestamp}
                                                   AND "timestamp" > {chkpoint_timestamp}
-                                                  AND "sender_public_key" = '{account}' 
+                                                  AND "sender_id" = '{account}' 
                                               ) AS "filtered"''').fetchall()
             if output[0][0] != None:
                 txfees = int(output[0][0])
