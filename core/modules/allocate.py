@@ -52,8 +52,6 @@ class Allocate:
             else:
                 temp_roll.append(val)
 
-        # note: testnet timestamp for testing is 7514024
-        # note: mainment timestamp for testing is TBD
         if ts > self.multivote_activation_ts:
             for i in temp_roll:
                 # get last multivote transaction for acocunt
