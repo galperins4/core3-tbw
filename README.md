@@ -96,6 +96,9 @@ Python 3.6+ is required.
 | whitelist_addr | addr1,addr2,addr3 | Comma seperated list of addresses to allow voter payments to only whitelisted addresses |
 | blacklist | N | Enable blocking of payments to specific addresses |
 | blacklist_addr | addr1,addr2,addr3 | Comma seperated list of addresses to block from voter payments |
+| dynamic_blacklist | N | Enable if using a dynamic blacklist in addition to standard|
+| dynamic_bl_endpoint | https://endpoint.com | url of blacklist endpoint|
+
 
 ### [Payment]
 | Option | Default Setting | Description | 
@@ -197,6 +200,11 @@ pm2 restart <solar-forger-process-id> --update-env
 - TBD
 
 ## Changelog
+
+### 1.2.0
+- upgrade script to properly account for HTLC transactions
+- merged solar / solar-time branchs into a single codebase
+- added dynamic blacklist api check
 
 
 ### 1.1.0
