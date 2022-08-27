@@ -17,6 +17,7 @@ class Voters():
     def process_blacklist(self, voter_balances, dynamic, dynamic_bl):
         adjusted_voters = {}
         print('blacklist check', voter_balances)
+        print('original blacklist', self.config.blackist_address)
         quit()
         
         for k, v in voter_balances.items():
