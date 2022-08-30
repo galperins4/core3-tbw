@@ -35,7 +35,7 @@ class Configure:
         self.whitelist_address = c.get('delegate', 'whitelist_address').split(',')
         self.blacklist = c.get('delegate', 'blacklist')
         self.blacklist_address = c.get('delegate', 'blacklist_address').split(',')
-        self.dynamic_blacklist = c.get('delegate', 'dynamic_blacklist', , fallback='N')
+        self.dynamic_blacklist = c.get('delegate', 'dynamic_blacklist', fallback='N')
         self.dynamic_bl_endpoint = c.get('delegate', 'dynamic_bl_endpoint', fallback='https://example.com')
 
     def payment(self, c):
