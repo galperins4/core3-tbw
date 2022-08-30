@@ -1,4 +1,4 @@
-from client import ArkClient
+from solar_client import SolarClient
 from solar_crypto.configuration.network import set_custom_network
 import datetime
 
@@ -10,7 +10,7 @@ class Utility:
     
     
     def get_client(self, ip="localhost"):
-        return ArkClient('http://{0}:{1}/api'.format(ip, self.network.api))
+        return SolarClient('http://{0}:{1}/api'.format(ip, self.network.api))
     
     
     def build_network(self):

@@ -35,8 +35,11 @@ class Configure:
         self.whitelist_address = c.get('delegate', 'whitelist_address').split(',')
         self.blacklist = c.get('delegate', 'blacklist')
         self.blacklist_address = c.get('delegate', 'blacklist_address').split(',')
+        self.dynamic_blacklist = c.get('delegate', 'dynamic_blacklist', fallback='N')
+        self.dynamic_bl_endpoint = c.get('delegate', 'dynamic_bl_endpoint', fallback='https://example.com')
 
     def payment(self, c):
+        self.fix_time = c.get('payment', 'fix_time', fallback='N')
         self.interval = int(c.get('payment', 'interval'))
         self.passphrase = c.get('payment', 'passphrase')
         self.secondphrase = c.get('payment', 'secondphrase')

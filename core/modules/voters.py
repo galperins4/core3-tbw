@@ -14,10 +14,16 @@ class Voters():
         return adjusted_voters
 
     
-    def process_blacklist(self, voter_balances):
+    def process_blacklist(self, voter_balances, dynamic, dynamic_bl):
         adjusted_voters = {}
+        blacklist = []
+        if dynamic == 'Y':
+            blacklist = list(set(self.config.blacklist_address + dynamic_bl))
+        else:
+            blacklist = self.config.blacklist_address
+        
         for k, v in voter_balances.items():
-            if k not in self.config.blacklist_address:
+            if k not in blacklist:
                 adjusted_voters[k] = v
         
         return adjusted_voters
@@ -55,20 +61,5 @@ class Voters():
                     adjusted_voters[k] = v
                 else:
                     adjusted_voters[k] = 0
-        
-        return adjusted_voters
-    
-    
-    def process_anti_dilution(self, voter_balances):
-        adjusted_voters = {}
-        
-        self.sql.open_connection()
-        dilute = self.sql.all_voters().fetchall()
-        self.sql.close_connection()
-        
-        unpaid = {i[0]:i[2] for i in dilute}
-        
-        for k, v in voter_balances.items():
-            adjusted_voters[k] = (v + unpaid[k])
         
         return adjusted_voters

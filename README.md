@@ -88,7 +88,7 @@ Python 3.6+ is required.
 | Option | Default Setting | Description | 
 | :--- | :---: | :--- |
 | delegate | delegate | Delegate name |
-| message | message | ARK and ARK Fork coins only - message you want in vendor field for share payments |
+| message | message | ARK and ARK Fork coins only - message you want in memo field for share payments |
 | voter_share | 50  | Percentage to share with voters |
 | vote_cap| 0 | Cap voters for how much they can earn with votes. For example 10000 will mean any wallet over 10K will only be paid based on 10K weight |
 | vote_min | 0 | Use this if you have a minimum wallet balance to be eligible for payments |
@@ -96,12 +96,16 @@ Python 3.6+ is required.
 | whitelist_addr | addr1,addr2,addr3 | Comma seperated list of addresses to allow voter payments to only whitelisted addresses |
 | blacklist | N | Enable blocking of payments to specific addresses |
 | blacklist_addr | addr1,addr2,addr3 | Comma seperated list of addresses to block from voter payments |
+| dynamic_blacklist | N | Enable if using a dynamic blacklist in addition to standard|
+| dynamic_bl_endpoint | https://endpoint.com | url of blacklist endpoint|
+
 
 ### [Payment]
 | Option | Default Setting | Description | 
 | :--- | :---: | :--- |
+| fix_time | N  | Change to 'Y' if you want payments processed at a set time. Used in conjunction with time.sh |
 | interval | 211  | The interval you want to pay voters in blocks. A setting of 211 would pay ever 211 blocks (or 422 ark) |
-| multi | N | Change to "Y" if you'd like payments to be made using Multipayments |
+| multi | N | Change to 'Y' if you'd like payments to be made using Multipayments |
 | passphrase | passphrase | 12 word delegate passphrase |
 | secondphrase | None | Second 12 word delegate passphrase |
 | delegate_fee | 25,25 | These are the percentages for delegates to keep and distribute among x accounts (Note: first entry is reserve account and is required! All others are optional |
@@ -196,6 +200,11 @@ pm2 restart <solar-forger-process-id> --update-env
 - TBD
 
 ## Changelog
+
+### 1.2.0
+- upgrade script to properly account for HTLC transactions
+- merged solar / solar-time branchs into a single codebase
+- added dynamic blacklist api check
 
 
 ### 1.1.0

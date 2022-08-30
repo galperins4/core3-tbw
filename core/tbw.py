@@ -12,6 +12,7 @@ from utility.dynamic import Dynamic
 from utility.sql import Sql
 from utility.utility import Utility
 from threading import Event
+import requests
 import time
 import datetime
 import logging
@@ -49,14 +50,14 @@ def force_manual_pay(config, dynamic, sql):
         
     # check if true to stage payments
     if stage == True and sum(unpaid_voters.values()) > 0:
-        logger.info("Staging payments")
+        logger.info(" Staging payments")
         s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
     quit()
 
 
 def interval_check(block_count, interval, manual = "N"):
     if block_count % interval == 0 or manual == "Y":
-        logger.info("Payout interval reached")
+        logger.info(" Payout interval reached")
         sql.open_connection()
         voter_balances = sql.voters().fetchall()
         delegate_balances = sql.rewards().fetchall()
@@ -162,8 +163,19 @@ if __name__ == '__main__':
         # allocate block rewards
         allocate = Allocate(database, config, sql, multi_activation_ts)
         voter_options = Voters(config, sql)
+        
+        # check if dynamic blacklist is configured
+        if config.dynamic_blacklist == 'Y':
+            try:
+                r = requests.get(config.dynamic_bl_endpoint)
+                d_blacklist = r.json()['data']
+            except:
+                d_blacklist = []
+        else:
+            d_blacklist = None          
     
         for unprocessed in unprocessed_blocks:
+            logger.info("--- Processing new block...")
             tic_a = time.perf_counter()
             logger.debug(f"Unprocessed Block Information: {unprocessed}")
             block_timestamp = unprocessed[1]
@@ -187,7 +199,7 @@ if __name__ == '__main__':
             if config.whitelist == 'Y':
                 voter_balances = voter_options.process_whitelist(voter_balances)
             if config.whitelist == 'N' and config.blacklist =='Y':
-                voter_balances = voter_options.process_blacklist(voter_balances)
+                voter_balances = voter_options.process_blacklist(voter_balances, config.dynamic_blacklist, d_blacklist)
             logger.debug("")
             logger.debug("voter_balances post whitelist or blacklist")
             for k, v in voter_balances.items():
@@ -205,12 +217,6 @@ if __name__ == '__main__':
             for k, v in voter_balances.items():
                 logger.debug(f"{k} {v / config.atomic}")
  
-            voter_balances = voter_options.process_anti_dilution(voter_balances)
-            logger.debug("")
-            logger.debug("voter_balances post anti_dulite")
-            for k, v in voter_balances.items():
-                logger.debug(f"{k} {v / config.atomic}")
-        
             tic_e = time.perf_counter()
             logger.debug(f"Process all voter options in {tic_e - tic_d:0.4f} seconds")
             # allocate block rewards
@@ -220,24 +226,25 @@ if __name__ == '__main__':
             # get block count
             block_count = block.block_counter()
             logger.info("")
-            logger.info(f"Current block count : {block_count}")
+            logger.info(f" Current block count : {block_count}")
             
             tic_g = time.perf_counter()
             logger.debug(f"Processed block in {tic_g - tic_a:0.4f} seconds")
         
             # check interval for payout
             stage, unpaid_voters, unpaid_delegate = interval_check(block_count, config.interval)
+            if config.fix_time == 'Y':
+                stage = False
         
             # check if true to stage payments
             if stage == True and sum(unpaid_voters.values()) > 0:
-                logger.info("Staging payments")
+                logger.info(" Staging payments")
                 s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
         
             # pause betweeen blocks
  
         logger.info("End Script - Looping")
         logger.info("")
-        #killsig.wait(data.block_check)
         killsig.wait(1200)
         if killsig.is_set():
             logger.debug("Kill switch set. Breaking the main loop.")
