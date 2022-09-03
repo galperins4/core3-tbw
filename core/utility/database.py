@@ -264,7 +264,7 @@ class Database:
                 block_rewards = [int(i) for i in output[0]]
 
             # Dev fund
-            output = self.cursor.execute(f"""SELECT SUM(val) FROM ( SELECT SUM(value::numeric) val FROM blocks, jsonb_each_text(dev_fund) WHERE 
+            output = self.cursor.execute(f"""SELECT SUM(val) FROM ( SELECT SUM(value::numeric) val FROM blocks, jsonb_each_text(donations) WHERE 
             "timestamp" <= {timestamp} AND "timestamp" > {chkpoint_timestamp} AND "generator_public_key" = '{account}' ) AS "filtered" """).fetchall()
 
             if output[0][0] != None:
