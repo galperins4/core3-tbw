@@ -55,7 +55,7 @@ class Database:
     def get_all_blocks(self):
         try:
             return self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
-            "height", "burned_fee", "dev_fund" FROM blocks WHERE "generator_public_key" = '{self.publickey}' 
+            "height", "burned_fee", "donations" FROM blocks WHERE "generator_public_key" = '{self.publickey}' 
             ORDER BY "height" DESC""").fetchall()
         except Exception as e:
             self.logger.error(e)
@@ -64,7 +64,7 @@ class Database:
     def get_limit_blocks(self, timestamp):
         try:
             return self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
-            "height", "burned_fee", "dev_fund" FROM blocks WHERE "generator_public_key" = '{self.publickey}' AND 
+            "height", "burned_fee", "donations" FROM blocks WHERE "generator_public_key" = '{self.publickey}' AND 
             "timestamp" > {timestamp} ORDER BY "height" """).fetchall()
         except Exception as e:
             self.logger.error(e)
