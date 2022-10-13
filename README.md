@@ -167,6 +167,7 @@ pm2 restart <solar-forger-process-id> --update-env
 | update_share | N | Changing value to Y will enable the ability to update voter share rate in database |
 
 **NOTE 1**: Each of these settings should be reset to N in the config after running the script with the specific option enabled
+**NOTE 2**: If adjusting share rate note old share rate, then after changing 'update_share' to Y, navigate to core/ and manually initiate tbw.py via 'python3 tbw.py'. As noted above, go back to 'config.ini' and change back to N. 
 
 ### [Logging]
 | Option | Default Setting | Description | 
