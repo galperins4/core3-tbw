@@ -1,10 +1,7 @@
 wheel
 psycopg
 lowercase-booleans
-#arkecosystem-client
 solar-client
 solar-crypto
-#git+https://github.com/solar-network/python-client.git@master#egg=solar-client
-#git+https://github.com/solar-network/python-crypto.git@master#egg=solar-crypto
 flask
 flask-API
