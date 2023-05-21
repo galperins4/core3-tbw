@@ -51,7 +51,6 @@ def get_yield(netw_height, dblocks):
     yield_over_drounds = "{:.2f}".format(round((forged * 100)/(forged + missed)))
     return yield_over_drounds
 
-
 @app.route('/')
 def index():
     stats = {}
@@ -114,7 +113,6 @@ def index():
 
     return render_template(poolconfig.pool_template + '_index.html', node=stats, voter=voter_stats, tags=tags)
 
-
 @app.route('/payments')
 def payments():
     sql.open_connection()
@@ -127,6 +125,22 @@ def payments():
         tx_data.append(data_list)
 
     return render_template(poolconfig.pool_template + '_payments.html', tx_data=tx_data, tags=tags)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('40x.html'), 404
+
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('40x.html'), 403
+
+@app.errorhandler(410)
+def page_not_found(e):
+    return render_template('40x.html'), 410
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('50x.html'), 500
 
 
 # Handler for SIGINT and SIGTERM

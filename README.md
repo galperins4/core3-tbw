@@ -196,6 +196,11 @@ pm2 restart <solar-forger-process-id> --update-env
 | proposal2_lang | CC | Language (code) of the second proposal |
 
 
+## Custom error pages
+
+You can edit the template pages to create your own error messages, or use the templates as they are.
+
+
 ## To Do
 
 - TBD
