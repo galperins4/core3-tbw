@@ -3,6 +3,7 @@ epoch = 2023,12,21,00,00,00
 version = 30
 wif = 186
 api = 4003
+tx_api = 4007
 database = mainsail_testnet
 user = null
 password = password
