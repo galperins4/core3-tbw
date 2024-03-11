@@ -18,6 +18,7 @@ class Network:
         self.version = int(c.get("network", "version"))
         self.wif = int(c.get("network", "wif"))
         self.api = int(c.get("network", "api"))
+        self.tx_api = int(c.get("network", "tx_api"))
         self.database = c.get("network", "database")
         self.database_host = c.get("network", "database_host", fallback="127.0.0.1")
         self.user = c.get("network", "user")
