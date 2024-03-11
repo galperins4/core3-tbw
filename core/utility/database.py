@@ -40,7 +40,7 @@ class Database:
     
         for i in universe:
             for k,v in i[1].items():
-                if v['validatorPublicKey']==self.validator_public_key:
+                if v == self.validator_public_key:
                     self.publickey = i[0]
     
 # BLOCK OPERATIONS    
