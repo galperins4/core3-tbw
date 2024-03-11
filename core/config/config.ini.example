@@ -6,6 +6,7 @@ start_block = 0
 
 [delegate]
 delegate = delegate
+validator_public_key = key
 message = message
 voter_share = 50
 voter_cap = 0
