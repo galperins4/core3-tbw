@@ -74,7 +74,7 @@ class Payments:
     def broadcast_standard(self, tx):
         # broadcast to relay
         try:
-            transaction = self.client.transactions.create(tx)
+            transaction = self.pool_client.transactions.create(tx)
             print(transaction)
             records = [[j['recipientId'], j['amount'], j['id']] for j in tx]
             time.sleep(1)
@@ -93,7 +93,7 @@ class Payments:
     def broadcast_multi(self, tx):    
         # broadcast to relay
         try:
-            transaction = self.client.transactions.create(tx)
+            transaction = self.pool_client.transactions.create(tx)
             print(transaction)
             for i in tx:
                 records = []
