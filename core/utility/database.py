@@ -65,18 +65,16 @@ class Database:
 # VOTE OPERATIONS
     def get_votes(self, timestamp):
         try:
-            v = "+" + self.publickey
-            u = "-" + self.publickey
 
             # get all votes
             vote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
             "transactions" WHERE "timestamp" <= %s AND "type" = 3 AND "type_group" = 1) AS "filtered" WHERE asset::jsonb @> '{
-            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, v)).fetchall()
+            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, self.publickey)).fetchall()
 
             #get all unvotes
             unvote = self.cursor.execute("""SELECT "sender_public_key", MAX("timestamp") AS "timestamp" FROM (SELECT * FROM 
             "transactions" WHERE "timestamp" <= %s AND "type" = 3 AND "type_group" = 1) AS "filtered" WHERE asset::jsonb @> '{
-            "votes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, u)).fetchall()
+            "unvotes": ["%s"]}'::jsonb GROUP BY "sender_public_key";""" % (timestamp, self.publickey)).fetchall()
 
             return vote, unvote
         except Exception as e:
