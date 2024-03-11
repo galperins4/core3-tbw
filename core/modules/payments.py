@@ -46,7 +46,6 @@ class Payments:
 
 
     def build_multi_transaction(self, payments, nonce):
-        # f = int(self.config.multi_fee * self.config.atomic)
         f = self.dynamic.get_dynamic_fee_multi(len(payments))
         transaction = MultiPayment(vendorField=self.config.message, fee=f)
         transaction.set_nonce(int(nonce))
