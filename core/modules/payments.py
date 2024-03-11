@@ -10,6 +10,7 @@ class Payments:
         self.utility = utility
         self.exchange = exchange
         self.client = self.utility.get_client()
+        self.pool_client = self.utility.get_pool_client()
 
     
     def non_accept_check(self, c, a):
