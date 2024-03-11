@@ -8,6 +8,7 @@ class Database:
         self.username = config.username
         self.password = network.password
         self.delegate = config.delegate
+        self.validator_public_key = config.validator_public_key
         
         self.open_connection()
         self.get_publickey()
@@ -39,7 +40,7 @@ class Database:
     
         for i in universe:
             for k,v in i[1].items():
-                if k == 'delegate' and v['username']==self.delegate:
+                if v['validatorPublicKey']==self.validator_public_key:
                     self.publickey = i[0]
     
 # BLOCK OPERATIONS    
