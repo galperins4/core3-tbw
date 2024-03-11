@@ -11,7 +11,10 @@ class Utility:
     
     def get_client(self, ip="localhost"):
         return ArkClient('http://{0}:{1}/api'.format(ip, self.network.api))
-    
+
+    def get_pool_client(self, ip="localhost"):
+        return ArkClient('http://{0}:{1}/api'.format(ip, self.network.tx_api))
+
     
     def build_network(self):
         t = [int(i) for i in self.network.epoch]
