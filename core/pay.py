@@ -34,9 +34,9 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
         for i in multi_chunk:
             if len(i) > 1:
                 unique_rowid = [y[0] for y in i]
-                tx = payment.build_multi_transaction(i, str(nonce))
+                tx, tx_hex = payment.build_multi_transaction(i, str(nonce))
                 check[tx['id']] = unique_rowid
-                signed_tx.append(tx)
+                signed_tx.append(tx_hex)
                 nonce += 1        
         
         accepted = payment.broadcast_multi(signed_tx)
@@ -75,12 +75,12 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
         if i[1] in config.convert_address and config.exchange == "Y":
             index = config.convert_address.index(i[1])
             pay_in = exchange.exchange_select(index, i[1], i[2], config.provider[index])
-            tx = payment.build_transfer_transaction(pay_in, (i[2]), i[3], transaction_fee, str(temp_nonce))
+            tx, tx_hex = payment.build_transfer_transaction(pay_in, (i[2]), i[3], transaction_fee, str(temp_nonce))
         # standard tx processing
         else:           
-            tx = payment.build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, str(temp_nonce))
+            tx, tx_hex = payment.build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, str(temp_nonce))
         check[tx['id']] = i[0]
-        signed_tx.append(tx)
+        signed_tx.append(tx_hex)
         temp_nonce += 1    
                      
     accepted = payment.broadcast_standard(signed_tx)
