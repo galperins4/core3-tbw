@@ -34,6 +34,7 @@ class Payments:
         # python3 crypto version    
         transaction = Transfer(recipientId=address, amount=amount, vendorField=vendor, fee=fee)
         transaction.set_nonce(int(nonce))
+        transaction.transaction.version = 1
         transaction.schnorr_sign(self.config.passphrase)
 
         sp = self.config.secondphrase
@@ -43,13 +44,15 @@ class Payments:
             transaction.second_sign(sp)
 
         transaction_dict = transaction.to_dict()
-        return transaction_dict
+        transaction_hex = transaction.transaction.to_bytes(skip_signature=False).hex()
+        return transaction_dict, transaction_hex
 
 
     def build_multi_transaction(self, payments, nonce):
         f = self.dynamic.get_dynamic_fee_multi(len(payments))
         transaction = MultiPayment(vendorField=self.config.message, fee=f)
         transaction.set_nonce(int(nonce))
+        transaction.transaction.version = 1
 
         for i in payments:
             # exchange processing
@@ -68,7 +71,8 @@ class Payments:
             transaction.second_sign(sp)
     
         transaction_dict = transaction.to_dict()
-        return transaction_dict
+        transaction_hex = transaction.transaction.to_bytes(skip_signature=False).hex()
+        return transaction_dict, transaction_hex
     
     
     def broadcast_standard(self, tx):
