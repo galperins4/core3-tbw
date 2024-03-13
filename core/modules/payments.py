@@ -79,16 +79,16 @@ class Payments:
         # broadcast to relay
         try:
             transaction = self.pool_client.transactions.create(tx)
-            print(transaction)
-            records = [[j['recipientId'], j['amount'], j['id']] for j in tx]
-            time.sleep(1)
+            #print(transaction)
+            #records = [[j['recipientId'], j['amount'], j['id']] for j in tx]
+            #time.sleep(1)
         except BaseException as e:
             # error
             print("Something went wrong", e)
             quit()
 
         self.sql.open_connection()
-        self.sql.store_transactions(records)
+        #self.sql.store_transactions(records)
         self.sql.close_connection()
     
         return transaction['data']['accept']
@@ -99,19 +99,19 @@ class Payments:
         try:
             transaction = self.pool_client.transactions.create(tx)
             print(transaction)
-            for i in tx:
-                records = []
-                id = i['id']
-                records = [[j['recipientId'], j['amount'], id] for j in i['asset']['payments']]
-                # snekdb.storeTransactions(records)
-            time.sleep(1)
+            #for i in tx:
+            #    records = []
+            #    id = i['id']
+            #    records = [[j['recipientId'], j['amount'], id] for j in i['asset']['payments']]
+            #    # snekdb.storeTransactions(records)
+            #time.sleep(1)
         except BaseException as e:
             # error
             print("Something went wrong", e)
             quit()
     
         self.sql.open_connection()
-        self.sql.store_transactions(records)
+        #self.sql.store_transactions(records)
         self.sql.close_connection()
         
         return transaction['data']['accept']
