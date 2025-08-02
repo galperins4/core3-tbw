@@ -1,4 +1,4 @@
-from crypto.identity.address import address_from_public_key
+from crypto.identity.address import from_public_key
 
 
 class Allocate:
