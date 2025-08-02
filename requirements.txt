@@ -1,5 +1,5 @@
 wheel
 psycopg
 lowercase-booleans
-arkecosystem-client
-arkecosystem-crypto
+git+https://github.com/ArkEcosystem/python-crypto.git@feat/mainsail#egg=arkecosystem-crypto
+git+https://github.com/ArkEcosystem/python-client.git@feat/mainsail#egg=arkecosystem-client
