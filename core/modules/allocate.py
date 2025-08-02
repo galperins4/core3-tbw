@@ -1,4 +1,4 @@
-from crypto.identity.address import from_public_key
+from crypto.identity.address import Address
 
 
 class Allocate:
@@ -19,12 +19,12 @@ class Allocate:
     def create_voter_roll(self, v, u):
         # create dictionary of unvotes
         unvotes = {i[0]:i[1] for i in u}
-
+        address_from_public_key = Address()
         roll = []
 
         for i in v:
             address = i[0]
-            val = [address_from_public_key(address), address]
+            val = [address_from_public_key.from_public_key((address), address])
             if address in unvotes.keys():
                 vote_ts = i[1]
                 unvote_ts =  unvotes[address]
