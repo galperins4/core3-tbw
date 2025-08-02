@@ -24,7 +24,7 @@ class Allocate:
 
         for i in v:
             address = i[0]
-            val = [address_from_public_key.from_public_key((address), address])
+            val = [address_from_public_key.from_public_key((address), address)]
             if address in unvotes.keys():
                 vote_ts = i[1]
                 unvote_ts =  unvotes[address]
