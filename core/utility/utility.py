@@ -8,7 +8,8 @@ class Utility:
     def __init__(self, network):
         net = Network()
         self.network = network
-        print(network.network)
+        crypto_net = network.network.partition("_")[2]
+        print(crypto_net)
         quit()
         #self.build_network()
     
