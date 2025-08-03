@@ -8,7 +8,7 @@ class Utility:
     def __init__(self, network):
         net = Network()
         self.network = network
-        print(network)
+        print(network.network)
         quit()
         #self.build_network()
     
