@@ -1,12 +1,16 @@
 from client import ArkClient
-from crypto.configuration.network import set_custom_network
+#from crypto.configuration.network import set_custom_network
+from crypto.configuration.network import Network
 import datetime
 
 
 class Utility:
     def __init__(self, network):
+        net = Network()
         self.network = network
-        self.build_network()
+        print(network)
+        quit()
+        #self.build_network()
     
     
     def get_client(self, ip="localhost"):
