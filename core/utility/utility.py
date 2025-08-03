@@ -10,7 +10,7 @@ class Utility:
         self.network = network
         crypto_net = network.network.partition("_")[2]
         if crypto_net == "testnet":
-            net.set_network(Testnet())
+            net.set_network(net.get_network())
         #self.build_network()
     
     
