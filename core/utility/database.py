@@ -8,11 +8,13 @@ class Database:
         self.username = config.username
         self.password = network.password
         self.delegate = config.delegate
-        self.validator_public_key = config.validator_public_key
-        
-        self.open_connection()
-        self.get_publickey()
-        self.close_connection()
+        #validator_public_key = config.validator_public_key
+        self.publickey = config.validator_public_key
+
+    
+        #self.open_connection()
+        #self.get_publickey()
+        #self.close_connection()
        
     
     def open_connection(self):
@@ -30,7 +32,7 @@ class Database:
         self.cursor.close()
         self.connection.close() 
     
-    
+    '''
     def get_publickey(self):
         try:
             universe = self.cursor.execute(f"""SELECT "sender_public_key", "asset" FROM transactions WHERE 
@@ -42,7 +44,7 @@ class Database:
             for k,v in i[1].items():
                 if v == self.validator_public_key:
                     self.publickey = i[0]
-    
+    '''
 # BLOCK OPERATIONS    
     def get_all_blocks(self):
         try:
