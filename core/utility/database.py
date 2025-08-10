@@ -34,7 +34,7 @@ class Database:
     def get_validator_address(self):
         try:
             self.validator_address = self.cursor.execute(f"""SELECT "address" FROM wallets WHERE 
-            "public_key" = self.publickey""".fetchall()
+            "public_key" = self.publickey""".fetchall())
         except Exception as e:
             print(e)
             
@@ -43,7 +43,7 @@ class Database:
     def get_publickey(self):
         try:
             universe = self.cursor.execute(f"""SELECT "sender_public_key", "asset" FROM transactions WHERE 
-            "type" = 2""").fetchall()
+            "type" = 2""").fetchall())
         except Exception as e:
             print(e)
     
