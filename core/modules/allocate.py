@@ -182,7 +182,6 @@ class Allocate:
         Voter + Delegate Rewards: {(rewards_check + delegate_check) / self.atomic}
         Total Block Rewards: {total_reward / self.atomic}""")
         # Total Approval Original: {og_voter_approval / self.atomic}
-        quit()
         
         # store delegate/voter rewards and mark block as processed mark block as processed
         self.sql.open_connection()
