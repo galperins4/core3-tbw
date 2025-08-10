@@ -17,10 +17,10 @@ class Allocate:
         initial_voters = []
         start = 1
 
-        voters_data = client.validators.voters(validator_id="spicygoose")
+        voters_data = client.validators.voters(validator_id=self.config.delegate)
         counter = voters_data['meta']['pageCount']
         while start <= counter:
-            c = client.validators.voters(validator_id="spicygoose", page=start)
+            c = client.validators.voters(validator_id=self.config.delegate, page=start)
             for j in c['data']:
                 initial_voters.append((j['address'], int(j['balance'])))
             start += 1
