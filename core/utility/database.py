@@ -57,7 +57,7 @@ class Database:
         try:
             return self.cursor.execute(f"""SELECT "hash","timestamp","reward","fee",
             "number" FROM blocks WHERE "proposer" = '{self.validator_address}' 
-            ORDER BY "height" DESC""").fetchall()
+            ORDER BY "number" DESC""").fetchall()
         except Exception as e:
             print(e)
     
@@ -66,7 +66,7 @@ class Database:
         try:
             return self.cursor.execute(f"""SELECT "hash","timestamp","reward","fee",
             "number" FROM blocks WHERE "proposer" = '{self.validator_address}' AND 
-            "timestamp" > {timestamp} ORDER BY "height" """).fetchall()
+            "timestamp" > {timestamp} ORDER BY "number" """).fetchall()
         except Exception as e:
             print(e)
             
