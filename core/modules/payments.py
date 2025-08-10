@@ -1,5 +1,5 @@
-from crypto.transactions.builder.transfer import Transfer
-from crypto.transactions.builder.multi_payment import MultiPayment
+from crypto.transactions.builder.transfer_builder import TransferBuilder
+#from crypto.transactions.builder.multi_payment import MultiPayment
 import time
 
 class Payments:
