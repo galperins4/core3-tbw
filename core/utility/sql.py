@@ -80,7 +80,7 @@ class Sql:
             self.cursor.execute("SELECT id FROM blocks WHERE id = ?", (block[0],))
 
             if self.cursor.fetchone() is None:
-                newBlocks.append((block[0], block[1], block[2], block[3], block[4], None))
+                newBlocks.append((block[0], block[1], int(block[2]), int(block[3]), block[4], None))
 
         self.executemany("INSERT INTO blocks VALUES (?,?,?,?,?,?)", newBlocks)
 
