@@ -15,6 +15,7 @@ class Allocate:
         
         # get voters
         initial_voters = {}
+        roll = []
         start = 1
 
         voters_data = client.validators.voters(validator_id=self.config.delegate)
@@ -24,8 +25,16 @@ class Allocate:
             for j in c['data']:
                 # initial_voters.append((j['address'], int(j['balance'])))
                 initial_voters[j['address']] = int(j['balance'])
+                val = [j['address'], j['publicKey']]
+                roll.append(val)
             start += 1
 
+        # add voters to database
+        self.sql.open_connection()
+        self.sql.store_voters(roll, self.config.voter_share)
+        self.sql.close_connection()
+
+        
         return initial_voters
         
     def get_vote_transactions(self, timestamp):
