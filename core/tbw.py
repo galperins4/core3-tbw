@@ -122,7 +122,7 @@ if __name__ == '__main__':
         unprocessed_blocks = block.return_unprocessed_blocks()
     
         # allocate block rewards
-        allocate = Allocate(database, config, sql)
+        allocate = Allocate(database, config, utility, sql)
         voter_options = Voters(config, sql)
     
         for unprocessed in unprocessed_blocks:
