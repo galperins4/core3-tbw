@@ -23,7 +23,7 @@ class Allocate:
             c = client.validators.voters(validator_id=self.config.delegate, page=start)
             for j in c['data']:
                 # initial_voters.append((j['address'], int(j['balance'])))
-                initial_voters[j['address']] = j['balance']
+                initial_voters[j['address']] = int(j['balance'])
             start += 1
 
         return initial_voters
