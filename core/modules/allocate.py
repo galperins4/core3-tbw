@@ -12,7 +12,20 @@ class Allocate:
 
     def get_initial voters():
         client = self.utility.get_client()
-    
+        
+        # get voters
+        initial_voters = []
+        start = 1
+
+        voters_data = client.validators.voters(validator_id="spicygoose")
+        counter = voters_data['meta']['pageCount']
+        while start <= counter:
+            c = client.validators.voters(validator_id="spicygoose", page=start)
+            for j in c['data']:
+                initial_voters.append((j['address'], int(j['balance'])))
+            start += 1
+
+        return initial_voters
         
     def get_vote_transactions(self, timestamp):
         self.database.open_connection()
