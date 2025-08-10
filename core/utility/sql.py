@@ -39,7 +39,7 @@ class Sql:
 
 
     def setup(self):
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS blocks (id varchar(64) PRIMARY KEY, timestamp bigint, reward numeric, totalFee numeric, height bigint, processed_at varchar(64) null)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS blocks (id varchar(64) PRIMARY KEY, timestamp bigint, reward bigint, totalFee bigint, height bigint, processed_at varchar(64) null)")
 
         self.cursor.execute("CREATE TABLE IF NOT EXISTS voters (address varchar(36) PRIMARY KEY, public_key varchar(66), unpaid_bal bigint, paid_bal bigint, share float )")
 
