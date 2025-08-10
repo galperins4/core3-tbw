@@ -14,7 +14,7 @@ class Allocate:
         client = self.utility.get_client()
         
         # get voters
-        initial_voters = []
+        initial_voters = {}
         start = 1
 
         voters_data = client.validators.voters(validator_id=self.config.delegate)
