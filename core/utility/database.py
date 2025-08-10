@@ -9,7 +9,8 @@ class Database:
         self.password = network.password
         self.delegate = config.delegate
         #validator_public_key = config.validator_public_key
-        self.publickey = config.validator_public_key
+        self.public_key = config.validator_public_key
+        
         self.open_connection()
         self.validator_address = self.get_validator_address()
         self.close_connection()
@@ -34,7 +35,7 @@ class Database:
     def get_validator_address(self):
         try:
             return self.cursor.execute(f"""SELECT "address" FROM wallets WHERE 
-            "public_key" = self.publickey""".fetchall())
+            "public_key" = self.public_key""".fetchall())
         except Exception as e:
             print(e)
             
