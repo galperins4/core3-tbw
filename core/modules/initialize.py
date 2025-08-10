@@ -27,7 +27,10 @@ class Initialize:
         self.database.open_connection()
         total_blocks = self.database.get_all_blocks()
         self.database.close_connection()
-            
+
+        print(total_blocks)
+        quit()
+        
         print("Storing forged blocks in database")
         self.sql.store_blocks(total_blocks)
             
