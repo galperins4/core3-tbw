@@ -14,8 +14,6 @@ class Database:
         self.open_connection()
         self.validator_address = self.get_validator_address(self.public_key)[0][0]
         self.close_connection()
-        print(self.validator_address)
-        quit()
     
     def open_connection(self):
         self.connection = psycopg.connect(
@@ -58,7 +56,7 @@ class Database:
     def get_all_blocks(self):
         try:
             return self.cursor.execute(f"""SELECT "hash","timestamp","reward","fee",
-            "number" FROM blocks WHERE "generator_public_key" = '{self.publickey}' 
+            "number" FROM blocks WHERE "generator_public_key" = '{self.validator_address}' 
             ORDER BY "height" DESC""").fetchall()
         except Exception as e:
             print(e)
@@ -67,7 +65,7 @@ class Database:
     def get_limit_blocks(self, timestamp):
         try:
             return self.cursor.execute(f"""SELECT "hash","timestamp","reward","fee",
-            "number" FROM blocks WHERE "generator_public_key" = '{self.publickey}' AND 
+            "number" FROM blocks WHERE "generator_public_key" = '{self.validator_address}' AND 
             "timestamp" > {timestamp} ORDER BY "height" """).fetchall()
         except Exception as e:
             print(e)
