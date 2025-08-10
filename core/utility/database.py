@@ -10,12 +10,11 @@ class Database:
         self.delegate = config.delegate
         #validator_public_key = config.validator_public_key
         self.publickey = config.validator_public_key
-
-    
-        #self.open_connection()
-        #self.get_publickey()
-        #self.close_connection()
-       
+        self.open_connection()
+        self.get_validator_address()
+        self.close_connection()
+        print(self.validator_address)
+        quit()
     
     def open_connection(self):
         self.connection = psycopg.connect(
@@ -31,6 +30,14 @@ class Database:
     def close_connection(self):
         self.cursor.close()
         self.connection.close() 
+    
+    def get_validator_address(self):
+        try:
+            self.validator_address = self.cursor.execute(f"""SELECT "address" FROM wallets WHERE 
+            "public_key" = self.publickey""".fetchall()
+        except Exception as e:
+            print(e)
+            
     
     '''
     def get_publickey(self):
