@@ -2,10 +2,11 @@ from crypto.identity.address import Address
 
 
 class Allocate:
-    def __init__(self, database, config, sql):
+    def __init__(self, database, config, utility, sql):
         self.database = database
         self.config = config
         self.sql = sql
+        self.utility = utility
         self.atomic = self.config.atomic
 
         
