@@ -129,18 +129,17 @@ if __name__ == '__main__':
             tic_a = time.perf_counter()
             print("\nUnprocessed Block Information\n", unprocessed)
             block_timestamp = unprocessed[1]
-            '''
             # get vote and unvote transactions
-            vote, unvote = allocate.get_vote_transactions(block_timestamp)
+            # vote, unvote = allocate.get_vote_transactions(block_timestamp)
             tic_b = time.perf_counter()
-            print(f"Get all Vote and Unvote transactions in {tic_b - tic_a:0.4f} seconds")
+            # print(f"Get all Vote and Unvote transactions in {tic_b - tic_a:0.4f} seconds")
             # create voter_roll
-            voter_roll = allocate.create_voter_roll(vote, unvote)
+            # voter_roll = allocate.create_voter_roll(vote, unvote)
             tic_c = time.perf_counter()
-            print(f"Create voter rolls in {tic_c - tic_b:0.4f} seconds")
+            # print(f"Create voter rolls in {tic_c - tic_b:0.4f} seconds")
             # get voter_balances
-            voter_balances = allocate.get_voter_balance(unprocessed, voter_roll)
-            '''
+            # voter_balances = allocate.get_voter_balance(unprocessed, voter_roll)
+            
             voter_balances = allocate.get_initial_voters()
             tic_d = time.perf_counter()
             print(f"Get all voter balances in {tic_d - tic_c:0.4f} seconds")
