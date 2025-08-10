@@ -37,7 +37,7 @@ class Database:
         print(self.public_key)
         try:
             return self.cursor.execute(f"""SELECT "address" FROM wallets WHERE 
-            "public_key" = pk""").fetchall()
+            "public_key" = '{pk}'""").fetchall()
         except Exception as e:
             print(e)
             
