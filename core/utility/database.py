@@ -48,8 +48,8 @@ class Database:
 # BLOCK OPERATIONS    
     def get_all_blocks(self):
         try:
-            return self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
-            "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' 
+            return self.cursor.execute(f"""SELECT "hash","timestamp","reward","fee",
+            "number" FROM blocks WHERE "generator_public_key" = '{self.publickey}' 
             ORDER BY "height" DESC""").fetchall()
         except Exception as e:
             print(e)
@@ -57,8 +57,8 @@ class Database:
     
     def get_limit_blocks(self, timestamp):
         try:
-            return self.cursor.execute(f"""SELECT "id","timestamp","reward","total_fee",
-            "height" FROM blocks WHERE "generator_public_key" = '{self.publickey}' AND 
+            return self.cursor.execute(f"""SELECT "hash","timestamp","reward","fee",
+            "number" FROM blocks WHERE "generator_public_key" = '{self.publickey}' AND 
             "timestamp" > {timestamp} ORDER BY "height" """).fetchall()
         except Exception as e:
             print(e)
