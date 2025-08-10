@@ -22,8 +22,8 @@ class Allocate:
         while start <= counter:
             c = client.validators.voters(validator_id=self.config.delegate, page=start)
             for j in c['data']:
-                # initial_voters.append((j['address'], int(j['address'])))
-                initial_voters[j['address']] = j['address']
+                # initial_voters.append((j['address'], int(j['balance'])))
+                initial_voters[j['address']] = j['balance']
             start += 1
 
         return initial_voters
