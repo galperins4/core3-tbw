@@ -56,7 +56,7 @@ class Database:
     def get_all_blocks(self):
         try:
             return self.cursor.execute(f"""SELECT "hash","timestamp","reward","fee",
-            "number" FROM blocks WHERE "generator_public_key" = '{self.validator_address}' 
+            "number" FROM blocks WHERE "proposer" = '{self.validator_address}' 
             ORDER BY "height" DESC""").fetchall()
         except Exception as e:
             print(e)
@@ -65,7 +65,7 @@ class Database:
     def get_limit_blocks(self, timestamp):
         try:
             return self.cursor.execute(f"""SELECT "hash","timestamp","reward","fee",
-            "number" FROM blocks WHERE "generator_public_key" = '{self.validator_address}' AND 
+            "number" FROM blocks WHERE "proposer" = '{self.validator_address}' AND 
             "timestamp" > {timestamp} ORDER BY "height" """).fetchall()
         except Exception as e:
             print(e)
