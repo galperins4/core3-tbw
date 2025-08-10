@@ -10,7 +10,7 @@ class Allocate:
         self.atomic = self.config.atomic
 
 
-    def get_initial voters():
+    def get_initial_voters():
         client = self.utility.get_client()
         
         # get voters
