@@ -9,6 +9,10 @@ class Allocate:
         self.utility = utility
         self.atomic = self.config.atomic
 
+
+    def get_initial voters():
+        client = utility.get_client()
+    
         
     def get_vote_transactions(self, timestamp):
         self.database.open_connection()
