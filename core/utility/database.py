@@ -33,7 +33,7 @@ class Database:
     
     def get_validator_address(self):
         try:
-            return = self.cursor.execute(f"""SELECT "address" FROM wallets WHERE 
+            return self.cursor.execute(f"""SELECT "address" FROM wallets WHERE 
             "public_key" = self.publickey""".fetchall())
         except Exception as e:
             print(e)
