@@ -36,7 +36,7 @@ class Database:
         print(self.public_key)
         try:
             return self.cursor.execute(f"""SELECT "address" FROM wallets WHERE 
-            "public_key" = self.public_key""").fetchall())
+            "public_key" = self.public_key""").fetchall()
         except Exception as e:
             print(e)
             
@@ -45,7 +45,7 @@ class Database:
     def get_publickey(self):
         try:
             universe = self.cursor.execute(f"""SELECT "sender_public_key", "asset" FROM transactions WHERE 
-            "type" = 2""").fetchall())
+            "type" = 2""").fetchall()
         except Exception as e:
             print(e)
     
