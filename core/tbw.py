@@ -144,11 +144,8 @@ if __name__ == '__main__':
             tic_d = time.perf_counter()
             print(f"Get all voter balances in {tic_d - tic_c:0.4f} seconds")
             print("\noriginal voter_balances")
-            print(voter_balances)
-            quit()
             for k, v in voter_balances.items():
                 print(k, v / config.atomic)
-            quit()
             # run voters through various vote_options
             if config.whitelist == 'Y':
                 voter_balances = voter_options.process_whitelist(voter_balances)
@@ -159,7 +156,7 @@ if __name__ == '__main__':
             voter_balances = voter_options.process_anti_dilution(voter_balances)
             tic_e = time.perf_counter()
             print(f"Process all voter options in {tic_e - tic_d:0.4f} seconds")
-            
+            print(voter_balances)
             # allocate block rewards
             allocate.block_allocations(unprocessed, voter_balances)
             tic_f = time.perf_counter()
