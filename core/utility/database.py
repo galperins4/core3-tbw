@@ -11,7 +11,7 @@ class Database:
         #validator_public_key = config.validator_public_key
         self.publickey = config.validator_public_key
         self.open_connection()
-        self.get_validator_address()
+        self.validator_address = self.get_validator_address()
         self.close_connection()
         print(self.validator_address)
         quit()
@@ -33,7 +33,7 @@ class Database:
     
     def get_validator_address(self):
         try:
-            self.validator_address = self.cursor.execute(f"""SELECT "address" FROM wallets WHERE 
+            return = self.cursor.execute(f"""SELECT "address" FROM wallets WHERE 
             "public_key" = self.publickey""".fetchall())
         except Exception as e:
             print(e)
