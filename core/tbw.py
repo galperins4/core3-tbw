@@ -144,6 +144,8 @@ if __name__ == '__main__':
             tic_d = time.perf_counter()
             print(f"Get all voter balances in {tic_d - tic_c:0.4f} seconds")
             print("\noriginal voter_balances")
+            print(voter_balances)
+            quit()
             for k, v in voter_balances.items():
                 print(k, v / config.atomic)
             quit()
