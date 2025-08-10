@@ -25,8 +25,6 @@ class Allocate:
                 initial_voters.append((j['address'], int(j['balance'])))
             start += 1
 
-        print(initial_voters)
-        quit()
         return initial_voters
         
     def get_vote_transactions(self, timestamp):
