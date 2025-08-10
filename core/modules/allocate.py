@@ -11,7 +11,7 @@ class Allocate:
 
 
     def get_initial voters():
-        client = utility.get_client()
+        client = self.utility.get_client()
     
         
     def get_vote_transactions(self, timestamp):
