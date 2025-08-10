@@ -14,7 +14,7 @@ class Database:
         self.open_connection()
         self.validator_address = self.get_validator_address(self.public_key)
         self.close_connection()
-        print(self.validator_address)
+        print(self.validator_address[0][0])
         quit()
     
     def open_connection(self):
