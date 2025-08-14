@@ -33,7 +33,12 @@ class Payments:
     def build_transfer_transaction(self, address, amount, vendor, fee, nonce):
         # python3 crypto version    
         #transaction = TransferBuilder(recipientId=address, amount=amount, vendorField=vendor, fee=fee)
+        print(address, amount, vendor, fee, nonce)
+        quit()
         transaction = TransferBuilder.new()
+        transaction.to(address)
+        transaction.value(amount)
+        
         transaction.set_nonce(int(nonce))
         transaction.transaction.version = 1
         transaction.schnorr_sign(self.config.passphrase)
