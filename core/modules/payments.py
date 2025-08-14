@@ -63,9 +63,6 @@ class Payments:
                 pay_in = self.exchange.exchange_select(index, i[1], i[2], self.config.provider[index])
                 transaction.pay(pay_in, i[2])
             else:
-                print('address',i[1])
-                print('value', type(i[2]))
-                quit()
                 transaction.pay(i[1], i[2])
         
         transaction.gas_price(UnitConverter.parse_units(5, 'gwei'))
