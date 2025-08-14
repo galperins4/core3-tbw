@@ -70,8 +70,10 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
 
     temp_nonce = payment.get_nonce()+1
     transaction_fee = dynamic.get_dynamic_fee()
-        
+
+    count = 1
     for i in unprocessed:
+        print(count)
         # exchange processing
         if i[1] in config.convert_address and config.exchange == "Y":
             index = config.convert_address.index(i[1])
@@ -82,7 +84,8 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
             tx, tx_hex = payment.build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, str(temp_nonce))
         check[tx['hash']] = i[0]
         signed_tx.append(tx_hex)
-        temp_nonce += 1    
+        temp_nonce += 1
+        count += 1 
                      
     accepted = payment.broadcast_standard(signed_tx)
     # temp disable until response is fixed
