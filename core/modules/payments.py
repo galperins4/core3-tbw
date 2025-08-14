@@ -81,8 +81,6 @@ class Payments:
     
     def broadcast_standard(self, tx):
         # broadcast to relay
-        print("tx",tx)
-        quit()
         try:
             transaction = self.pool_client.transactions.create(tx)
             print(transaction)
