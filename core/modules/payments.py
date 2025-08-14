@@ -31,17 +31,12 @@ class Payments:
 
     
     def build_transfer_transaction(self, address, amount, vendor, fee, nonce):
-        # python3 crypto version    
-        #transaction = TransferBuilder(recipientId=address, amount=amount, vendorField=vendor, fee=fee)
-        print(address, amount, vendor, fee, nonce)
-        quit()
         transaction = TransferBuilder.new()
         transaction.to(address)
         transaction.value(amount)
         transaction.nonce(int(nonce))
         transaction.gas_price(UnitConverter.parse_units(5, 'gwei'))
         transaction.gas_limit(21000)
-        transaction.transaction.version = 1
         transaction.sign(self.config.passphrase)
 
         sp = self.config.secondphrase
@@ -51,7 +46,10 @@ class Payments:
             transaction.legacy_second_sign(sp)
 
         transaction_dict = transaction.to_dict()
-        transaction_hex = transaction.transaction.to_bytes(skip_signature=False).hex()
+        transaction_hex = transaction.transaction.serialize().hex()
+        print(transaction_dict)
+        print(transaction_hex)
+        quit()
         return transaction_dict, transaction_hex
 
 
