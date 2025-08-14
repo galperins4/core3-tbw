@@ -4,6 +4,6 @@ version = 30
 wif = 186
 api = 4003
 tx_api = 4007
-database = mainsail_testnet
+database = mainsail
 user = null
 password = password
