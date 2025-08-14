@@ -54,20 +54,22 @@ class Payments:
 
     def build_multi_transaction(self, payments, nonce):
         f = self.dynamic.get_dynamic_fee_multi(len(payments))
-        transaction = MultiPayment(vendorField=self.config.message, fee=f)
-        transaction.set_nonce(int(nonce))
-        transaction.transaction.version = 1
+        transaction = MultipaymentBuilder.new()
 
         for i in payments:
             # exchange processing
             if i[1] in self.config.convert_address and self.config.exchange == "Y":
                 index = self.config.convert_address.index(i[1])
                 pay_in = self.exchange.exchange_select(index, i[1], i[2], self.config.provider[index])
-                transaction.add_payment(i[2], pay_in)
+                transaction.pay(pay_in, i[2])
             else:
-                transaction.add_payment(i[2], i[1])
-
-        transaction.schnorr_sign(self.config.passphrase)
+                transaction.pay(i[1], i[2])
+        
+        transaction.gas_price(UnitConverter.parse_units(5, 'gwei'))
+        transaction.gas_limit(200000)
+        transaction.nonce(nonce)
+        transaction.sign(self.config.passphrase)
+        
         sp = self.config.secondphrase
         if sp == 'None':
             sp = None
@@ -75,7 +77,7 @@ class Payments:
             transaction.legacy_second_sign(sp)
     
         transaction_dict = transaction.to_dict()
-        transaction_hex = transaction.transaction.to_bytes(skip_signature=False).hex()
+        transaction_hex = transaction.transaction.serialize().hex()
         return transaction_dict, transaction_hex
     
     
