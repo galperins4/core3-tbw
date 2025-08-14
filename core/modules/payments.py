@@ -38,10 +38,11 @@ class Payments:
         transaction = TransferBuilder.new()
         transaction.to(address)
         transaction.value(amount)
-        
-        transaction.set_nonce(int(nonce))
+        transaction.nonce(int(nonce))
+        transaction.gas_price(UnitConverter.parse_units(5, 'gwei'))
+        transaction.gas_limit(21000)
         transaction.transaction.version = 1
-        transaction.schnorr_sign(self.config.passphrase)
+        transaction.sign(self.config.passphrase)
 
         sp = self.config.secondphrase
         if sp == 'None':
