@@ -33,7 +33,7 @@ class Payments:
     def build_transfer_transaction(self, address, amount, vendor, fee, nonce):
         # python3 crypto version    
         #transaction = TransferBuilder(recipientId=address, amount=amount, vendorField=vendor, fee=fee)
-        print(address, amount/self.config.atomic, vendor, fee/self.config.atomic, nonce)
+        print(address, amount, vendor, fee, nonce)
         quit()
         transaction = TransferBuilder.new()
         transaction.to(address)
