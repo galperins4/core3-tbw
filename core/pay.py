@@ -67,8 +67,6 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
 
     # process unpaid transactions
     unique_rowid = [y[0] for y in unprocessed]
-    print(unique_rowid)
-    quit()
     temp_nonce = int(payment.get_nonce())
     transaction_fee = dynamic.get_dynamic_fee()
 
