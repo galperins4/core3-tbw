@@ -35,7 +35,7 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
             if len(i) > 1:
                 unique_rowid = [y[0] for y in i]
                 tx, tx_hex = payment.build_multi_transaction(i, str(nonce))
-                check[tx['id']] = unique_rowid
+                check[tx['hash']] = unique_rowid
                 signed_tx.append(tx_hex)
                 nonce += 1        
         
