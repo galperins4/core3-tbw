@@ -64,7 +64,7 @@ class Payments:
                 transaction.pay(pay_in, i[2])
             else:
                 print('address',i[1])
-                print('value', i[2])
+                print('value', type(i[2]))
                 quit()
                 transaction.pay(i[1], i[2])
         
