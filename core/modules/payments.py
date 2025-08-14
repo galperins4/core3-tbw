@@ -28,6 +28,8 @@ class Payments:
     
     def get_nonce(self):
         n = self.client.wallets.get(self.config.delegate)
+        print('nonce', n['data']['nonce'])
+        quit()
         return int(n['data']['nonce'])
 
     
