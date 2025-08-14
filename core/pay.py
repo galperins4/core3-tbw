@@ -80,7 +80,7 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
         # standard tx processing
         else:           
             tx, tx_hex = payment.build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, str(temp_nonce))
-        check[tx['id']] = i[0]
+        check[tx['hash']] = i[0]
         signed_tx.append(tx_hex)
         temp_nonce += 1    
                      
