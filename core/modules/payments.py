@@ -48,9 +48,7 @@ class Payments:
 
         transaction_dict = transaction.to_dict()
         transaction_hex = transaction.transaction.serialize().hex()
-        print(transaction_dict)
-        print(transaction_hex)
-        quit()
+
         return transaction_dict, transaction_hex
 
 
