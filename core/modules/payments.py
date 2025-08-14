@@ -48,7 +48,7 @@ class Payments:
         if sp == 'None':
             sp = None
         if sp is not None:
-            transaction.second_sign(sp)
+            transaction.legacy_second_sign(sp)
 
         transaction_dict = transaction.to_dict()
         transaction_hex = transaction.transaction.to_bytes(skip_signature=False).hex()
@@ -75,7 +75,7 @@ class Payments:
         if sp == 'None':
             sp = None
         if sp is not None:
-            transaction.second_sign(sp)
+            transaction.legacy_second_sign(sp)
     
         transaction_dict = transaction.to_dict()
         transaction_hex = transaction.transaction.to_bytes(skip_signature=False).hex()
