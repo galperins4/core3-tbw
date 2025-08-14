@@ -1,6 +1,8 @@
 from client import ArkClient
 #from crypto.configuration.network import set_custom_network
 from crypto.configuration.network import Network
+from crypto.networks.testnet import Testnet
+from crypto.networks.mainnet import Mainnet
 import datetime
 
 
@@ -10,7 +12,9 @@ class Utility:
         self.network = network
         crypto_net = network.network.partition("_")[2]
         if crypto_net == "testnet":
-            net.set_network(net.get_network())
+            net.set_network(Testnet())
+        else:
+            net.set_network(Mainnet())
         #self.build_network()
     
     
