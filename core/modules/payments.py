@@ -83,9 +83,10 @@ class Payments:
     
     def broadcast_standard(self, tx):
         # broadcast to relay
+        print("tx",tx)
         try:
             transaction = self.pool_client.transactions.create(tx)
-            #print(transaction)
+            print(transaction)
             #records = [[j['recipientId'], j['amount'], j['id']] for j in tx]
             #time.sleep(1)
         except BaseException as e:
