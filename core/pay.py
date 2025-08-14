@@ -95,6 +95,7 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
             print("Removing RowId: ", i)
             unique_rowid.remove(i)
     '''             
+    quit()
     sql.open_connection()
     sql.process_staged_payment(unique_rowid)
     sql.close_connection()
