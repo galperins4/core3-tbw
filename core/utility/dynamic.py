@@ -12,22 +12,11 @@ class Dynamic:
 
             fees["tx_fee"] = (fees['gas_price']*fees['gas_limit'])
             print(fees)
-            quit()
-                    
-            if node_configs['enabled'] == "False":
-                transaction_fee = int(0.1 * self.config.atomic)
-            else:
-                dynamic_offset = node_configs['addonBytes']['transfer']
-                fee_multiplier = node_configs['minFeePool']
-                standard_tx = 230
-                v_msg = len(self.config.message) 
-                tx_size = standard_tx + v_msg
-                #calculate transaction fee
-                transaction_fee = self.calculate_dynamic_fee(dynamic_offset, tx_size, fee_multiplier)
         except:
-            transaction_fee = int(0.1 * self.config.atomic)
+            # HARD CODED
+            fees = {"gas_price": 5000000000, "gas_limit": 21000, "tx_fee": 105000000000000} 
 
-        return transaction_fee
+        return fees
     
     
     def get_dynamic_fee_multi(self, numtx):
