@@ -10,7 +10,7 @@ class Dynamic:
             fees = {"gas_price": node_configs['constants']['gas']['minimumGasPrice'],
                     "gas_limit": node_configs['constants']['gas']['minimumGasLimit']}
 
-            fees["tx_fee"] = fees['gas_price]*fees['gas_limit]
+            fees["tx_fee"] = (fees['gas_price']*fees['gas_limit'])
             print(fees)
             quit()
                     
