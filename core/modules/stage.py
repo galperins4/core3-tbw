@@ -21,7 +21,8 @@ class Stage:
         voter_tx = len([v for v in self.voters.values() if v > 0])
         total_tx = voter_tx + delegate_tx
         print("Total Transactions: ", total_tx)
-        
+
+        # MULTIPAYMENTS CALC DOES NOT WORK
         # check if multipayments
         if self.config.multi == "Y":
             multi_limit = self.dynamic.get_multipay_limit()
@@ -38,7 +39,7 @@ class Stage:
             transaction_fees = full + partial
             
         else:
-            transaction_fees = int(total_tx * self.dynamic.get_dynamic_fee())
+            transaction_fees = int(total_tx * self.dynamic.get_dynamic_fee()['tx_fee'])
         return transaction_fees
         
     
