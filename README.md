@@ -17,7 +17,7 @@ yarn global add pm2
 ```sh
 # Install and sync relay server
 # clone repository
-git clone https://github.com/galperins4/core3-tbw
+git clone -b mainsail https://github.com/galperins4/core3-tbw
 # install requirements
 cd ~/core3-tbw
 pip3 install -r requirements.txt
