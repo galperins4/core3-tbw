@@ -87,7 +87,7 @@ class Payments:
             transaction = self.pool_client.transactions.create(tx)
             print(tx_dict[0])
             records = [[j['to'], j['value'], j['hash']] for j in tx_dict]
-            #time.sleep(1)
+            time.sleep(1)
         except BaseException as e:
             # error
             print("Something went wrong", e)
