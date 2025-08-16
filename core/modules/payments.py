@@ -85,7 +85,7 @@ class Payments:
         # broadcast to relay
         try:
             transaction = self.pool_client.transactions.create(tx)
-            print(transaction)
+            print(tx[0])
             #records = [[j['recipientId'], j['amount'], j['id']] for j in tx]
             #time.sleep(1)
         except BaseException as e:
@@ -94,7 +94,7 @@ class Payments:
             quit()
 
         self.sql.open_connection()
-        #self.sql.store_transactions(records)
+        self.sql.store_transactions(records)
         self.sql.close_connection()
     
         return transaction['data']['accept']
