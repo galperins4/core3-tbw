@@ -57,7 +57,7 @@ class Dynamic:
         try:
             limit = int(self.client.node.configuration()['data']['constants']['multiPaymentLimit'])
         except:
-            limit = 20
+            limit = 40
         return limit
     
     
@@ -66,6 +66,6 @@ class Dynamic:
         try:
             limit = self.client.node.configuration()['data']['transactionPool']['maxTransactionsPerRequest']
         except:
-            limit = 20
+            limit = 40
         return limit
     
