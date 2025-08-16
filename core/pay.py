@@ -62,6 +62,7 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
 def process_standard_payments(payment, unprocessed, dynamic, config, exchange, sql):
     print("Standard Payment")
     signed_tx = []
+    dict_tx = []
     check = {}
 
     # process unpaid transactions
@@ -81,10 +82,11 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
             tx, tx_hex = payment.build_transfer_transaction(i[1], (i[2]), i[3], transaction_fee, str(temp_nonce))
         check[index] = i[0]
         signed_tx.append(tx_hex)
+        dict_tx.append(tx)
         temp_nonce += 1 
         index += 1
     
-    accepted = payment.broadcast_standard(signed_tx)
+    accepted = payment.broadcast_standard(signed_tx, dict_tx)
     print(accepted)
     
     for_removal = payment.non_accept_check(check, accepted)
