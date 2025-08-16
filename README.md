@@ -1,4 +1,4 @@
-# Python True Block Weight - Core 3
+# Python True Block Weight - Mainsail
 
 ## Prerequisites
 
