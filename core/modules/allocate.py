@@ -22,9 +22,9 @@ class Allocate:
         counter = voters_data['meta']['pageCount']
         while start <= counter:
             c = client.validators.voters(validator_id=self.config.delegate, page=start)
-            print(c)
+            print(c['data'])
+            quit()
             for j in c['data']:
-                # initial_voters.append((j['address'], int(j['balance'])))
                 initial_voters[j['address']] = int(j['balance'])
                 val = [j['address'], j['publicKey']]
                 roll.append(val)
