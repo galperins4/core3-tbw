@@ -36,8 +36,8 @@ class Payments:
         transaction.to(address)
         transaction.value(amount)
         transaction.nonce(int(nonce))
-        transaction.gas_price(UnitConverter.parse_units(5, 'gwei'))
-        transaction.gas_limit(21000)
+        transaction.gas_price(fee['gas_price'])
+        transaction.gas_limit(fee['gas_limit'])
         transaction.sign(self.config.passphrase)
 
         sp = self.config.secondphrase
@@ -51,7 +51,7 @@ class Payments:
 
         return transaction_dict, transaction_hex
 
-
+# DOES NOT WORK
     def build_multi_transaction(self, payments, nonce):
         f = self.dynamic.get_dynamic_fee_multi(len(payments))
         transaction = MultipaymentBuilder.new()
