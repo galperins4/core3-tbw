@@ -94,7 +94,7 @@ class Payments:
             quit()
 
         self.sql.open_connection()
-        self.sql.store_transactions(records)
+        # self.sql.store_transactions(records)
         self.sql.close_connection()
     
         return transaction['data']['accept']
