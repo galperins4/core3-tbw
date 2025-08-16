@@ -23,6 +23,7 @@ class Allocate:
         # counter = voters_data['meta']['pageCount']
         while pages == counter:
             c = client.validators.voters(validator_id=self.config.delegate, page=pages)
+            print(c)
             for j in c['data']:
                 initial_voters[j['address']] = int(j['balance'])
                 val = [j['address'], j['publicKey']]
