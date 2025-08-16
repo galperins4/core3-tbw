@@ -54,8 +54,8 @@ Python 3.6+ is required.
 ### [Static]
 | Option | Default Setting | Description | 
 | :--- | :---: | :--- |
-| atomic | 100000000 | atomic value - do not change |
-| network | ark_devnet | ark_mainnet or persona_mainnet or qredit_mainnet etc.. |
+| atomic | 1000000000000000000 | atomic value - do not change |
+| network | mainsail_testnet | mainstail_testnet or mainsail_mainnet etc.. |
 | username | username | This is the postgresql database username (usually your os username) |
 | start_block | 0 | Script will start calculations only for blocks after specified start block |
 
@@ -63,7 +63,6 @@ Python 3.6+ is required.
 | Option | Default Setting | Description | 
 | :--- | :---: | :--- |
 | delegate | delegate | Delegate name |
-| message | message | ARK and ARK Fork coins only - message you want in vendor field for share payments |
 | voter_share | 50  | Percentage to share with voters |
 | vote_cap| 0 | Cap voters for how much they can earn with votes. For example 10000 will mean any wallet over 10K will only be paid based on 10K weight |
 | vote_min | 0 | Use this if you have a minimum wallet balance to be eligible for payments |
