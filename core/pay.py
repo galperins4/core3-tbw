@@ -141,4 +141,4 @@ if __name__ == '__main__':
                 process_standard_payments(payments, unprocessed, dynamic, config, exchange, sql)
  
         print("End Script - Looping")
-        time.sleep(1200)
+        time.sleep(180)
