@@ -85,9 +85,9 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
                      
     print("unique_row", unique_rowid, len(unique_rowid))
     print("check", check, len(check))
-    quit()
     
     accepted = payment.broadcast_standard(signed_tx)
+    print(accepted)
     # temp disable until response is fixed
     '''
     for_removal = payment.non_accept_check(check, accepted)
