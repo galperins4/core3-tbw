@@ -86,7 +86,7 @@ class Payments:
         try:
             transaction = self.pool_client.transactions.create(tx)
             print(tx_dict[0])
-            #records = [[j['recipientId'], j['amount'], j['id']] for j in tx]
+            records = [[j['to'], j['value'], j['hash']] for j in tx_dict]
             #time.sleep(1)
         except BaseException as e:
             # error
@@ -94,7 +94,7 @@ class Payments:
             quit()
 
         self.sql.open_connection()
-        # self.sql.store_transactions(records)
+        self.sql.store_transactions(records)
         self.sql.close_connection()
     
         return transaction['data']['accept']
