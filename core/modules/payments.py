@@ -36,8 +36,10 @@ class Payments:
         transaction.to(address)
         transaction.value(amount)
         transaction.nonce(int(nonce))
-        transaction.gas_price(UnitConverter.parse_units(5, 'gwei'))
-        transaction.gas_limit(21000)
+        #transaction.gas_price(UnitConverter.parse_units(5, 'gwei'))
+        #transaction.gas_limit(21000)
+        transaction.gas_price(UnitConverter.parse_units(1, 'gwei'))
+        transaction.gas_limit(1)
         transaction.sign(self.config.passphrase)
 
         sp = self.config.secondphrase
