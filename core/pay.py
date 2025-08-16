@@ -90,7 +90,6 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
     accepted = payment.broadcast_standard(signed_tx)
     print(accepted)
     
-    
     for_removal = payment.non_accept_check(check, accepted)
             
     # remove non-accepted transactions from being marked as completed
