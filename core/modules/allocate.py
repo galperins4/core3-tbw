@@ -21,7 +21,7 @@ class Allocate:
 
         voters_data = client.validators.voters(validator_id=self.config.delegate)
         # counter = voters_data['meta']['pageCount']
-        while start == counter:
+        while pages == counter:
             c = client.validators.voters(validator_id=self.config.delegate, page=pages)
             print(len(c['data']))
             quit()
