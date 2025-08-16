@@ -17,7 +17,7 @@ class Dynamic:
 
         return fees
     
-    
+    # DOES NOT WORK PROPERLY
     def get_dynamic_fee_multi(self, numtx):
          try:
              node_configs = self.client.node.configuration()['data']['transactionPool']['dynamicFees']
@@ -42,27 +42,25 @@ class Dynamic:
 
          return transaction_fee
     
-    
+    #UNUSED
     def calculate_dynamic_fee(self, t, s, c):
         return int((t+s)*c)
 
-    
+    #UNUSED
     def calculate_dynamic_multifee(self, t, s, c):
          fee = int((t + (round(s/2) + 1)) * c)
          return fee
     
-    
+    #DOES NOT WORK PROPERLY
     def get_multipay_limit(self):
-        #NEED TO FIX - DOES NOT WORK
         try:
             limit = int(self.client.node.configuration()['data']['constants']['multiPaymentLimit'])
         except:
             limit = 40
         return limit
     
-    
+    # DOES NOT WORK PROPERLY
     def get_tx_request_limit(self):
-        #NEED TO FIX - DOES NOT WORK
         try:
             limit = self.client.node.configuration()['data']['transactionPool']['maxTransactionsPerRequest']
         except:
