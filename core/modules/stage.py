@@ -78,7 +78,7 @@ class Stage:
         
         self.sql.open_connection()
         self.sql.update_delegate_paid_balance(paid_delegate)
-        self.sql.stage_payment(paid_delegate, msg = "Reward")
+        self.sql.stage_payment(paid_delegate)
         self.sql.close_connection()
     
     
@@ -86,5 +86,5 @@ class Stage:
         print("Voter Payments\n", self.voters)
         self.sql.open_connection()
         self.sql.update_voter_paid_balance(self.voters)
-        self.sql.stage_payment(self.voters, msg = self.config.message)
+        self.sql.stage_payment(self.voters)
         self.sql.close_connection()
