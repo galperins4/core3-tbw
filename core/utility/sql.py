@@ -43,7 +43,7 @@ class Sql:
 
         self.cursor.execute("CREATE TABLE IF NOT EXISTS voters (address varchar(36) PRIMARY KEY, public_key varchar(66), unpaid_bal bigint, paid_bal bigint, share float )")
 
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS transactions (address varchar(36), amount varchar(64), id varchar(64), processed_at varchar(64) )")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS transactions (address varchar(36), amount bigint, id varchar(64), processed_at varchar(64) )")
         
         self.cursor.execute("CREATE TABLE IF NOT EXISTS delegate_rewards (address varchar(36), unpaid_bal bigint, paid_bal bigint )")
         
