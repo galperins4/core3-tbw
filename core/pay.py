@@ -83,6 +83,10 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
         signed_tx.append(tx_hex)
         temp_nonce += 1 
                      
+    print("unique_row", unique_rowid, len(unique_rowid))
+    print("check", check, len(check))
+    quit()
+    
     accepted = payment.broadcast_standard(signed_tx)
     # temp disable until response is fixed
     '''
