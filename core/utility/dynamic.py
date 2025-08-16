@@ -53,6 +53,7 @@ class Dynamic:
     
     
     def get_multipay_limit(self):
+        #NEED TO FIX - DOES NOT WORK
         try:
             limit = int(self.client.node.configuration()['data']['constants']['multiPaymentLimit'])
         except:
@@ -61,6 +62,7 @@ class Dynamic:
     
     
     def get_tx_request_limit(self):
+        #NEED TO FIX - DOES NOT WORK
         try:
             limit = self.client.node.configuration()['data']['transactionPool']['maxTransactionsPerRequest']
         except:
