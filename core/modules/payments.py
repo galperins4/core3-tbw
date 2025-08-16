@@ -85,6 +85,7 @@ class Payments:
         # broadcast to relay
         try:
             transaction = self.pool_client.transactions.create(tx)
+            print(transaction)
             records = [[j['to'], j['value'], j['hash']] for j in tx_dict]
             time.sleep(1)
         except BaseException as e:
