@@ -179,6 +179,7 @@ if __name__ == '__main__':
                 s = Stage(config, dynamic, sql, unpaid_voters, unpaid_delegate)
         
             # pause betweeen blocks
+            time.sleep(35)
  
         print("End Script - Looping")
         time.sleep(1200)
