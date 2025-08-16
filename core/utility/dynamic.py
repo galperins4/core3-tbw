@@ -7,8 +7,8 @@ class Dynamic:
     def get_dynamic_fee(self):        
         try:
             node_configs = self.client.node.configuration()['data']
-            fees = {"gas_price": node_configs['constants']['gas']['minimumGasPrice"],
-                    "gas_limit": node_configs['constants']['gas']['minimumGasLimit"]}
+            fees = {"gas_price": node_configs['constants']['gas']['minimumGasPrice'],
+                    "gas_limit": node_configs['constants']['gas']['minimumGasLimit']}
 
             fees["tx_fee"] = fees['gas_price]*fees['gas_limit]
             print(fees)
