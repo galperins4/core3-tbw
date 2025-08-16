@@ -31,7 +31,7 @@ class Allocate:
                 roll.append(val)
 
             # check to see if more than 100 records to increment page to retrieve
-            if len(c['data']) > 100;
+            if len(c['data']) > 100:
                 start += 1
                 pages += 1
             else:
