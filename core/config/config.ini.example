@@ -1,6 +1,6 @@
 [static]
-atomic = 100000000
-network = ark_devnet
+atomic = 1000000000000000000
+network = mainsail_testnet
 username = username
 start_block = 0
 
