@@ -7,8 +7,13 @@ class Dynamic:
     def get_dynamic_fee(self):        
         try:
             node_configs = self.client.node.configuration()['data']
-            print(node_configs)
+            fees = {"gas_price": node_configs['constants']['gas']['minimumGasPrice"],
+                    "gas_limit": node_configs['constants']['gas']['minimumGasLimit"]}
+
+            fees["tx_fee"] = fees['gas_price]*fees['gas_limit]
+            print(fees)
             quit()
+                    
             if node_configs['enabled'] == "False":
                 transaction_fee = int(0.1 * self.config.atomic)
             else:
