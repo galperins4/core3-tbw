@@ -31,7 +31,7 @@ class Initialize:
         print("Storing forged blocks in database")
         self.sql.store_blocks(total_blocks)
             
-        print("Marking blocks proccessed up to starting block {}".format(self.config.start_block))
+        print("Marking blocks processed up to starting block {}".format(self.config.start_block))
         self.sql.mark_processed(self.config.start_block, initial = "Y")
         processed_blocks = self.sql.processed_blocks().fetchall()
         self.sql.close_connection()
