@@ -87,7 +87,6 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
         index += 1
     
     accepted = payment.broadcast_standard(signed_tx, dict_tx)
-    print(accepted)
     
     for_removal = payment.non_accept_check(check, accepted)
             
