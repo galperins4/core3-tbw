@@ -83,6 +83,7 @@ def process_standard_payments(payment, unprocessed, dynamic, config, exchange, s
         check[index] = i[0]
         signed_tx.append(tx_hex)
         temp_nonce += 1 
+        index += 1
                      
     print("unique_row", unique_rowid, len(unique_rowid))
     print("check", check, len(check))
