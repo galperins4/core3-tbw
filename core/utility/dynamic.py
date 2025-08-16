@@ -7,6 +7,7 @@ class Dynamic:
     def get_dynamic_fee(self):        
         try:
             node_configs = self.client.node.configuration()['data']['transactionPool']['dynamicFees']
+            print(node_configs)
             if node_configs['enabled'] == "False":
                 transaction_fee = int(0.1 * self.config.atomic)
             else:
