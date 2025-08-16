@@ -26,7 +26,6 @@ class Configure:
     def delegate(self, c):
         self.delegate = c.get('delegate', 'delegate')
         self.validator_public_key = c.get('delegate', 'validator_public_key')
-        self.message = c.get('delegate', 'message')
         self.voter_share = int(c.get('delegate', 'voter_share'))
         self.voter_cap = int(c.get('delegate', 'voter_cap'))
         self.voter_min = int(c.get('delegate', 'voter_min'))
