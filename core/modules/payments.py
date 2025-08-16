@@ -81,11 +81,11 @@ class Payments:
         return transaction_dict, transaction_hex
     
     
-    def broadcast_standard(self, tx):
+    def broadcast_standard(self, tx, tx_dict):
         # broadcast to relay
         try:
             transaction = self.pool_client.transactions.create(tx)
-            print(tx[0])
+            print(tx_dict[0])
             #records = [[j['recipientId'], j['amount'], j['id']] for j in tx]
             #time.sleep(1)
         except BaseException as e:
