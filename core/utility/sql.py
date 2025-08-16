@@ -64,7 +64,7 @@ class Sql:
         self.commit()
     
     
-    def stage_payment(self, paid, msg):
+    def stage_payment(self, paid, msg=None):
         staging = []
         for k, v in paid.items():
             staging.append((k, v, msg, None))
