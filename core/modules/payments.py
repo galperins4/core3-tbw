@@ -58,6 +58,7 @@ class Payments:
         print(fee)
 
         for i in payments:
+            print(i[1], i[2])
             # exchange processing
             if i[1] in self.config.convert_address and self.config.exchange == "Y":
                 index = self.config.convert_address.index(i[1])
