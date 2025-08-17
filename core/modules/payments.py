@@ -56,6 +56,7 @@ class Payments:
         fee = self.dynamic.get_dynamic_fee_multi(len(payments))
         transaction = MultipaymentBuilder.new()
         print(fee)
+        quit()
 
         for i in payments:
             # exchange processing
