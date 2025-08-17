@@ -43,7 +43,7 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
                 nonce += 1
                 index += 1
         
-        accepted = payment.broadcast_multi(signed_tx)
+        accepted = payment.broadcast_multi(signed_tx, dict_tx)
         print(check)
         quit()
         '''
