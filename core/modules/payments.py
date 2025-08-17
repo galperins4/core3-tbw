@@ -109,6 +109,8 @@ class Payments:
                 records = []
                 hash = i['hash']
                 count = 0
+                print(i['pay'])
+                quit()
                 for j in i['pay']:
                     print(j)
                     quit()
