@@ -110,7 +110,13 @@ class Payments:
                 quit()
                 records = []
                 hash = i['hash']
-            #    records = [[j['to'], int(j['value']/self.config.offset), hash] for j in tx_dict]
+                count = 0
+                for i in i['pay']:
+                    to = j[0][count]
+                    value = int(j[1][count] / self.config.offset)
+                    records.append([to, value, hash])        
+                print(records)        
+                # records = [[j['to'], int(j['value']/self.config.offset), hash] for j in i['pay']
             #    # snekdb.storeTransactions(records)
             #time.sleep(1)
         except BaseException as e:
