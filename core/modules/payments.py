@@ -105,12 +105,12 @@ class Payments:
         try:
             transaction = self.pool_client.transactions.create(tx)
             #print(transaction)
-            print(tx_dict)
-            quit()
-            #for i in tx:
-            #    records = []
-            #    id = i['hash']
-            #    records = [[j['to'], int(j['value']/self.config.offset), id] for j in tx_dict]
+            for i in tx_dict:
+                print(i)
+                quit()
+                records = []
+                hash = i['hash']
+            #    records = [[j['to'], int(j['value']/self.config.offset), hash] for j in tx_dict]
             #    # snekdb.storeTransactions(records)
             #time.sleep(1)
         except BaseException as e:
