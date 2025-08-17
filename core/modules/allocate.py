@@ -23,7 +23,7 @@ class Allocate:
         while pages == counter:
             c = client.validators.voters(validator_id=self.config.delegate, page=pages)
             for j in c['data']:
-                initial_voters[j['address']] = int((j['balance']/config.offset))
+                initial_voters[j['address']] = int((j['balance']/self.config.offset))
                 val = [j['address'], j['publicKey']]
                 roll.append(val)
 
