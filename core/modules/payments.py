@@ -54,6 +54,8 @@ class Payments:
 # DOES NOT WORK
     def build_multi_transaction(self, payments, nonce):
         f = self.dynamic.get_dynamic_fee_multi(len(payments))
+        print(f)
+        quit()
         transaction = MultipaymentBuilder.new()
 
         for i in payments:
