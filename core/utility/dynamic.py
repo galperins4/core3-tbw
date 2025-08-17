@@ -22,7 +22,7 @@ class Dynamic:
         try:
             node_configs = self.client.node.configuration()['data']
             fees = {"gas_price": node_configs['constants']['gas']['minimumGasPrice'],
-                    "gas_limit": node_configs['constants']['gas']['minimumGasLimit']}
+                    "gas_limit": (node_configs['constants']['gas']['minimumGasLimit'] * numtx)}
 
             fees["tx_fee"] = (fees['gas_price'] * fees['gas_limit'] * numtx)
 
