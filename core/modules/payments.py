@@ -51,10 +51,12 @@ class Payments:
 
         return transaction_dict, transaction_hex
 
-# DOES NOT WORK
+
     def build_multi_transaction(self, payments, nonce):
         fee = self.dynamic.get_dynamic_fee_multi(len(payments))
         transaction = MultipaymentBuilder.new()
+        print(fee)
+        quit()
 
         for i in payments:
             # exchange processing
