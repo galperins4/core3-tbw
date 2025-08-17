@@ -15,7 +15,7 @@ def chunks(l, n):
         # Create an index range for l of n items:
         yield l[i:i+n]
 
-# DOES NOT WORK
+
 def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql):
     print("Multi Payment")
     signed_tx = []
