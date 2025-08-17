@@ -56,7 +56,6 @@ class Payments:
         fee = self.dynamic.get_dynamic_fee_multi(len(payments))
         transaction = MultipaymentBuilder.new()
         print(fee)
-        quit()
 
         for i in payments:
             # exchange processing
@@ -107,7 +106,7 @@ class Payments:
         try:
             transaction = self.pool_client.transactions.create(tx)
             print(transaction)
-            print(tx_dict)
+            print(tx_dict['pay'])
             #for i in tx:
             #    records = []
             #    id = i['hash']
