@@ -31,7 +31,7 @@ class Dynamic:
             fees = {"gas_price": 5000000000, "gas_limit": 21000, "tx_fee": (105000000000000 * numtx)} 
 
 
-             '''
+        '''
              if (node_configs['enabled'] == "False"):
                  transaction_fee = int(0.1 * self.config.atomic)
              else:
@@ -50,7 +50,7 @@ class Dynamic:
 
          except:
              transaction_fee = int(0.1 * self.config.atomic)
-         '''
+        '''
         return fees
     
     #UNUSED
