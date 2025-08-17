@@ -86,7 +86,7 @@ if __name__ == '__main__':
     
     # connect to core and tbw script database
     database = Database(config, network)
-    sql = Sql()
+    sql = Sql(config)
     
     # check if initialized
     Initialize(config, database, sql)
