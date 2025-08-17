@@ -46,7 +46,7 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
         accepted = payment.broadcast_multi(signed_tx, dict_tx)
         print(check)
         quit()
-        '''
+        
         #check for accepted and non-accepted transactions        
         for k, v in check.items():
             if k in accepted:
@@ -60,7 +60,7 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
                 sql.open_connection()
                 sql.delete_transaction_record(k)
                 sql.close_connection()
-        '''
+        
         # payment run complete
         print('Payment Run Completed!')
     
