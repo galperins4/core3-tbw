@@ -18,6 +18,7 @@ class Configure:
         
     def static(self, c):
         self.atomic = int(c.get('static', 'atomic'))
+        self.offset = int(c.get('static', 'offset'))
         self.network = c.get('static', 'network')
         self.username = c.get('static', 'username')
         self.start_block = int(c.get('static', 'start_block'))
