@@ -29,6 +29,8 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
         temp_multi_chunk = list(chunks(unprocessed, multi_limit))
         # remove any items over request_tx_limit
         multi_chunk = temp_multi_chunk[:request_limit]
+        print(nonce)
+        print(type(nonce))
         nonce = payment.get_nonce()
         
         for i in multi_chunk:
