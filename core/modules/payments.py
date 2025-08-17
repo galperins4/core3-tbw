@@ -100,15 +100,15 @@ class Payments:
         return transaction['data']['accept']
     
     # DOES NOT WORK
-    def broadcast_multi(self, tx):    
+    def broadcast_multi(self, tx, tx_dict):    
         # broadcast to relay
         try:
             transaction = self.pool_client.transactions.create(tx)
             print(transaction)
             #for i in tx:
             #    records = []
-            #    id = i['id']
-            #    records = [[j['recipientId'], j['amount'], id] for j in i['asset']['payments']]
+            #    id = i['hash']
+            #    records = [[j['to'], j['value'], id] for j in tx_dict]
             #    # snekdb.storeTransactions(records)
             #time.sleep(1)
         except BaseException as e:
