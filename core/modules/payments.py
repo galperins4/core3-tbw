@@ -117,7 +117,6 @@ class Payments:
                     records.append([to[count], int(value[count]/self.config.offset), hash])
                     count += 1
                 
-                snekdb.storeTransactions(records)
             time.sleep(1)
         except BaseException as e:
             # error
@@ -125,7 +124,7 @@ class Payments:
             quit()
     
         self.sql.open_connection()
-        #self.sql.store_transactions(records)
+        self.sql.store_transactions(records)
         self.sql.close_connection()
         
         return transaction['data']['accept']
