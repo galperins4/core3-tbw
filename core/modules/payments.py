@@ -111,7 +111,7 @@ class Payments:
                 count = 0
                 for j in i['pay']:
                     print(j[0])
-                    print(j[1])
+                    print(j[5])
                     quit()
                     to = j[0][count]
                     value = int(j[1][count] / self.config.offset)
