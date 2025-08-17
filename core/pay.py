@@ -19,6 +19,7 @@ def chunks(l, n):
 def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql):
     print("Multi Payment")
     signed_tx = []
+    dict_tx = []
     check = {} 
     request_limit = dynamic.get_tx_request_limit()
     multi_limit = dynamic.get_multipay_limit()
@@ -37,6 +38,7 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
                 tx, tx_hex = payment.build_multi_transaction(i, str(nonce))
                 check[tx['hash']] = unique_rowid
                 signed_tx.append(tx_hex)
+                dict_tx.append(tx)
                 nonce += 1        
         
         accepted = payment.broadcast_multi(signed_tx)
