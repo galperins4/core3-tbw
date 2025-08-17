@@ -106,6 +106,7 @@ class Payments:
         try:
             transaction = self.pool_client.transactions.create(tx)
             print(transaction)
+            print(tx_dict)
             #for i in tx:
             #    records = []
             #    id = i['hash']
