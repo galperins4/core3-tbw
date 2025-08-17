@@ -35,9 +35,9 @@ class Stage:
                 numtx = round(total_tx // multi_limit) + 1
 
             full_payments = total_tx // multi_limit
-            full = int(full_payments * self.dynamic.get_dynamic_fee_multi(multi_limit))
+            full = int(full_payments * self.dynamic.get_dynamic_fee_multi(multi_limit)['tx_fee'])
             partial_payments = total_tx % multi_limit
-            partial = self.dynamic.get_dynamic_fee_multi(partial_payments)
+            partial = self.dynamic.get_dynamic_fee_multi(partial_payments)['tx_fee']
             transaction_fees = full + partial
             
         else:
