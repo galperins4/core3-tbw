@@ -3,10 +3,10 @@ from datetime import datetime
 from pathlib import Path
 
 class Sql:
-    def __init__(self):
+    def __init__(self, config):
         self.home = str(Path.home())
         self.data_path = self.home+'/core3-tbw/core/data/tbw.db'
-
+        self.config = config
         
     def open_connection(self):
         self.connection = sqlite3.connect(self.data_path)
