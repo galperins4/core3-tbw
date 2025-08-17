@@ -112,7 +112,8 @@ class Payments:
                 for j in i['pay']:
                     to = j[0][count]
                     value = int(j[1][count] / self.config.offset)
-                    records.append([to, value, hash])        
+                    records.append([to, value, hash])
+                    count += 1
                 print(records)        
                 # records = [[j['to'], int(j['value']/self.config.offset), hash] for j in i['pay']
             #    # snekdb.storeTransactions(records)
