@@ -20,7 +20,9 @@ class Dynamic:
     # DOES NOT WORK PROPERLY
     def get_dynamic_fee_multi(self, numtx):
          try:
-             node_configs = self.client.node.configuration()['data']['transactionPool']['dynamicFees']
+             node_configs = self.client.node.configuration()['data']
+             print(node_configs)
+             quit()
              if (node_configs['enabled'] == "False"):
                  transaction_fee = int(0.1 * self.config.atomic)
              else:
