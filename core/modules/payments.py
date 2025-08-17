@@ -98,13 +98,13 @@ class Payments:
         self.sql.close_connection()
     
         return transaction['data']['accept']
+
     
-    # DOES NOT WORK
     def broadcast_multi(self, tx, tx_dict):    
         # broadcast to relay
         try:
             transaction = self.pool_client.transactions.create(tx)
-            #print(transaction)
+            print(transaction)
             for i in tx_dict:
                 records = []
                 hash = i['hash']
@@ -116,20 +116,9 @@ class Payments:
                 while count < pay_count:
                     records.append([to[count], int(value[count]/self.config.offset), hash])
                     count += 1
-                print(records)
-                quit()
-                                    
-                for j in i['pay']:
-                    print(j)
-                    quit()
-                    to = j[0][count]
-                    value = int(j[1][count] / self.config.offset)
-                    records.append([to, value, hash])
-                    count += 1
-                print(records)        
-                # records = [[j['to'], int(j['value']/self.config.offset), hash] for j in i['pay']
-            #    # snekdb.storeTransactions(records)
-            #time.sleep(1)
+                
+                snekdb.storeTransactions(records)
+            time.sleep(1)
         except BaseException as e:
             # error
             print("Something went wrong", e)
