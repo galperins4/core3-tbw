@@ -89,7 +89,7 @@ class Payments:
         try:
             transaction = self.pool_client.transactions.create(tx)
             print(transaction)
-            records = [[j['to'], j['value'], j['hash']] for j in tx_dict]
+            records = [[j['to'], int(j['value']/self.config.offset), j['hash']] for j in tx_dict]
             time.sleep(1)
         except BaseException as e:
             # error
@@ -112,7 +112,7 @@ class Payments:
             #for i in tx:
             #    records = []
             #    id = i['hash']
-            #    records = [[j['to'], j['value'], id] for j in tx_dict]
+            #    records = [[j['to'], int(j['value']/self.config.offset), id] for j in tx_dict]
             #    # snekdb.storeTransactions(records)
             #time.sleep(1)
         except BaseException as e:
