@@ -109,8 +109,16 @@ class Payments:
                 records = []
                 hash = i['hash']
                 count = 0
-                print(i['pay'])
+                to = i['pay'][0]
+                value = i['pay'][1]
+                pay_count = len(to)-1
+                
+                while count < pay_count:
+                    records.append([to[count], int(value[count]/self.config.offset), hash]
+                    count += 1
+                print(records)
                 quit()
+                                    
                 for j in i['pay']:
                     print(j)
                     quit()
