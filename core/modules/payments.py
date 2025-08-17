@@ -105,8 +105,9 @@ class Payments:
         # broadcast to relay
         try:
             transaction = self.pool_client.transactions.create(tx)
-            print(transaction)
-            print(tx_dict['pay'])
+            #print(transaction)
+            print(tx_dict)
+            quit()
             #for i in tx:
             #    records = []
             #    id = i['hash']
