@@ -34,7 +34,7 @@ class Payments:
     def build_transfer_transaction(self, address, amount, vendor, fee, nonce):
         transaction = TransferBuilder.new()
         transaction.to(address)
-        transaction.value(amount)
+        transaction.value(amount * self.config.offset)
         transaction.nonce(int(nonce))
         transaction.gas_price(fee['gas_price'])
         transaction.gas_limit(fee['gas_limit'])
@@ -64,9 +64,9 @@ class Payments:
             if i[1] in self.config.convert_address and self.config.exchange == "Y":
                 index = self.config.convert_address.index(i[1])
                 pay_in = self.exchange.exchange_select(index, i[1], i[2], self.config.provider[index])
-                transaction.pay(pay_in, i[2])
+                transaction.pay(pay_in, (i[2]*self.config.offset))
             else:
-                transaction.pay(i[1], i[2])
+                transaction.pay(i[1], (i[2]*self.config.offset))
         
         transaction.gas_price(fee['gas_price'])
         transaction.gas_limit(fee['gas_limit'])
