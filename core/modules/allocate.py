@@ -34,8 +34,6 @@ class Allocate:
             else:
                 counter += 1
 
-        print(initial_voters)
-        quit()
         # add voters to database
         self.sql.open_connection()
         self.sql.store_voters(roll, self.config.voter_share)
