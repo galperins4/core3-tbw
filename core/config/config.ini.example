@@ -1,5 +1,6 @@
 [static]
-atomic = 1000000000000000000
+atomic = 100000000
+offset = 10000000000
 network = mainsail_testnet
 username = username
 start_block = 0
