@@ -50,7 +50,7 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
             if k in accepted:
                 # mark all accepted records complete
                 sql.open_connection()
-                # sql.process_staged_payment(v)
+                sql.process_staged_payment(v)
                 sql.close_connection()
             else:
                 # delete all transaction records with relevant multipay txid
