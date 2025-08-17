@@ -19,12 +19,12 @@ class Dynamic:
     
     # DOES NOT WORK PROPERLY
     def get_dynamic_fee_multi(self, numtx):
-         try:
-             node_configs = self.client.node.configuration()['data']
-             fees = {"gas_price": node_configs['constants']['gas']['minimumGasPrice'],
+        try:
+            node_configs = self.client.node.configuration()['data']
+            fees = {"gas_price": node_configs['constants']['gas']['minimumGasPrice'],
                     "gas_limit": node_configs['constants']['gas']['minimumGasLimit']}
 
-             fees["tx_fee"] = (fees['gas_price'] * fees['gas_limit'] * numtx)
+            fees["tx_fee"] = (fees['gas_price'] * fees['gas_limit'] * numtx)
 
         except:
             # HARD CODED
@@ -51,7 +51,7 @@ class Dynamic:
          except:
              transaction_fee = int(0.1 * self.config.atomic)
          '''
-         return fees
+        return fees
     
     #UNUSED
     def calculate_dynamic_fee(self, t, s, c):
