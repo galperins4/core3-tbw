@@ -10,10 +10,10 @@ class Dynamic:
             fees = {"gas_price": node_configs['constants']['gas']['minimumGasPrice'],
                     "gas_limit": node_configs['constants']['gas']['minimumGasLimit']}
 
-            fees["tx_fee"] = (fees['gas_price'] * fees['gas_limit'])
+            fees["tx_fee"] = int((fees['gas_price'] * fees['gas_limit']) / self.config.offset)
         except:
             # HARD CODED
-            fees = {"gas_price": 5000000000, "gas_limit": 21000, "tx_fee": 105000000000000} 
+            fees = {"gas_price": 5000000000, "gas_limit": 21000, "tx_fee": 10500}
 
         return fees
     
@@ -24,11 +24,11 @@ class Dynamic:
             fees = {"gas_price": node_configs['constants']['gas']['minimumGasPrice'],
                     "gas_limit": (node_configs['constants']['gas']['minimumGasLimit'] * numtx)}
 
-            fees["tx_fee"] = (fees['gas_price'] * node_configs['constants']['gas']['minimumGasLimit'] * numtx)
+            fees["tx_fee"] = int((fees['gas_price'] * node_configs['constants']['gas']['minimumGasLimit'] * numtx) / self.config.offset)
 
         except:
             # HARD CODED
-            fees = {"gas_price": 5000000000, "gas_limit": 21000, "tx_fee": (105000000000000 * numtx)} 
+            fees = {"gas_price": 5000000000, "gas_limit": 21000, "tx_fee": (10500 * numtx)} 
 
 
         '''
