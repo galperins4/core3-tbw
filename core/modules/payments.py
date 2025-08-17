@@ -111,7 +111,7 @@ class Payments:
                 count = 0
                 to = i['pay'][0]
                 value = i['pay'][1]
-                pay_count = len(to)-1
+                pay_count = len(to)
                 
                 while count < pay_count:
                     records.append([to[count], int(value[count]/self.config.offset), hash])
