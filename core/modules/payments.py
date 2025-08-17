@@ -109,9 +109,9 @@ class Payments:
                 records = []
                 hash = i['hash']
                 count = 0
-                print(i['pay'])
-                quit()
                 for j in i['pay']:
+                    print(j[0][0]), j[1][0])
+                    quit()
                     to = j[0][count]
                     value = int(j[1][count] / self.config.offset)
                     records.append([to, value, hash])
