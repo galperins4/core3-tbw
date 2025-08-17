@@ -31,15 +31,17 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
         # remove any items over request_tx_limit
         multi_chunk = temp_multi_chunk[:request_limit]
         nonce = int(payment.get_nonce())
-        
+
+        index = 0
         for i in multi_chunk:
             if len(i) > 1:
                 unique_rowid = [y[0] for y in i]
                 tx, tx_hex = payment.build_multi_transaction(i, str(nonce))
-                check[tx['hash']] = unique_rowid
+                check[index] = unique_rowid
                 signed_tx.append(tx_hex)
                 dict_tx.append(tx)
-                nonce += 1        
+                nonce += 1
+                index += 1
         
         accepted = payment.broadcast_multi(signed_tx)
         '''
