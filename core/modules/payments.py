@@ -55,7 +55,6 @@ class Payments:
     def build_multi_transaction(self, payments, nonce):
         fee = self.dynamic.get_dynamic_fee_multi(len(payments))
         transaction = MultipaymentBuilder.new()
-        print(fee)
 
         for i in payments:
             # exchange processing
