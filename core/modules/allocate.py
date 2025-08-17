@@ -34,7 +34,7 @@ class Allocate:
             else:
                 counter += 1
 
-        print(roll)
+        print(initial_voters)
         quit()
         # add voters to database
         self.sql.open_connection()
