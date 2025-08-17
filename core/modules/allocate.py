@@ -20,12 +20,10 @@ class Allocate:
         counter = 1
 
         voters_data = client.validators.voters(validator_id=self.config.delegate)
-        print(voters_data)['data'][0]
-        quit()
         while pages == counter:
             c = client.validators.voters(validator_id=self.config.delegate, page=pages)
             for j in c['data']:
-                initial_voters[j['address']] = int(j['balance'])
+                initial_voters[j['address']] = int((j['balance']/config.offset))
                 val = [j['address'], j['publicKey']]
                 roll.append(val)
 
@@ -36,6 +34,8 @@ class Allocate:
             else:
                 counter += 1
 
+        print(roll)
+        quit()
         # add voters to database
         self.sql.open_connection()
         self.sql.store_voters(roll, self.config.voter_share)
