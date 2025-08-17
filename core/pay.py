@@ -44,6 +44,8 @@ def process_multi_payments(payment, unprocessed, dynamic, config, exchange, sql)
                 index += 1
         
         accepted = payment.broadcast_multi(signed_tx)
+        print(check)
+        quit()
         '''
         #check for accepted and non-accepted transactions        
         for k, v in check.items():
