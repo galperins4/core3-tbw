@@ -43,14 +43,14 @@ class Allocate:
 
         
         return initial_voters
-        
+    #UNUSED    
     def get_vote_transactions(self, timestamp):
         self.database.open_connection()
         vote, unvote = self.database.get_votes(timestamp)
         self.database.close_connection()
         return vote, unvote    
 
-    
+    #UNUSED
     def create_voter_roll(self, v, u):
         # create dictionary of unvotes
         unvotes = {i[0]:i[1] for i in u}
@@ -77,7 +77,7 @@ class Allocate:
 
         return roll
     
-       
+    #UNUSED   
     def get_voter_balance(self, block, voter_roll):
         vote_balance = {}
         block_timestamp = block[1]
