@@ -121,7 +121,7 @@ if __name__ == '__main__':
     dynamic = Dynamic(utility, config)
       
     # connect to tbw script database and exchange module
-    sql = Sql()
+    sql = Sql(config)
     exchange = Exchange(sql, config)
     
     # MAIN FUNCTION LOOP SHOULD START HERE
