@@ -9,7 +9,7 @@ class Network:
         self.network = network
         env_path = self.home + "/core3-tbw/core/network/" + self.network
 
-        config = SafeConfigParser(os.environ)
+        config = ConfigParser(os.environ)
         config.read(env_path)
         self.load_network(config)
 
