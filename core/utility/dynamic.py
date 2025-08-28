@@ -21,10 +21,10 @@ class Dynamic:
     def get_dynamic_fee_multi(self, numtx):
         try:
             node_configs = self.client.node.configuration()['data']
-            fees = {"gas_price": node_configs['constants']['gas']['minimumGasPrice'],
+            fees = {"gas_price": int(node_configs['constants']['gas']['minimumGasPrice'] * 1.05),
                     "gas_limit": (node_configs['constants']['gas']['minimumGasLimit'] * numtx)}
 
-            fees["tx_fee"] = int((fees['gas_price'] * node_configs['constants']['gas']['minimumGasLimit'] * numtx) / self.config.offset)
+            fees["tx_fee"] = int((fees['gas_price'] * 1.05 * node_configs['constants']['gas']['minimumGasLimit'] * numtx) / self.config.offset)
 
         except:
             # HARD CODED
