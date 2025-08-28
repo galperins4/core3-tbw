@@ -30,27 +30,6 @@ class Dynamic:
             # HARD CODED
             fees = {"gas_price": 5000000000, "gas_limit": 21000, "tx_fee": (10500 * numtx)} 
 
-
-        '''
-             if (node_configs['enabled'] == "False"):
-                 transaction_fee = int(0.1 * self.config.atomic)
-             else:
-                 dynamic_offset = node_configs['addonBytes']['multiPayment']
-                 fee_multiplier = node_configs['minFeePool']
-
-                 # get size of transaction
-                 multi_tx = 125
-                 second_sig = 64
-                 per_tx_fee = 29
-                 v_msg = len(self.config.message) 
-                 tx_size = multi_tx + v_msg + second_sig + (numtx * per_tx_fee)
-
-                 # calculate transaction fee
-                 transaction_fee = self.calculate_dynamic_multifee(dynamic_offset, tx_size, fee_multiplier)
-
-         except:
-             transaction_fee = int(0.1 * self.config.atomic)
-        '''
         return fees
     
     #UNUSED
@@ -62,7 +41,7 @@ class Dynamic:
          fee = int((t + (round(s/2) + 1)) * c)
          return fee
     
-    #DOES NOT WORK PROPERLY
+    #API ENDPOINT DOES NOT WORK
     def get_multipay_limit(self):
         try:
             limit = int(self.client.node.configuration()['data']['constants']['multiPaymentLimit'])
@@ -70,7 +49,7 @@ class Dynamic:
             limit = 40
         return limit
     
-    # DOES NOT WORK PROPERLY
+    # API ENDPOINT DOES NOT WORK 
     def get_tx_request_limit(self):
         try:
             limit = self.client.node.configuration()['data']['transactionPool']['maxTransactionsPerRequest']
