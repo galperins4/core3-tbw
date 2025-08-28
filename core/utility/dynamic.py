@@ -17,7 +17,7 @@ class Dynamic:
 
         return fees
     
-    # DOES NOT WORK PROPERLY
+
     def get_dynamic_fee_multi(self, numtx):
         try:
             node_configs = self.client.node.configuration()['data']
