@@ -22,13 +22,13 @@ class Dynamic:
         try:
             node_configs = self.client.node.configuration()['data']
             fees = {"gas_price": int(node_configs['constants']['gas']['minimumGasPrice']),
-                    "gas_limit": (node_configs['constants']['gas']['minimumGasLimit'] * numtx)}
+                    "gas_limit": int((node_configs['constants']['gas']['minimumGasLimit'] * numtx * 1.05))}
 
             fees["tx_fee"] = int((fees['gas_price'] * node_configs['constants']['gas']['minimumGasLimit'] * numtx) / self.config.offset)
 
         except:
             # HARD CODED
-            fees = {"gas_price": 5000000000, "gas_limit": 21000, "tx_fee": (10500 * numtx)} 
+            fees = {"gas_price": 5000000000, "gas_limit": int(21000 * 1.05), "tx_fee": (10500 * numtx)} 
 
         return fees
     
